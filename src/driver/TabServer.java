@@ -8,7 +8,7 @@ public class TabServer extends JFrame{
     JPanel login,signup,acceptRide,feedback,update;
     static Driver driver;
     public TabServer(){
-        setBackground(new Color(110, 30, 43));
+        setBackground(new Color(35, 176, 212));
         setTitle("DRIVER'S HOME");
         tabs=new JTabbedPane();
         setBounds(0,0,1900,1000);

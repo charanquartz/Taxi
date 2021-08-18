@@ -3,9 +3,9 @@ import javax.swing.*;
 import java.awt.Event.*;
 import java.awt.*;
 public class Car {
-    String carID,company,model;
-    Boolean AC;
-    int capacity,farePerKM;
+    private String carID,company,model;
+    private Boolean AC;
+    private int capacity,farePerKM;
     Car(String carID,String company,String model,boolean AC,int capacity,int farePerKM){
         this.carID=carID;
         this.company=company;
