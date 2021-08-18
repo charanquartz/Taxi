@@ -1,11 +1,14 @@
 package driver;
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.event.*;
 public class Login extends JPanel{
-    TextField txtFld1,txtFld2;
+    JTextField txtFld1,txtFld2;
     Label lbl1,lbl2,lbl3;
-    Button btn1;
+    JPasswordField pwdFld1;
+    JButton btn1;
+    Border bdr;
     Login(){
         setBackground(new Color(3, 252, 240));
         setLayout(null);
@@ -19,30 +22,36 @@ public class Login extends JPanel{
         lbl3=new Label("Forgot password");
 
         //TextField
-        txtFld1=new TextField();
-        txtFld2=new TextField();
+        txtFld1=new JTextField();
+        pwdFld1=new JPasswordField();
 
         //Button
-        btn1=new Button("LOGIN");
+        btn1=new JButton("LOGIN");
 
-        lbl1.setBounds(10,10,250,70);
-        lbl2.setBounds(10,80,250,70);
+        //Border
+        bdr=BorderFactory.createLineBorder(Color.BLACK, 5);
 
-        txtFld1.setBounds(260,10,250,70);
-        txtFld2.setBounds(260,80,250,70);
-        txtFld2.setEchoChar('*');
-        txtFld2.addActionListener(new ActionListener(){
+        //Set Bounds for label
+        lbl1.setBounds(10,10,250,60);
+        lbl2.setBounds(10,80,250,60);
+
+        //set bounds for txtflds and passwordfields
+        txtFld1.setBounds(260,10,250,60);
+        pwdFld1.setBounds(260,80,250,60);
+
+        //ActionListener for password field
+        pwdFld1.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
                 login(txtFld1.getText(),txtFld2.getText());
             }
         });
-
         btn1.setBounds(260,160,250,60);
         btn1.addMouseListener(new MouseListener(){
             @Override
             public void mouseClicked(MouseEvent e) {
-                login(txtFld1.getText(),txtFld2.getText());
+                login(txtFld1.getText(),pwdFld1.getText());
+                System.out.println(pwdFld1.getText());
             }
 
             @Override
@@ -66,10 +75,16 @@ public class Login extends JPanel{
             }
         });
 
+        //Borders
+        pwdFld1.setBorder(bdr);
+        txtFld1.setBorder(bdr);
+        btn1.setBorder(bdr);
+
+        //Adding components to frame
         add(lbl1);
         add(lbl2);
         add(txtFld1);
-        add(txtFld2);
+        add(pwdFld1);
         add(btn1);
     }
     public boolean login(String username,String password){
