@@ -2,7 +2,7 @@ package driver;
 import java.util.*;
 public class Driver {
     private String fname,lname,carID,gender,dob,nationality,city,address,email,pass;
-    private ArrayList<Car> cars;
+    private ArrayList<Car> cars=new ArrayList<>();
     private long mobile,driverExp;
 
     public ArrayList<Car> getCars() {

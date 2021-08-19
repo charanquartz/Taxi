@@ -6,7 +6,7 @@ import java.awt.event.*;
 public class TabServer extends JFrame{
     JTabbedPane tabs;
     JPanel login,signup,viewRide,feedback,update;
-    static Driver driver;
+    static Driver driver=new Driver("Madhi","V","12325","male","sdfd","dfsd","dslfds","sdfgdsf","sdfgds","dsfdsf",34565434,3434);
     public TabServer(){
         setBackground(new Color(35, 176, 212));
         setTitle("DRIVER'S HOME");

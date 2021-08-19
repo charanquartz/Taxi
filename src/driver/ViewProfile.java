@@ -1,6 +1,7 @@
 package driver;
 import java.awt.*;
 import javax.swing.*;
+import java.util.*;
 import java.awt.Event.*;
 import javax.swing.border.Border;
 import javax.swing.BorderFactory;
@@ -12,12 +13,13 @@ public class ViewProfile extends JPanel{
     Label lbl1,lbl2,lbl3,lbl4,lbl5,lbl6,lbl7,lbl8,lbl9,lbl10,lbl11,lbl12,lbl13,lbl14,lbl15,lbl16,lbl17,lbl18,lbl19;
     JTextField txtFld1,txtFld2,txtFld3,txtFld4,txtFld5,txtFld6,txtFld7,txtFld8,txtFld11,txtFld12,txtFld13,txtFld14,txtFld15,txtFld16,txtFld17,txtFld18;
     JPasswordField txtFld9,txtFld10;
-    JComboBox<String> list1;
+    JComboBox<String> list1,list2;
     Button btn1,btn2,btn3;
     String[] arr;
     JRadioButton radBtn1,radBtn2,radBtn3;
     ButtonGroup btnGrp1;
     Border bdr=BorderFactory.createLineBorder(Color.BLACK,5);
+    ArrayList<Car> cars;
 
     ViewProfile(){
         setBackground(new Color(3, 252, 240));
@@ -74,6 +76,12 @@ public class ViewProfile extends JPanel{
         //JCombo box
         arr=new String[]{"Afghanistan","Albania","Algeria","Andorra","Angola","Anguilla","Antigua &amp; Barbuda","Argentina","Armenia","Aruba","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia &amp; Herzegovina","Botswana","Brazil","British Virgin Islands","Brunei","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Cape Verde","Cayman Islands","Chad","Chile","China","Colombia","Congo","Cook Islands","Costa Rica","Cote D Ivoire","Croatia","Cruise Ship","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Estonia","Ethiopia","Falkland Islands","Faroe Islands","Fiji","Finland","France","French Polynesia","French West Indies","Gabon","Gambia","Georgia","Germany","Ghana","Gibraltar","Greece","Greenland","Grenada","Guam","Guatemala","Guernsey","Guinea","Guinea Bissau","Guyana","Haiti","Honduras","Hong Kong","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Isle of Man","Israel","Italy","Jamaica","Japan","Jersey","Jordan","Kazakhstan","Kenya","Kuwait","Kyrgyz Republic","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Macau","Macedonia","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Mauritania","Mauritius","Mexico","Moldova","Monaco","Mongolia","Montenegro","Montserrat","Morocco","Mozambique","Namibia","Nepal","Netherlands","Netherlands Antilles","New Caledonia","New Zealand","Nicaragua","Niger","Nigeria","Norway","Oman","Pakistan","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Puerto Rico","Qatar","Reunion","Romania","Russia","Rwanda","Saint Pierre &amp; Miquelon","Samoa","San Marino","Satellite","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","South Africa","South Korea","Spain","Sri Lanka","St Kitts &amp; Nevis","St Lucia","St Vincent","St. Lucia","Sudan","Suriname","Swaziland","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor L'Este","Togo","Tonga","Trinidad &amp; Tobago","Tunisia","Turkey","Turkmenistan","Turks &amp; Caicos","Uganda","Ukraine","United Arab Emirates","United Kingdom","Uruguay","Uzbekistan","Venezuela","Vietnam","Virgin Islands (US)","Yemen","Zambia","Zimbabwe"};
         list1=new JComboBox<>(arr);
+        cars=TabServer.driver.getCars();
+        arr=new String[cars.size()];
+        for(int i=0;i<cars.size();i++){
+            arr[i]=cars.get(i).getCarID();
+        }
+        list2=new JComboBox<>(arr);
 
         //RadioButton
         radBtn1=new JRadioButton("Male");
@@ -116,7 +124,6 @@ public class ViewProfile extends JPanel{
         txtFld7.setBounds(270,570,250,60);//Mobile No
         txtFld8.setBounds(270,640,250,60);//Email
         txtFld9.setBounds(270,710,250,60);//Password
-        txtFld11.setBounds(790,290,250,60);//Car ID
         txtFld12.setBounds(790,360,250,60);//Company
         txtFld13.setBounds(790,430,250,60);//Model
         txtFld14.setBounds(790,500,250,60);//Capacity
@@ -136,6 +143,7 @@ public class ViewProfile extends JPanel{
 
         //Setbounds for JCombo box
         list1.setBounds(270,500,250,60);
+        list2.setBounds(790,290,250,60);
 
         //adding borders
         txtFld1.setBorder(bdr);
@@ -147,7 +155,6 @@ public class ViewProfile extends JPanel{
         txtFld7.setBorder(bdr);
         txtFld8.setBorder(bdr);
         txtFld9.setBorder(bdr);
-        txtFld11.setBorder(bdr);
         txtFld12.setBorder(bdr);
         txtFld13.setBorder(bdr);
         txtFld14.setBorder(bdr);
@@ -248,6 +255,7 @@ public class ViewProfile extends JPanel{
         });
         //Adding lists
         add(list1);
+        add(list2);
         disableEdit();
 
         //Adding Labels
@@ -280,7 +288,6 @@ public class ViewProfile extends JPanel{
         add(txtFld7);
         add(txtFld8);
         add(txtFld9);
-        add(txtFld11);
         add(txtFld12);
         add(txtFld13);
         add(txtFld14);
