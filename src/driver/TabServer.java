@@ -5,7 +5,7 @@ import java.awt.event.*;
 
 public class TabServer extends JFrame{
     JTabbedPane tabs;
-    JPanel login,signup,acceptRide,feedback,update;
+    JPanel login,signup,viewRide,feedback,update;
     static Driver driver;
     public TabServer(){
         setBackground(new Color(35, 176, 212));
@@ -17,12 +17,12 @@ public class TabServer extends JFrame{
         add(tabs,BorderLayout.CENTER);
         login=new Login();
         signup=new SignUp();
-        acceptRide=new AcceptRide();
+        viewRide=new ViewRides();
         feedback =new ProvideFeedback();
         update=new UpdateProfile();
         tabs.addTab("LOGIN",login);
         tabs.addTab("SIGNUP",signup);
-        tabs.addTab("ACCEPT RIDES",acceptRide);
+        tabs.addTab("VIEW RIDES",viewRide);
         tabs.addTab("UPDATE PROFILE",update);
         tabs.addTab("PROVIDE FEEDBACK",feedback);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
