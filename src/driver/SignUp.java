@@ -45,7 +45,6 @@ public class SignUp extends JPanel{
         lbl10=new Label("Email : ");
         lbl11=new Label("Password : ");
         lbl12=new Label("Re-enter Password : ");
-        lbl13=new Label("Car details : ");
         lbl14=new Label("Car ID : ");
         lbl15=new Label("Company : ");
         lbl16=new Label("Model : ");
@@ -230,6 +229,7 @@ public class SignUp extends JPanel{
         this.connection = connection;
     }
     public boolean validateEntries(){
+        //
         return true;
     }
     public boolean notAlreadyPresent(){
