@@ -1,19 +1,19 @@
 package driver;
 import javax.swing.*;
-import java.awt.Event.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.sql.*;
 import java.awt.*;
+import javax.swing.border.Border;
 public class SignUp extends JPanel{
     Label lbl1,lbl2,lbl3,lbl4,lbl5,lbl6,lbl7,lbl8,lbl9,lbl10,lbl11,lbl12,lbl13,lbl14,lbl15,lbl16,lbl17,lbl18,lbl19;
-    TextField txtFld1,txtFld2,txtFld3,txtFld4,txtFld5,txtFld6,txtFld7,txtFld8,txtFld9,txtFld10,txtFld11,txtFld12,txtFld13,txtFld14,txtFld15,txtFld16,txtFld17;
+    JTextField txtFld1,txtFld2,txtFld3,txtFld4,txtFld5,txtFld6,txtFld7,txtFld8,txtFld9,txtFld10,txtFld11,txtFld12,txtFld13,txtFld14,txtFld15,txtFld16,txtFld17;
     JComboBox<String> list1;
-    Button btn1;
+    JButton btn1;
     String[] arr;
     JRadioButton radBtn1,radBtn2,radBtn3;
     ButtonGroup btnGrp1;
     Car car;
+    Border bdr=BorderFactory.createLineBorder(Color.BLACK,5);
     SignUp(){
         setBackground(new Color(3, 252, 240));
         setBounds(0,0,2000,1900);
@@ -43,26 +43,26 @@ public class SignUp extends JPanel{
         lbl19=new Label("Fare/KM: ");
 
         //TextField
-        txtFld1=new TextField();
-        txtFld2=new TextField();
-        txtFld3=new TextField();
-        txtFld4=new TextField();
-        txtFld5=new TextField();
-        txtFld6=new TextField();
-        txtFld7=new TextField();
-        txtFld8=new TextField();
-        txtFld9=new TextField();
-        txtFld10=new TextField();
-        txtFld11=new TextField();
-        txtFld12=new TextField();
-        txtFld13=new TextField();
-        txtFld14=new TextField();
-        txtFld15=new TextField();
-        txtFld16=new TextField();
-        txtFld17=new TextField();
+        txtFld1=new JTextField();
+        txtFld2=new JTextField();
+        txtFld3=new JTextField();
+        txtFld4=new JTextField();
+        txtFld5=new JTextField();
+        txtFld6=new JTextField();
+        txtFld7=new JTextField();
+        txtFld8=new JTextField();
+        txtFld9=new JTextField();
+        txtFld10=new JTextField();
+        txtFld11=new JTextField();
+        txtFld12=new JTextField();
+        txtFld13=new JTextField();
+        txtFld14=new JTextField();
+        txtFld15=new JTextField();
+        txtFld16=new JTextField();
+        txtFld17=new JTextField();
 
         //Button
-        btn1=new Button("SIGNUP");
+        btn1=new JButton("SIGNUP");
 
         //JCombo box
         arr=new String[]{"Afghanistan","Albania","Algeria","Andorra","Angola","Anguilla","Antigua &amp; Barbuda","Argentina","Armenia","Aruba","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia &amp; Herzegovina","Botswana","Brazil","British Virgin Islands","Brunei","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Cape Verde","Cayman Islands","Chad","Chile","China","Colombia","Congo","Cook Islands","Costa Rica","Cote D Ivoire","Croatia","Cruise Ship","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Estonia","Ethiopia","Falkland Islands","Faroe Islands","Fiji","Finland","France","French Polynesia","French West Indies","Gabon","Gambia","Georgia","Germany","Ghana","Gibraltar","Greece","Greenland","Grenada","Guam","Guatemala","Guernsey","Guinea","Guinea Bissau","Guyana","Haiti","Honduras","Hong Kong","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Isle of Man","Israel","Italy","Jamaica","Japan","Jersey","Jordan","Kazakhstan","Kenya","Kuwait","Kyrgyz Republic","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Macau","Macedonia","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Mauritania","Mauritius","Mexico","Moldova","Monaco","Mongolia","Montenegro","Montserrat","Morocco","Mozambique","Namibia","Nepal","Netherlands","Netherlands Antilles","New Caledonia","New Zealand","Nicaragua","Niger","Nigeria","Norway","Oman","Pakistan","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Puerto Rico","Qatar","Reunion","Romania","Russia","Rwanda","Saint Pierre &amp; Miquelon","Samoa","San Marino","Satellite","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","South Africa","South Korea","Spain","Sri Lanka","St Kitts &amp; Nevis","St Lucia","St Vincent","St. Lucia","Sudan","Suriname","Swaziland","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor L'Este","Togo","Tonga","Trinidad &amp; Tobago","Tunisia","Turkey","Turkmenistan","Turks &amp; Caicos","Uganda","Ukraine","United Arab Emirates","United Kingdom","Uruguay","Uzbekistan","Venezuela","Vietnam","Virgin Islands (US)","Yemen","Zambia","Zimbabwe"};
@@ -161,6 +161,26 @@ public class SignUp extends JPanel{
 
             }
         });
+
+        //adding borders
+        txtFld1.setBorder(bdr);
+        txtFld2.setBorder(bdr);
+        txtFld3.setBorder(bdr);
+        txtFld4.setBorder(bdr);
+        txtFld5.setBorder(bdr);
+        txtFld6.setBorder(bdr);
+        txtFld7.setBorder(bdr);
+        txtFld8.setBorder(bdr);
+        txtFld9.setBorder(bdr);
+        txtFld10.setBorder(bdr);
+        txtFld11.setBorder(bdr);
+        txtFld12.setBorder(bdr);
+        txtFld13.setBorder(bdr);
+        txtFld14.setBorder(bdr);
+        txtFld15.setBorder(bdr);
+        txtFld16.setBorder(bdr);
+        txtFld17.setBorder(bdr);
+        btn1.setBorder(bdr);
 
         //Adding lists
         add(list1);
