@@ -1,9 +1,17 @@
 package driver;
-
+import java.util.*;
 public class Driver {
     private String fname,lname,carID,gender,dob,nationality,city,address,email,pass;
-    private Car[] cars;
+    private ArrayList<Car> cars;
     private long mobile,driverExp;
+
+    public ArrayList<Car> getCars() {
+        return cars;
+    }
+
+    public void setCars(ArrayList<Car> cars) {
+        this.cars = cars;
+    }
 
     public Driver(String fname, String lname, String carID, String gender, String dob, String nationality, String city, String address, String email, String pass, long mobile, long driverExp) {
         this.fname = fname;
