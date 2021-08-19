@@ -7,15 +7,13 @@ import java.sql.*;
 import java.awt.*;
 public class SignUp extends JPanel{
     Label lbl1,lbl2,lbl3,lbl4,lbl5,lbl6,lbl7,lbl8,lbl9,lbl10,lbl11,lbl12,lbl13,lbl14,lbl15,lbl16,lbl17,lbl18,lbl19;
-    TextField txtFld1,txtFld2,txtFld3,txtFld4,txtFld5,txtFld6,txtFld7,txtFld8,txtFld9,txtFld10,txtFld11,txtFld12,txtFld13,txtFld14,txtFld15,txtFld16,txtFld17,txtFld18;
+    TextField txtFld1,txtFld2,txtFld3,txtFld4,txtFld5,txtFld6,txtFld7,txtFld8,txtFld9,txtFld10,txtFld11,txtFld12,txtFld13,txtFld14,txtFld15,txtFld16,txtFld17;
     JComboBox<String> list1;
     Button btn1;
     String[] arr;
     JRadioButton radBtn1,radBtn2,radBtn3;
     ButtonGroup btnGrp1;
-    JFrame carTab;
     Car car;
-
     SignUp(){
         setBackground(new Color(3, 252, 240));
         setBounds(0,0,2000,1900);
@@ -36,6 +34,7 @@ public class SignUp extends JPanel{
         lbl10=new Label("Email : ");
         lbl11=new Label("Password : ");
         lbl12=new Label("Re-enter Password : ");
+        lbl13=new Label("Driver Lisence ID : ");
         lbl14=new Label("Car ID : ");
         lbl15=new Label("Company : ");
         lbl16=new Label("Model : ");
@@ -61,7 +60,6 @@ public class SignUp extends JPanel{
         txtFld15=new TextField();
         txtFld16=new TextField();
         txtFld17=new TextField();
-        txtFld18=new TextField();
 
         //Button
         btn1=new Button("SIGNUP");
@@ -94,6 +92,7 @@ public class SignUp extends JPanel{
         lbl10.setBounds(10,640,250,60);//Email
         lbl11.setBounds(10,710,250,60);//Password
         lbl12.setBounds(10,780,250,60);//Re-Enter pass
+        lbl13.setBounds(530,220,250,60);//Lisence ID
         lbl14.setBounds(530,290,250,60);
         lbl15.setBounds(530,360,250,60);
         lbl16.setBounds(530,430,250,60);
@@ -118,6 +117,7 @@ public class SignUp extends JPanel{
         txtFld14.setBounds(790,500,250,60);//Capacity
         txtFld15.setBounds(790,570,250,60);//AC
         txtFld16.setBounds(790,640,250,60);//Fare
+        txtFld17.setBounds(790,220,250,60);//License ID
 
         //setBounds for buttons
         btn1.setBounds(270,850,250,60);
@@ -178,6 +178,7 @@ public class SignUp extends JPanel{
         add(lbl10);
         add(lbl11);
         add(lbl12);
+        add(lbl13);
         add(lbl14);
         add(lbl15);
         add(lbl16);
@@ -202,6 +203,7 @@ public class SignUp extends JPanel{
         add(txtFld14);
         add(txtFld15);
         add(txtFld16);
+        add(txtFld17);
 
         //Adding Buttons
         add(btn1);

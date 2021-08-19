@@ -2,6 +2,7 @@ package driver;
 
 public class Driver {
     private String fname,lname,carID,gender,dob,nationality,city,address,email,pass;
+    private Car[] cars;
     private long mobile,driverExp;
 
     public Driver(String fname, String lname, String carID, String gender, String dob, String nationality, String city, String address, String email, String pass, long mobile, long driverExp) {
