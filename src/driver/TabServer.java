@@ -18,7 +18,7 @@ public class TabServer extends JFrame{
         login=new Login();
         signup=new SignUp();
         viewRide=new ViewRides();
-        feedback =new ProvideFeedback();
+        feedback =new Feedback();
         update=new UpdateProfile();
         tabs.addTab("LOGIN",login);
         tabs.addTab("SIGNUP",signup);

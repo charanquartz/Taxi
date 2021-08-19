@@ -16,21 +16,12 @@ public class SignUp extends JPanel{
     JFrame carTab;
     Car car;
 
-    private Connection connection;
     SignUp(){
         setBackground(new Color(3, 252, 240));
         setBounds(0,0,2000,1900);
         setFont(new  Font("Times New Roman",Font.BOLD,19));
         setVisible(true);
         setLayout(null);
-
-        try {
-            setConnection(DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:XE", "madhi", "java"));
-            connection.setAutoCommit(true);
-        }
-        catch(Exception e){
-
-        }
 
         //Label
         lbl1=new Label("FirstName : ");
@@ -186,7 +177,6 @@ public class SignUp extends JPanel{
         add(lbl9);
         add(lbl10);
         add(lbl11);
-        add(lbl13);
         add(lbl12);
         add(lbl14);
         add(lbl15);
@@ -221,13 +211,7 @@ public class SignUp extends JPanel{
         add(radBtn2);
         add(radBtn3);
     }
-    public Connection getConnection() {
-        return connection;
-    }
 
-    public void setConnection(Connection connection) {
-        this.connection = connection;
-    }
     public boolean validateEntries(){
         //
         return true;
