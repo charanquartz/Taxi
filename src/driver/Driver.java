@@ -1,9 +1,18 @@
 package driver;
-
+import java.util.*;
 public class Driver {
-    private String fname,lname,carID,gender,dob,nationality,city,address,email,pass;
-    private Car[] cars;
+    private String fname,lname,carID,gender,dob,nationality,city,address,email,pass,approved,availability;
+    private int portNUmber;
+    private ArrayList<Car> cars=new ArrayList<>();
     private long mobile,driverExp;
+
+    public ArrayList<Car> getCars() {
+        return cars;
+    }
+
+    public void setCars(ArrayList<Car> cars) {
+        this.cars = cars;
+    }
 
     public Driver(String fname, String lname, String carID, String gender, String dob, String nationality, String city, String address, String email, String pass, long mobile, long driverExp) {
         this.fname = fname;
@@ -18,6 +27,29 @@ public class Driver {
         this.pass = pass;
         this.mobile = mobile;
         this.driverExp = driverExp;
+    }
+    public int getPortNUmber() {
+        return portNUmber;
+    }
+
+    public void setPortNUmber(int portNUmber) {
+        this.portNUmber = portNUmber;
+    }
+
+    public String getApproved() {
+        return approved;
+    }
+
+    public void setApproved(String approved) {
+        this.approved = approved;
+    }
+
+    public String getAvailability() {
+        return availability;
+    }
+
+    public void setAvailability(String availability) {
+        this.availability = availability;
     }
 
     public String getFname() {

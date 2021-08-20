@@ -6,7 +6,7 @@ import java.awt.event.*;
 public class TabServer extends JFrame{
     JTabbedPane tabs;
     JPanel login,signup,viewRide,feedback,update;
-    static Driver driver;
+    static Driver driver=new Driver("Madhi","V","12325","male","sdfd","dfsd","dslfds","sdfgdsf","sdfgds","dsfdsf",34565434,3434);
     public TabServer(){
         setBackground(new Color(35, 176, 212));
         setTitle("DRIVER'S HOME");
@@ -19,11 +19,11 @@ public class TabServer extends JFrame{
         signup=new SignUp();
         viewRide=new ViewRides();
         feedback =new Feedback();
-        update=new UpdateProfile();
+        update=new ViewProfile();
         tabs.addTab("LOGIN",login);
         tabs.addTab("SIGNUP",signup);
         tabs.addTab("VIEW RIDES",viewRide);
-        tabs.addTab("UPDATE PROFILE",update);
+        tabs.addTab("VIEW PROFILE",update);
         tabs.addTab("PROVIDE FEEDBACK",feedback);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
