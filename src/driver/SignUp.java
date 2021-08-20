@@ -2,7 +2,10 @@ package driver;
 import javax.swing.*;
 import java.awt.event.*;
 import java.sql.*;
+import java.util.*;
 import java.awt.*;
+import javax.mail.*;
+import javax.mail.internet.*;
 import javax.swing.border.Border;
 public class SignUp extends JPanel{
     Label lbl1,lbl2,lbl3,lbl4,lbl5,lbl6,lbl7,lbl8,lbl9,lbl10,lbl11,lbl12,lbl13,lbl14,lbl15,lbl16,lbl17,lbl18,lbl19;
@@ -15,6 +18,7 @@ public class SignUp extends JPanel{
     ButtonGroup btnGrp1;
     Car car;
     Font f;
+    int num;
     Border bdr=BorderFactory.createLineBorder(Color.BLACK,5);
     SignUp(){
         f=new Font("Times New Roman",Font.BOLD,19);
@@ -139,8 +143,53 @@ public class SignUp extends JPanel{
             public void mouseClicked(MouseEvent e) {
                 if(validateEntries()){
                     if(notAlreadyPresent()){
-                        dbInsert();
-                        JOptionPane.showMessageDialog(null,"Registration success...");
+                        Label OTPLabel=new Label("Enter OTP : ");
+                        TextField txtFld4=new TextField();
+                        Button btn=new Button("Submit OTP");
+                        OTPLabel.setBounds(530,710,250,60);
+                        txtFld4.setBounds(790,710,250,60);
+                        btn.setBounds(790,780,250,60);
+                        add(OTPLabel);
+                        add(txtFld4);
+                        add(btn);
+                        num=generateRandomNumber();
+                        sendOTP(num);
+                        btn.addMouseListener(new MouseListener() {
+                            @Override
+                            public void mouseClicked(MouseEvent e) {
+                                if(TabServer.isValidNumber(txtFld4.getText()) && num==Integer.parseInt(txtFld4.getText())) {
+                                    if(num==0){
+                                        JOptionPane.showMessageDialog(null, "Already registered");
+                                    }
+                                    dbInsert();
+                                    JOptionPane.showMessageDialog(null, "Registration success...");
+                                    num=0;
+                                }
+                                else{
+                                    JOptionPane.showMessageDialog(null,"Wrong OTP");
+                                }
+                            }
+
+                            @Override
+                            public void mousePressed(MouseEvent e) {
+
+                            }
+
+                            @Override
+                            public void mouseReleased(MouseEvent e) {
+
+                            }
+
+                            @Override
+                            public void mouseEntered(MouseEvent e) {
+
+                            }
+
+                            @Override
+                            public void mouseExited(MouseEvent e) {
+
+                            }
+                        });
                     }
                 }
             }
@@ -165,7 +214,6 @@ public class SignUp extends JPanel{
 
             }
         });
-
         //adding borders
         txtFld1.setBorder(bdr);
         txtFld2.setBorder(bdr);
@@ -351,11 +399,11 @@ public class SignUp extends JPanel{
         //License ID
         if(txtFld17.getText().equals("")){
             System.out.println(txtFld17.getText());
-            JOptionPane.showMessageDialog(null,"Please enter your lisence ID");
+            JOptionPane.showMessageDialog(null,"Please enter your license ID");
             return false;
         }
         if(!TabServer.isValidID(txtFld17.getText())){
-            JOptionPane.showMessageDialog(null,"Please enter valid lisence ID");
+            JOptionPane.showMessageDialog(null,"Please enter valid license ID");
             return false;
         }
         //Car ID
@@ -411,5 +459,60 @@ public class SignUp extends JPanel{
     public boolean dbInsert(){
         return true;
     }
+    public void sendOTP(int num){
+        final String username = "19eucs076@skcet.ac.in";
+        final String password = "krishna123";
 
+        final String from = "19eucs076@skcet.ac.in";
+        final String to = txtFld8.getText();
+
+        Properties props = new Properties();
+
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.socketFactory.port", "465");
+        props.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.port", "465");
+
+
+
+
+        Authenticator a =new Authenticator() {
+
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+
+                return new PasswordAuthentication(username, password);
+
+            }
+
+        };
+
+        Session session = Session.getInstance(props, a);
+
+        try {
+
+            Message message = new MimeMessage(session);
+
+            message.setFrom(new InternetAddress(from));
+
+            message.setRecipients(Message.RecipientType.TO,InternetAddress.parse(to));
+            message.setSubject("Registration Confirmation!!!");
+            message.setText("Your One Time Password for taxi driver registration is : "+num);
+
+            Transport.send(message);
+
+            System.out.println("Done");
+
+        } catch (MessagingException e) {
+            System.out.println(e);
+        }
+    }
+    private int generateRandomNumber(){
+        int num=0;
+        for(int i=0;i<5;i++){
+            num+=(int)(Math.pow(10,i)+Math.random()*10);
+        }
+        return num;
+    }
 }
