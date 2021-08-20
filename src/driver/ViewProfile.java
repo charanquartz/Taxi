@@ -322,7 +322,6 @@ public class ViewProfile extends JPanel{
         txtFld6.setEditable(false);
         txtFld7.setEditable(false);
         txtFld8.setEditable(false);
-        txtFld9.setEditable(false);
         txtFld11.setEditable(false);
         txtFld12.setEditable(false);
         txtFld13.setEditable(false);
@@ -342,8 +341,6 @@ public class ViewProfile extends JPanel{
         txtFld6.setEditable(true);
         txtFld7.setEditable(true);
         txtFld8.setEditable(true);
-        txtFld9.setEditable(true);
-        txtFld10.setEditable(true);
         txtFld11.setEditable(true);
         list1.setEditable(false);
         return true;
