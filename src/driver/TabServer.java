@@ -1,6 +1,7 @@
 package driver;
 import javax.swing.*;
 import java.awt.*;
+import java.sql.*;
 import java.awt.event.*;
 import java.util.regex.*;
 public class TabServer extends JFrame{
@@ -9,13 +10,15 @@ public class TabServer extends JFrame{
     String s;
     static Matcher matcher;
     JPanel login,signup,viewRide,feedback,update;
-    static Driver driver=new Driver("Madhi","V","12325","male","sdfd","dfsd","dslfds","sdfgdsf","sdfgds","dsfdsf",34565434,3434);
+    static Driver driver=null;
+    static Connection connection;
     public TabServer(){
         setBackground(new Color(35, 176, 212));
         setTitle("DRIVER'S HOME");
         tabs=new JTabbedPane();
         setBounds(0,0,1900,1000);
         setVisible(true);
+        setLayout(new BorderLayout());
         setFont(new Font("Times new roman",Font.BOLD,18));
         add(tabs,BorderLayout.CENTER);
         login=new Login();
@@ -28,8 +31,18 @@ public class TabServer extends JFrame{
         tabs.addTab("VIEW RIDES",viewRide);
         tabs.addTab("VIEW PROFILE",update);
         tabs.addTab("PROVIDE FEEDBACK",feedback);
+        tabs.setEnabledAt(2,false);
+        tabs.setEnabledAt(3,false);
+        tabs.setEnabledAt(4,false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
+        try{
+            connection=DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:XE\",\"madhi\",\"java");
+            connection.setAutoCommit(true);
+        }
+        catch(Exception e){
+
+        }
         add(tabs);
     }
     static public boolean isValidEmail(String email){
@@ -61,8 +74,8 @@ public class TabServer extends JFrame{
         return matcher.matches();
     }
     static public boolean isValidID(String txt){
-        pattern=Pattern.compile("^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){3,18}[a-zA-Z0-9]$");
+        pattern=Pattern.compile("^[a-zA-Z0-9!@#$&()\\\\-`.+,/\\\"]*$");
         matcher=pattern.matcher(txt);
-        return matcher.find();
+        return matcher.matches();
     }
 }
