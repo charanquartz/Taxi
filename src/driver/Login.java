@@ -8,8 +8,10 @@ public class Login extends JPanel{
     Label lbl1,lbl2,lbl3;
     JPasswordField pwdFld1;
     JButton btn1;
+    Font f;
     Border bdr;
     Login(){
+        f=new Font("Times New Roman",Font.BOLD,19);
         setBackground(new Color(3, 252, 240));
         setLayout(null);
         setVisible(true);
@@ -38,6 +40,9 @@ public class Login extends JPanel{
         //set bounds for txtflds and passwordfields
         txtFld1.setBounds(260,10,250,60);
         pwdFld1.setBounds(260,80,250,60);
+
+        //set font to textfields
+        txtFld1.setFont(f);
 
         //ActionListener for password field
         pwdFld1.addActionListener(new ActionListener(){

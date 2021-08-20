@@ -14,11 +14,13 @@ public class SignUp extends JPanel{
     JRadioButton radBtn1,radBtn2,radBtn3;
     ButtonGroup btnGrp1;
     Car car;
+    Font f;
     Border bdr=BorderFactory.createLineBorder(Color.BLACK,5);
     SignUp(){
+        f=new Font("Times New Roman",Font.BOLD,19);
         setBackground(new Color(3, 252, 240));
         setBounds(0,0,2000,1900);
-        setFont(new  Font("Times New Roman",Font.BOLD,19));
+        setFont(new Font("Times New Roman",Font.BOLD,19));
         setVisible(true);
         setLayout(null);
 
@@ -233,6 +235,24 @@ public class SignUp extends JPanel{
         add(radBtn1);
         add(radBtn2);
         add(radBtn3);
+
+        //set font to textfields
+        txtFld1.setFont(f);
+        txtFld2.setFont(f);
+        txtFld3.setFont(f);
+        txtFld4.setFont(f);
+        txtFld5.setFont(f);
+        txtFld6.setFont(f);
+        txtFld7.setFont(f);
+        txtFld8.setFont(f);
+        txtFld9.setFont(f);
+        txtFld10.setFont(f);
+        txtFld11.setFont(f);
+        txtFld12.setFont(f);
+        txtFld13.setFont(f);
+        txtFld14.setFont(f);
+        txtFld16.setFont(f);
+        txtFld17.setFont(f);
     }
 
     public boolean validateEntries(){
@@ -326,58 +346,60 @@ public class SignUp extends JPanel{
         //Re enter password
         if(!txtFld10.getText().equals(txtFld9.getText())){
             JOptionPane.showMessageDialog(null,"Passwords do not match");
+            return false;
         }
         //License ID
-        if(txtFld11.getText().equals("")){
+        if(txtFld17.getText().equals("")){
+            System.out.println(txtFld17.getText());
             JOptionPane.showMessageDialog(null,"Please enter your lisence ID");
             return false;
         }
-        if(!TabServer.isValidPassword(txtFld11.getText())){
-            JOptionPane.showMessageDialog(null,"Please a valid lisence ID");
+        if(!TabServer.isValidID(txtFld17.getText())){
+            JOptionPane.showMessageDialog(null,"Please enter valid lisence ID");
             return false;
         }
         //Car ID
-        if(txtFld12.getText().equals("")){
+        if(txtFld11.getText().equals("")){
             JOptionPane.showMessageDialog(null,"Please enter your Car ID");
             return false;
         }
-        if(!TabServer.isValidPassword(txtFld12.getText())){
-            JOptionPane.showMessageDialog(null,"Please a valid car ID");
+        if(!TabServer.isValidID(txtFld11.getText())){
+            JOptionPane.showMessageDialog(null,"Please enter valid car ID");
             return false;
         }
         //Company
-        if(txtFld13.getText().equals("")){
+        if(txtFld12.getText().equals("")){
             JOptionPane.showMessageDialog(null,"Please enter the company name of your car");
             return false;
         }
-        if(!TabServer.isValidName(txtFld13.getText())){
+        if(!TabServer.isValidName(txtFld12.getText())){
             JOptionPane.showMessageDialog(null,"Please enter a valid company name");
             return false;
         }
         //Model
-        if(txtFld14.getText().equals("")){
+        if(txtFld13.getText().equals("")){
             JOptionPane.showMessageDialog(null,"Please enter the model name of your car");
             return false;
         }
-        if(!TabServer.isValidID(txtFld14.getText())){
+        if(!TabServer.isValidID(txtFld13.getText())){
             JOptionPane.showMessageDialog(null,"Please enter a valid model name");
             return false;
         }
         //Capacity
-        if(txtFld15.getText().equals("")){
+        if(txtFld14.getText().equals("")){
             JOptionPane.showMessageDialog(null,"Please enter your car's capacity");
             return false;
         }
-        if(!TabServer.isValidNumber(txtFld15.getText())){
+        if(!TabServer.isValidNumber(txtFld14.getText())){
             JOptionPane.showMessageDialog(null,"Please enter valid capacity of your car");
             return false;
         }
         //Fare
-        if(txtFld17.getText().equals("")){
+        if(txtFld16.getText().equals("")){
             JOptionPane.showMessageDialog(null,"Please enter your car's fare per KM");
             return false;
         }
-        if(!TabServer.isValidNumber(txtFld17.getText())){
+        if(!TabServer.isValidNumber(txtFld16.getText())){
             JOptionPane.showMessageDialog(null,"Please enter valid fare for your car");
             return false;
         }

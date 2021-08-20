@@ -56,7 +56,7 @@ public class TabServer extends JFrame{
         return matcher.matches();
     }
     static public boolean isValidPassword(String txt){
-        pattern=Pattern.compile("((?=.*\\\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})");
+        pattern=Pattern.compile("^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\\d]){1,})(?=(.*[\\W]){1,})(?!.*\\s).{8,}$");
         matcher=pattern.matcher(txt);
         return matcher.matches();
     }
