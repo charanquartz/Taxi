@@ -12,7 +12,7 @@ public class ViewProfile extends JPanel{
     int flag=0;
     Label lbl1,lbl2,lbl3,lbl4,lbl5,lbl6,lbl7,lbl8,lbl9,lbl10,lbl11,lbl12,lbl13,lbl14,lbl15,lbl16,lbl17,lbl18,lbl19;
     JTextField txtFld1,txtFld2,txtFld3,txtFld4,txtFld5,txtFld6,txtFld7,txtFld8,txtFld11,txtFld12,txtFld13,txtFld14,txtFld15,txtFld16,txtFld17,txtFld18;
-    JPasswordField txtFld9,txtFld10;
+    JPasswordField txtFld9;
     JComboBox<String> list1,list2;
     Button btn1,btn2,btn3;
     String[] arr;

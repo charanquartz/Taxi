@@ -4,7 +4,7 @@ public class Driver {
     private String fname,lname,carID,gender,dob,nationality,city,address,email,pass,approved,availability;
     private int portNUmber;
     private ArrayList<Car> cars=new ArrayList<>();
-    private long mobile,driverExp;
+    private long mobile,driverExp,xp;
 
     public ArrayList<Car> getCars() {
         return cars;
@@ -147,4 +147,5 @@ public class Driver {
     public void setDriverExp(long driverExp) {
         this.driverExp = driverExp;
     }
+
 }
