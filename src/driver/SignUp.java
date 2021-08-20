@@ -6,8 +6,9 @@ import java.awt.*;
 import javax.swing.border.Border;
 public class SignUp extends JPanel{
     Label lbl1,lbl2,lbl3,lbl4,lbl5,lbl6,lbl7,lbl8,lbl9,lbl10,lbl11,lbl12,lbl13,lbl14,lbl15,lbl16,lbl17,lbl18,lbl19;
-    JTextField txtFld1,txtFld2,txtFld3,txtFld4,txtFld5,txtFld6,txtFld7,txtFld8,txtFld9,txtFld10,txtFld11,txtFld12,txtFld13,txtFld14,txtFld15,txtFld16,txtFld17;
-    JComboBox<String> list1;
+    JTextField txtFld1,txtFld2,txtFld3,txtFld4,txtFld5,txtFld6,txtFld7,txtFld8,txtFld11,txtFld12,txtFld13,txtFld14,txtFld15,txtFld16,txtFld17;
+    JComboBox<String> list1,list2;
+    JPasswordField txtFld9,txtFld10;
     JButton btn1;
     String[] arr;
     JRadioButton radBtn1,radBtn2,radBtn3;
@@ -51,13 +52,12 @@ public class SignUp extends JPanel{
         txtFld6=new JTextField();
         txtFld7=new JTextField();
         txtFld8=new JTextField();
-        txtFld9=new JTextField();
-        txtFld10=new JTextField();
+        txtFld9=new JPasswordField();
+        txtFld10=new JPasswordField();
         txtFld11=new JTextField();
         txtFld12=new JTextField();
         txtFld13=new JTextField();
         txtFld14=new JTextField();
-        txtFld15=new JTextField();
         txtFld16=new JTextField();
         txtFld17=new JTextField();
 
@@ -67,6 +67,8 @@ public class SignUp extends JPanel{
         //JCombo box
         arr=new String[]{"Afghanistan","Albania","Algeria","Andorra","Angola","Anguilla","Antigua &amp; Barbuda","Argentina","Armenia","Aruba","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia &amp; Herzegovina","Botswana","Brazil","British Virgin Islands","Brunei","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Cape Verde","Cayman Islands","Chad","Chile","China","Colombia","Congo","Cook Islands","Costa Rica","Cote D Ivoire","Croatia","Cruise Ship","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Estonia","Ethiopia","Falkland Islands","Faroe Islands","Fiji","Finland","France","French Polynesia","French West Indies","Gabon","Gambia","Georgia","Germany","Ghana","Gibraltar","Greece","Greenland","Grenada","Guam","Guatemala","Guernsey","Guinea","Guinea Bissau","Guyana","Haiti","Honduras","Hong Kong","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Isle of Man","Israel","Italy","Jamaica","Japan","Jersey","Jordan","Kazakhstan","Kenya","Kuwait","Kyrgyz Republic","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Macau","Macedonia","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Mauritania","Mauritius","Mexico","Moldova","Monaco","Mongolia","Montenegro","Montserrat","Morocco","Mozambique","Namibia","Nepal","Netherlands","Netherlands Antilles","New Caledonia","New Zealand","Nicaragua","Niger","Nigeria","Norway","Oman","Pakistan","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Puerto Rico","Qatar","Reunion","Romania","Russia","Rwanda","Saint Pierre &amp; Miquelon","Samoa","San Marino","Satellite","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","South Africa","South Korea","Spain","Sri Lanka","St Kitts &amp; Nevis","St Lucia","St Vincent","St. Lucia","Sudan","Suriname","Swaziland","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor L'Este","Togo","Tonga","Trinidad &amp; Tobago","Tunisia","Turkey","Turkmenistan","Turks &amp; Caicos","Uganda","Ukraine","United Arab Emirates","United Kingdom","Uruguay","Uzbekistan","Venezuela","Vietnam","Virgin Islands (US)","Yemen","Zambia","Zimbabwe"};
         list1=new JComboBox<>(arr);
+        arr=new String[]{"Yes","No"};
+        list2=new JComboBox<>(arr);
 
         //RadioButton
         radBtn1=new JRadioButton("Male");
@@ -115,7 +117,6 @@ public class SignUp extends JPanel{
         txtFld12.setBounds(790,360,250,60);//Company
         txtFld13.setBounds(790,430,250,60);//Model
         txtFld14.setBounds(790,500,250,60);//Capacity
-        txtFld15.setBounds(790,570,250,60);//AC
         txtFld16.setBounds(790,640,250,60);//Fare
         txtFld17.setBounds(790,220,250,60);//License ID
 
@@ -129,6 +130,7 @@ public class SignUp extends JPanel{
 
         //Setbounds for JCombo box
         list1.setBounds(270,500,250,60);
+        list2.setBounds(790,570,250,60);
 
         btn1.addMouseListener(new MouseListener() {
             @Override
@@ -177,13 +179,13 @@ public class SignUp extends JPanel{
         txtFld12.setBorder(bdr);
         txtFld13.setBorder(bdr);
         txtFld14.setBorder(bdr);
-        txtFld15.setBorder(bdr);
         txtFld16.setBorder(bdr);
         txtFld17.setBorder(bdr);
         btn1.setBorder(bdr);
 
         //Adding lists
         add(list1);
+        add(list2);
 
         //Adding Labels
         add(lbl1);
@@ -221,7 +223,6 @@ public class SignUp extends JPanel{
         add(txtFld12);
         add(txtFld13);
         add(txtFld14);
-        add(txtFld15);
         add(txtFld16);
         add(txtFld17);
 
@@ -235,7 +236,151 @@ public class SignUp extends JPanel{
     }
 
     public boolean validateEntries(){
-        //
+        //FirstName
+        if(txtFld1.getText().equals("")){
+            JOptionPane.showMessageDialog(null,"Please enter your first name");
+            return false;
+        }
+        if( !TabServer.isValidName(txtFld1.getText())){
+            JOptionPane.showMessageDialog(null,"Invalid first Name");
+            return false;
+        }
+        //Last name
+        if(txtFld2.getText().equals("")){
+            JOptionPane.showMessageDialog(null,"Please enter your last name");
+            return false;
+        }
+        if(!TabServer.isValidName(txtFld2.getText())){
+            JOptionPane.showMessageDialog(null,"Invalid last Name");
+            return false;
+        }
+        //Gender
+        if(btnGrp1.getSelection()==null){
+            JOptionPane.showMessageDialog(null,"Please select gender");
+            return false;
+        }
+        //DOB
+        if(txtFld3.getText().equals("")){
+            JOptionPane.showMessageDialog(null,"Please enter your DOB");
+            return false;
+        }
+        if(!TabServer.isValidDate(txtFld3.getText())){
+            JOptionPane.showMessageDialog(null,"Please enter your DOB in format DD/MM/YYYY");
+            return false;
+        }
+        //Driving Experience
+        if(txtFld4.getText().equals("")){
+            JOptionPane.showMessageDialog(null,"Please enter your Driving experience");
+            return false;
+        }
+        if(!TabServer.isValidNumber(txtFld4.getText())){
+            JOptionPane.showMessageDialog(null,"Please enter a valid driving experience");
+            return false;
+        }
+        //Address
+        if(txtFld5.getText().equals("")){
+            JOptionPane.showMessageDialog(null,"Please enter your address");
+            return false;
+        }
+        if(txtFld5.getText().length()<10){
+            JOptionPane.showMessageDialog(null,"Please enter your proper address");
+            return false;
+        }
+        //City
+        if(txtFld6.getText().equals("")){
+            JOptionPane.showMessageDialog(null,"Please enter your city");
+            return false;
+        }
+        if(!TabServer.isValidName(txtFld6.getText())){
+            JOptionPane.showMessageDialog(null,"Please enter a  valid city name");
+            return false;
+        }
+        //Mobile number
+        if(txtFld7.getText().equals("")){
+            JOptionPane.showMessageDialog(null,"Please enter your mobile number");
+            return false;
+        }
+        if(!TabServer.isValidNumber(txtFld7.getText())){
+            JOptionPane.showMessageDialog(null,"Please enter a valid mobile number");
+            return false;
+        }
+        //E-mail
+        if(txtFld8.getText().equals("")){
+            JOptionPane.showMessageDialog(null,"Please enter your e-mail");
+            return false;
+        }
+        if(!TabServer.isValidEmail(txtFld8.getText())){
+            JOptionPane.showMessageDialog(null,"Please enter a valid e-mail id");
+            return false;
+        }
+        //Password
+        if(txtFld9.getText().equals("")){
+            JOptionPane.showMessageDialog(null,"Please enter your password");
+            return false;
+        }
+        if(!TabServer.isValidPassword(txtFld9.getText())){
+            System.out.println(txtFld9.getText());
+            JOptionPane.showMessageDialog(null,"Please enter a strong password");
+            return false;
+        }
+        //Re enter password
+        if(!txtFld10.getText().equals(txtFld9.getText())){
+            JOptionPane.showMessageDialog(null,"Passwords do not match");
+        }
+        //License ID
+        if(txtFld11.getText().equals("")){
+            JOptionPane.showMessageDialog(null,"Please enter your lisence ID");
+            return false;
+        }
+        if(!TabServer.isValidPassword(txtFld11.getText())){
+            JOptionPane.showMessageDialog(null,"Please a valid lisence ID");
+            return false;
+        }
+        //Car ID
+        if(txtFld12.getText().equals("")){
+            JOptionPane.showMessageDialog(null,"Please enter your Car ID");
+            return false;
+        }
+        if(!TabServer.isValidPassword(txtFld12.getText())){
+            JOptionPane.showMessageDialog(null,"Please a valid car ID");
+            return false;
+        }
+        //Company
+        if(txtFld13.getText().equals("")){
+            JOptionPane.showMessageDialog(null,"Please enter the company name of your car");
+            return false;
+        }
+        if(!TabServer.isValidName(txtFld13.getText())){
+            JOptionPane.showMessageDialog(null,"Please enter a valid company name");
+            return false;
+        }
+        //Model
+        if(txtFld14.getText().equals("")){
+            JOptionPane.showMessageDialog(null,"Please enter the model name of your car");
+            return false;
+        }
+        if(!TabServer.isValidID(txtFld14.getText())){
+            JOptionPane.showMessageDialog(null,"Please enter a valid model name");
+            return false;
+        }
+        //Capacity
+        if(txtFld15.getText().equals("")){
+            JOptionPane.showMessageDialog(null,"Please enter your car's capacity");
+            return false;
+        }
+        if(!TabServer.isValidNumber(txtFld15.getText())){
+            JOptionPane.showMessageDialog(null,"Please enter valid capacity of your car");
+            return false;
+        }
+        //Fare
+        if(txtFld17.getText().equals("")){
+            JOptionPane.showMessageDialog(null,"Please enter your car's fare per KM");
+            return false;
+        }
+        if(!TabServer.isValidNumber(txtFld17.getText())){
+            JOptionPane.showMessageDialog(null,"Please enter valid fare for your car");
+            return false;
+        }
         return true;
     }
     public boolean notAlreadyPresent(){
@@ -244,4 +389,5 @@ public class SignUp extends JPanel{
     public boolean dbInsert(){
         return true;
     }
+
 }
