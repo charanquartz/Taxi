@@ -115,6 +115,7 @@ public class Login extends JPanel{
                 TabServer.enableViewRide();
                 TabServer.disableLogin();
                 TabServer.disableSignUp();
+                updateDriverFields();
             }
             else{
                 JOptionPane.showMessageDialog(null,"Wrong password...");
@@ -152,5 +153,32 @@ public class Login extends JPanel{
             System.out.println(e);
         }
         return "-1";
+    }
+    public boolean updateDriverFields(){
+        query="select * from driver where email = '"+txtFld1.getText()+"'";
+        try {
+            rs = statement.executeQuery(query);
+            TabServer.driver=new Driver();
+            TabServer.driver.setFname(rs.getString(1));
+            TabServer.driver.setLname(rs.getString(2));
+            TabServer.driver.setCarID(rs.getString(3));
+            TabServer.driver.setGender(rs.getString(4));
+            TabServer.driver.setDob(rs.getDate(5));
+            TabServer.driver.setCity(rs.getString(6));
+            TabServer.driver.setAddress(rs.getString(7));
+            TabServer.driver.setDriverExp(rs.getInt(8));
+            TabServer.driver.setLicenseId(rs.getString(9));
+            TabServer.driver.setNationality(rs.getString(10));
+            TabServer.driver.setMobile(rs.getLong(11));
+            TabServer.driver.setEmail(rs.getString(12));
+            TabServer.driver.setPass(rs.getString(13));
+            TabServer.driver.setApproved(rs.getString(14));
+            TabServer.driver.setAvailability(rs.getString(15));
+            TabServer.driver.setXp(rs.getLong(16));
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
+        return true;
     }
 }

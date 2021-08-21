@@ -10,7 +10,7 @@ public class TabServer extends JFrame{
     String s;
     static Matcher matcher;
     JPanel login,signup,viewRide,feedback,update;
-    private Driver driver=null;
+    static Driver driver=null;
     static Connection connection;
     public TabServer(){
         setBackground(new Color(35, 176, 212));
@@ -78,15 +78,6 @@ public class TabServer extends JFrame{
         matcher=pattern.matcher(txt);
         return matcher.matches();
     }
-
-    public Driver getDriver() {
-        return driver;
-    }
-
-    public void setDriver(Driver driver) {
-        this.driver = driver;
-    }
-
     //Functions for tab enable
     public static boolean enableViewRide(){
         tabs.setEnabledAt(2,true);
