@@ -3,12 +3,14 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.sql.*;
 import java.sql.Date;
+import java.sql.Driver;
 import java.util.*;
 import java.awt.*;
 import javax.mail.*;
 import javax.mail.internet.*;
 import javax.swing.border.Border;
 public class SignUp extends JPanel{
+    Connection connection;
     Label lbl1,lbl2,lbl3,lbl4,lbl5,lbl6,lbl7,lbl8,lbl9,lbl10,lbl11,lbl12,lbl13,lbl14,lbl15,lbl16,lbl17,lbl18,lbl19;
     JTextField txtFld1,txtFld2,txtFld3,txtFld4,txtFld5,txtFld6,txtFld7,txtFld8,txtFld11,txtFld12,txtFld13,txtFld14,txtFld16,txtFld17;
     JComboBox<String> list1,list2;
@@ -143,7 +145,7 @@ public class SignUp extends JPanel{
             @Override
             public void mouseClicked(MouseEvent e) {
                 if(validateEntries()){
-                    if(driverNotAlreadyPresent()){
+                    if(!driverAlreadyPresent()){
                         Label OTPLabel=new Label("Enter OTP : ");
                         TextField txtFld4=new TextField();
                         Button btn=new Button("Submit OTP");
@@ -168,8 +170,6 @@ public class SignUp extends JPanel{
                                 }
                                 else{
                                     JOptionPane.showMessageDialog(null,"Wrong OTP");
-                                }
-                                if(num!=0){
                                     Button btn2=new Button("Resend OTP");
                                     add(btn2);
                                     btn2.setBounds(1050,780,250,60);
@@ -496,19 +496,20 @@ public class SignUp extends JPanel{
     }
 
     //Function to check if the entered email is already present or not...
-    public boolean driverNotAlreadyPresent(){
+    public boolean driverAlreadyPresent(){
         try {
+            query="select * from driver where email = '"+txtFld8.getText()+"'";
             Statement statement = TabServer.connection.createStatement();
-            ResultSet rs=statement.executeQuery("select fname from driver where email = '"+txtFld8.getText()+"'");
+            ResultSet rs=statement.executeQuery(query);
             if(rs.next()){
-                return false;
+                return true;
             }
-            return true;
+            return false;
         }
         catch(Exception e){
-
+            System.out.println(e);
         }
-        return true;
+        return false;
     }
 
     //Fuction to check if car is already registered
@@ -530,6 +531,7 @@ public class SignUp extends JPanel{
     public boolean dbInsert(){
         try{
             String gender,date=txtFld3.getText();
+            date=date.substring(6,10)+"-"+date.substring(3,5)+"-"+date.substring(0,2);
             if(radBtn1.isSelected()){
                 gender="male";
             }
@@ -539,24 +541,10 @@ public class SignUp extends JPanel{
             else{
                 gender="others";
             }
-            PreparedStatement statement=TabServer.connection.prepareStatement("insert into driver values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-            statement.setString(1,txtFld1.getText());
-            statement.setString(2,txtFld2.getText());
-            statement.setString(3,txtFld11.getText());
-            statement.setString(4,gender);
-            statement.setDate(5,Date.valueOf(date.substring(6,10)+"-"+date.substring(3,5)+"-"+date.substring(0,2)));
-            statement.setString(6,txtFld6.getText());
-            statement.setString(7,txtFld5.getText());
-            statement.setInt(8,Integer.parseInt(txtFld4.getText()));
-            statement.setString(9,txtFld17.getText());
-            statement.setString(10,list1.getItemAt(list1.getSelectedIndex()));
-            statement.setLong(11,Long.parseLong(txtFld7.getText()));
-            statement.setString(12,txtFld8.getText());
-            statement.setString(13,txtFld9.getText());
-            statement.setString(14,"false");
-            statement.setString(15,"false");
-            statement.setInt(16,0);
-            statement.executeUpdate();
+            PreparedStatement statement;
+            query="insert into driver values('"+txtFld1.getText()+"','"+txtFld2.getText()+"','"+txtFld11.getText()+"','"+gender+"',TO_DATE('"+date+"','YYYY-MM-DD')"+",'"+txtFld6.getText()+"','"+txtFld5.getText()+"',"+Integer.parseInt(txtFld4.getText())+",'"+txtFld17.getText()+"','"+list1.getItemAt(list1.getSelectedIndex())+"',"+Long.parseLong(txtFld7.getText())+",'"+txtFld8.getText()+"','"+txtFld9.getText()+"','false','false',0)";
+            System.out.println(query);Statement statement1=TabServer.connection.createStatement();
+            statement1.executeQuery(query);
 
             statement=TabServer.connection.prepareStatement("insert into car values(?,?,?,?,?,?,?)");
             statement.setString(1,txtFld8.getText());
@@ -565,12 +553,12 @@ public class SignUp extends JPanel{
             statement.setString(4,txtFld13.getText());
             statement.setInt(5,Integer.parseInt(txtFld14.getText()));
             statement.setString(6,list2.getItemAt(list2.getSelectedIndex()));
-            statement.setInt(7,Integer.parseInt(txtFld17.getText()));
+            statement.setInt(7,Integer.parseInt(txtFld16.getText()));
             statement.executeUpdate();
             return true;
         }
         catch(Exception e){
-
+            System.out.println(e);
         }
         return true;
     }
@@ -615,11 +603,9 @@ public class SignUp extends JPanel{
 
             message.setRecipients(Message.RecipientType.TO,InternetAddress.parse(to));
             message.setSubject("Registration Confirmation!!!");
-            message.setText("Your One Time Password for taxi driver registration is : "+num);
+            message.setText("Your OTP for taxi driver registration is : "+num);
 
             Transport.send(message);
-
-            System.out.println("Done");
 
         } catch (MessagingException e) {
             System.out.println(e);
@@ -627,10 +613,12 @@ public class SignUp extends JPanel{
     }
     //Function for generating random number....
     private int generateRandomNumber(){
-        int num=0;
+        long num=0;
+        double temp;
         for(int i=0;i<5;i++){
-            num+=(int)(Math.pow(10,i)+Math.random()*10);
+            temp=Math.random()*10;
+            num=num*10+(int)temp;
         }
-        return num;
+        return (int)num;
     }
 }

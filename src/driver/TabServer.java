@@ -41,7 +41,7 @@ public class TabServer extends JFrame{
             connection.setAutoCommit(true);
         }
         catch(Exception e){
-
+            System.out.println(e);
         }
         add(tabs);
     }
