@@ -3,6 +3,7 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.event.*;
+import java.sql.*;
 public class Login extends JPanel{
     JTextField txtFld1,txtFld2;
     Label lbl1,lbl2,lbl3;
@@ -10,6 +11,9 @@ public class Login extends JPanel{
     JButton btn1;
     Font f;
     Border bdr;
+    Statement statement;
+    ResultSet rs;
+    String query;
     Login(){
         f=new Font("Times New Roman",Font.BOLD,19);
         setBackground(new Color(3, 252, 240));
@@ -55,8 +59,10 @@ public class Login extends JPanel{
         btn1.addMouseListener(new MouseListener(){
             @Override
             public void mouseClicked(MouseEvent e) {
+                if(!TabServer.tabs.isEnabledAt(0)){
+                    return;
+                }
                 login(txtFld1.getText(),pwdFld1.getText());
-                System.out.println(pwdFld1.getText());
             }
 
             @Override
@@ -92,7 +98,59 @@ public class Login extends JPanel{
         add(pwdFld1);
         add(btn1);
     }
-    public boolean login(String username,String password){
+    public boolean login(String email,String password){
+        if(email.equals("")){
+            JOptionPane.showMessageDialog(null,"Please enter valid email");
+            return false;
+        }
+        if(password.equals("")){
+            JOptionPane.showMessageDialog(null,"Wrong password/emailID");
+            return false;
+        }
+        if(isPresent(email)){
+            if(pass(email).equals(password)){
+                JOptionPane.showMessageDialog(null,"Login success...");
+                TabServer.enableFeedback();
+                TabServer.enableViewProfile();
+                TabServer.enableViewRide();
+                TabServer.disableLogin();
+                TabServer.disableSignUp();
+            }
+            else{
+                JOptionPane.showMessageDialog(null,"Wrong password...");
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(null,"Email not registered...");
+        }
         return true;
+    }
+    public boolean isPresent(String email){
+        query="select * from driver where email='"+email+"'";
+        try {
+            statement = TabServer.connection.createStatement();
+            rs =statement.executeQuery(query);
+            if(rs.next()){
+                return true;
+            }
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
+        return false;
+    }
+    public String pass(String email){
+        query="select * from driver where email='"+email+"'";
+        try {
+            statement = TabServer.connection.createStatement();
+            rs =statement.executeQuery(query);
+            if(rs.next()){
+                return rs.getString(13);
+            }
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
+        return "-1";
     }
 }
