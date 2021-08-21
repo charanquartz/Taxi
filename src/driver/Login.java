@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.event.*;
 import java.sql.*;
+import java.util.*;
 public class Login extends JPanel{
     JTextField txtFld1,txtFld2;
     Label lbl1,lbl2,lbl3;
@@ -175,6 +176,23 @@ public class Login extends JPanel{
             TabServer.driver.setApproved(rs.getString(14));
             TabServer.driver.setAvailability(rs.getString(15));
             TabServer.driver.setXp(rs.getLong(16));
+
+            //Cars of driver
+            Car car;
+            query="select * from car where owneremail='"+TabServer.driver.getEmail()+"'";
+            rs=statement.executeQuery(query);
+            TabServer.cars=new ArrayList<>();
+            while(rs.next()){
+                car=new Car();
+                car.setOwnerEmail(rs.getString(1));
+                car.setCarID(rs.getString(2));
+                car.setCompany(rs.getString(3));
+                car.setModel(rs.getString(4));
+                car.setCapacity(rs.getInt(5));
+                car.setAC(rs.getString(6));
+                car.setFarePerKM(rs.getInt(7));
+                TabServer.cars.add(car);
+            }
         }
         catch(Exception e){
             System.out.println(e);

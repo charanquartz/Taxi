@@ -20,7 +20,6 @@ public class ViewProfile extends JPanel{
     JRadioButton radBtn1,radBtn2,radBtn3;
     ButtonGroup btnGrp1;
     Border bdr=BorderFactory.createLineBorder(Color.BLACK,5);
-    ArrayList<Car> cars;
 
     ViewProfile(){
         setBackground(new Color(3, 252, 240));

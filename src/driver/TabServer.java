@@ -3,6 +3,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.sql.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.regex.*;
 public class TabServer extends JFrame{
     static JTabbedPane tabs;
@@ -11,6 +12,7 @@ public class TabServer extends JFrame{
     static Matcher matcher;
     JPanel login,signup,viewRide,feedback,update;
     static Driver driver=null;
+    static ArrayList<Car> cars;
     static Connection connection;
     public TabServer(){
         setBackground(new Color(35, 176, 212));
