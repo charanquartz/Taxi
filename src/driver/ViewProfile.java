@@ -5,6 +5,7 @@ import java.util.*;
 import java.awt.Event.*;
 import javax.swing.border.Border;
 import javax.swing.BorderFactory;
+import javax.swing.text.JTextComponent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -346,4 +347,5 @@ public class ViewProfile extends JPanel{
         list1.setEditable(false);
         return true;
     }
+
 }
