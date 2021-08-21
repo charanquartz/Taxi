@@ -2,6 +2,7 @@ package driver;
 import javax.swing.*;
 import java.awt.event.*;
 import java.sql.*;
+import java.sql.Date;
 import java.util.*;
 import java.awt.*;
 import javax.mail.*;
@@ -9,16 +10,16 @@ import javax.mail.internet.*;
 import javax.swing.border.Border;
 public class SignUp extends JPanel{
     Label lbl1,lbl2,lbl3,lbl4,lbl5,lbl6,lbl7,lbl8,lbl9,lbl10,lbl11,lbl12,lbl13,lbl14,lbl15,lbl16,lbl17,lbl18,lbl19;
-    JTextField txtFld1,txtFld2,txtFld3,txtFld4,txtFld5,txtFld6,txtFld7,txtFld8,txtFld11,txtFld12,txtFld13,txtFld14,txtFld15,txtFld16,txtFld17;
+    JTextField txtFld1,txtFld2,txtFld3,txtFld4,txtFld5,txtFld6,txtFld7,txtFld8,txtFld11,txtFld12,txtFld13,txtFld14,txtFld16,txtFld17;
     JComboBox<String> list1,list2;
     JPasswordField txtFld9,txtFld10;
     JButton btn1;
     String[] arr;
     JRadioButton radBtn1,radBtn2,radBtn3;
     ButtonGroup btnGrp1;
-    Car car;
     Font f;
     int num;
+    String query;
     Border bdr=BorderFactory.createLineBorder(Color.BLACK,5);
     SignUp(){
         f=new Font("Times New Roman",Font.BOLD,19);
@@ -43,7 +44,7 @@ public class SignUp extends JPanel{
         lbl12=new Label("Re-enter Password : ");
         lbl13=new Label("Driver Lisence ID : ");
         lbl14=new Label("Car ID : ");
-        lbl15=new Label("Company : ");
+        lbl15=new Label("Car Company : ");
         lbl16=new Label("Model : ");
         lbl17=new Label("Capacity : ");
         lbl18=new Label("AC : ");
@@ -142,7 +143,7 @@ public class SignUp extends JPanel{
             @Override
             public void mouseClicked(MouseEvent e) {
                 if(validateEntries()){
-                    if(notAlreadyPresent()){
+                    if(driverNotAlreadyPresent()){
                         Label OTPLabel=new Label("Enter OTP : ");
                         TextField txtFld4=new TextField();
                         Button btn=new Button("Submit OTP");
@@ -157,16 +158,48 @@ public class SignUp extends JPanel{
                         btn.addMouseListener(new MouseListener() {
                             @Override
                             public void mouseClicked(MouseEvent e) {
-                                if(TabServer.isValidNumber(txtFld4.getText()) && num==Integer.parseInt(txtFld4.getText())) {
-                                    if(num==0){
-                                        JOptionPane.showMessageDialog(null, "Already registered");
-                                    }
+                                if(num==0){
+                                    JOptionPane.showMessageDialog(null, "Already registered");
+                                }
+                                else if(TabServer.isValidNumber(txtFld4.getText()) && num==Integer.parseInt(txtFld4.getText())) {
                                     dbInsert();
                                     JOptionPane.showMessageDialog(null, "Registration success...");
                                     num=0;
                                 }
                                 else{
                                     JOptionPane.showMessageDialog(null,"Wrong OTP");
+                                }
+                                if(num!=0){
+                                    Button btn2=new Button("Resend OTP");
+                                    add(btn2);
+                                    btn2.setBounds(1050,780,250,60);
+                                    btn2.addMouseListener(new MouseListener() {
+                                        @Override
+                                        public void mouseClicked(MouseEvent e) {
+                                            num=generateRandomNumber();
+                                            sendOTP(num);
+                                        }
+
+                                        @Override
+                                        public void mousePressed(MouseEvent e) {
+
+                                        }
+
+                                        @Override
+                                        public void mouseReleased(MouseEvent e) {
+
+                                        }
+
+                                        @Override
+                                        public void mouseEntered(MouseEvent e) {
+
+                                        }
+
+                                        @Override
+                                        public void mouseExited(MouseEvent e) {
+
+                                        }
+                                    });
                                 }
                             }
 
@@ -190,6 +223,9 @@ public class SignUp extends JPanel{
 
                             }
                         });
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null,"Driver already registered");
                     }
                 }
             }
@@ -303,6 +339,7 @@ public class SignUp extends JPanel{
         txtFld17.setFont(f);
     }
 
+    //Validating entires of the registration form...
     public boolean validateEntries(){
         //FirstName
         if(txtFld1.getText().equals("")){
@@ -411,7 +448,11 @@ public class SignUp extends JPanel{
             JOptionPane.showMessageDialog(null,"Please enter your Car ID");
             return false;
         }
-        if(!TabServer.isValidID(txtFld11.getText())){
+        if(carAlreadyPresent()){
+            JOptionPane.showMessageDialog(null,"Cannot enter car that is already registered");
+            return false;
+        }
+        if(!TabServer.isValidID(txtFld11.getText()) ){
             JOptionPane.showMessageDialog(null,"Please enter valid car ID");
             return false;
         }
@@ -453,12 +494,88 @@ public class SignUp extends JPanel{
         }
         return true;
     }
-    public boolean notAlreadyPresent(){
+
+    //Function to check if the entered email is already present or not...
+    public boolean driverNotAlreadyPresent(){
+        try {
+            Statement statement = TabServer.connection.createStatement();
+            ResultSet rs=statement.executeQuery("select fname from driver where email = '"+txtFld8.getText()+"'");
+            if(rs.next()){
+                return false;
+            }
+            return true;
+        }
+        catch(Exception e){
+
+        }
         return true;
     }
+
+    //Fuction to check if car is already registered
+    public boolean carAlreadyPresent(){
+        try{
+            Statement statement=TabServer.connection.createStatement();
+            ResultSet rs=statement.executeQuery("select ac from car where carId = '"+txtFld11.getText()+"'");
+            if(rs.next()){
+                return true;
+            }
+        }
+        catch(Exception e){
+
+        }
+        return false;
+    }
+
+    //Function to insert the details of driver after successful validations...
     public boolean dbInsert(){
+        try{
+            String gender,date=txtFld3.getText();
+            if(radBtn1.isSelected()){
+                gender="male";
+            }
+            else if(radBtn2.isSelected()){
+                gender="female";
+            }
+            else{
+                gender="others";
+            }
+            PreparedStatement statement=TabServer.connection.prepareStatement("insert into driver values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            statement.setString(1,txtFld1.getText());
+            statement.setString(2,txtFld2.getText());
+            statement.setString(3,txtFld11.getText());
+            statement.setString(4,gender);
+            statement.setDate(5,Date.valueOf(date.substring(6,10)+"-"+date.substring(3,5)+"-"+date.substring(0,2)));
+            statement.setString(6,txtFld6.getText());
+            statement.setString(7,txtFld5.getText());
+            statement.setInt(8,Integer.parseInt(txtFld4.getText()));
+            statement.setString(9,txtFld17.getText());
+            statement.setString(10,list1.getItemAt(list1.getSelectedIndex()));
+            statement.setLong(11,Long.parseLong(txtFld7.getText()));
+            statement.setString(12,txtFld8.getText());
+            statement.setString(13,txtFld9.getText());
+            statement.setString(14,"false");
+            statement.setString(15,"false");
+            statement.setInt(16,0);
+            statement.executeUpdate();
+
+            statement=TabServer.connection.prepareStatement("insert into car values(?,?,?,?,?,?,?)");
+            statement.setString(1,txtFld8.getText());
+            statement.setString(2,txtFld11.getText());
+            statement.setString(3,txtFld12.getText());
+            statement.setString(4,txtFld13.getText());
+            statement.setInt(5,Integer.parseInt(txtFld14.getText()));
+            statement.setString(6,list2.getItemAt(list2.getSelectedIndex()));
+            statement.setInt(7,Integer.parseInt(txtFld17.getText()));
+            statement.executeUpdate();
+            return true;
+        }
+        catch(Exception e){
+
+        }
         return true;
     }
+
+    //Funcion to send OTP to the email after submit...
     public void sendOTP(int num){
         final String username = "19eucs076@skcet.ac.in";
         final String password = "krishna123";
@@ -508,6 +625,7 @@ public class SignUp extends JPanel{
             System.out.println(e);
         }
     }
+    //Function for generating random number....
     private int generateRandomNumber(){
         int num=0;
         for(int i=0;i<5;i++){

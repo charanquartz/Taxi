@@ -37,7 +37,7 @@ public class TabServer extends JFrame{
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         try{
-            connection=DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:XE\",\"madhi\",\"java");
+            connection=DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:XE","madhi","java");
             connection.setAutoCommit(true);
         }
         catch(Exception e){
