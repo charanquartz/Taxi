@@ -5,12 +5,12 @@ import java.sql.*;
 import java.awt.event.*;
 import java.util.regex.*;
 public class TabServer extends JFrame{
-    JTabbedPane tabs;
+    static JTabbedPane tabs;
     static Pattern pattern;
     String s;
     static Matcher matcher;
     JPanel login,signup,viewRide,feedback,update;
-    static Driver driver=null;
+    private Driver driver=null;
     static Connection connection;
     public TabServer(){
         setBackground(new Color(35, 176, 212));
@@ -77,5 +77,49 @@ public class TabServer extends JFrame{
         pattern=Pattern.compile("^[a-zA-Z0-9!@#$&()\\\\-`.+,/\\\"]*$");
         matcher=pattern.matcher(txt);
         return matcher.matches();
+    }
+
+    public Driver getDriver() {
+        return driver;
+    }
+
+    public void setDriver(Driver driver) {
+        this.driver = driver;
+    }
+
+    //Functions for tab enable
+    public static boolean enableViewRide(){
+        tabs.setEnabledAt(2,true);
+        return true;
+    }
+    public static boolean enableFeedback(){
+        tabs.setEnabledAt(4,true);
+        return true;
+    }
+    public static boolean enableViewProfile(){
+        tabs.setEnabledAt(3,true);
+        return true;
+    }
+
+    //Functions for tab disable
+    public static boolean disableViewRide(){
+        tabs.setEnabledAt(2,false);
+        return true;
+    }
+    public static boolean disableFeedback(){
+        tabs.setEnabledAt(4,false);
+        return true;
+    }
+    public static  boolean disableViewProfile(){
+        tabs.setEnabledAt(3,false);
+        return true;
+    }
+    public static boolean disableLogin(){
+        tabs.setEnabledAt(0,false);
+        return true;
+    }
+    public static boolean disableSignUp(){
+        tabs.setEnabledAt(1,false);
+        return true;
     }
 }

@@ -2,8 +2,6 @@ package driver;
 import javax.swing.*;
 import java.awt.event.*;
 import java.sql.*;
-import java.sql.Date;
-import java.sql.Driver;
 import java.util.*;
 import java.awt.*;
 import javax.mail.*;
