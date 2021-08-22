@@ -5,6 +5,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.*;
 import java.awt.*;
+import java.sql.Driver;
+
 public class ViewRides extends JPanel{
     Statement statement;
     ResultSet resultSet;
@@ -61,7 +63,7 @@ public class ViewRides extends JPanel{
 
         //Adding buttons
         add(changingButton);
-        add(chatButton);
+        //add(chatButton);
         changingButton.setBounds(0,210,200,60);
         chatButton.setBounds(210,210,200,60);
 
@@ -87,6 +89,34 @@ public class ViewRides extends JPanel{
                 else{
                     JOptionPane.showMessageDialog(null,"Wrong OTP entered");
                 }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+
+        //Mouse Event on chat button
+        chatButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                new DriverChatBox();
             }
 
             @Override
@@ -200,10 +230,11 @@ public class ViewRides extends JPanel{
             statement = TabServer.connection.createStatement();
             resultSet= statement.executeQuery(query);
             currentRide=new Ride();
-            if(resultSet==null){
-                JOptionPane.showMessageDialog(null,"Sorry this ride is already in progress / completed by other driver....");
-            }
             resultSet.next();
+            if(driverAssignedForRide(currentRideOTP)){
+                JOptionPane.showMessageDialog(null,"Sorry this ride is already in progress / completed by other driver....");
+                return false;
+            }
             currentRide.setCustomerEmail(resultSet.getString(1));
             currentRide.setNoOfPassengers(resultSet.getInt(2));
             currentRide.setPickup(resultSet.getString(3));
@@ -319,5 +350,20 @@ public class ViewRides extends JPanel{
         disableButton(changingButton);
         disableButton(chatButton);
         return true;
+    }
+    //Function to check if ride is already assigned by someone or not
+    private boolean driverAssignedForRide(int otp){
+        try {
+            query ="select driverassigned from ride where otp="+otp;
+            statement=TabServer.connection.createStatement();
+            resultSet=statement.executeQuery(query);
+            if(resultSet.getString(2)=="true"){
+                return true;
+            }
+        }
+        catch(Exception e){
+            System.out.println("Driver assigned for ride() "+e);
+        }
+        return false;
     }
 }
