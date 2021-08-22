@@ -14,14 +14,16 @@ public class ViewRides extends JPanel{
     String query,otp;
     Border bdr=BorderFactory.createLineBorder(Color.BLACK, 5);;
     JButton changingButton,chatButton;
-    JScrollPane jScrollPane,jScrollPane2;
-    int index,noOfRides,input,currentRideOTP,selectedRow,endKM,hoursElapsed,fare,distanceTravelled;
+    JScrollPane currentRideTableScrollPane, availabletableJScrollPane;
+    private int index,noOfRides,input,currentRideOTP,selectedRow,endKM,hoursElapsed,fare,distanceTravelled;
     private Ride currentRide;
+    private Font font;
     ViewRides(){
         setBackground(new Color(255, 167, 88));
         setBounds(0,0,1900,1000);
         setVisible(true);
-        setFont(new Font("Times New Roman",Font.BOLD,19));
+        font=new Font("Times New Roman",Font.BOLD,19);
+        setFont(font);
         setLayout(null);
 
         //Label
@@ -35,15 +37,19 @@ public class ViewRides extends JPanel{
         //Table
         arr=new Object[][]{{"-","-","-","-","-","-"}};
         currentRideTable =new JTable(arr,new Object[]{"Customer email","Number of pasengers","Pickup place","Destination place","Kilometers at pickup","Customer mobile number"});
-        jScrollPane=new JScrollPane(currentRideTable);
-        jScrollPane.setBounds(0,70,1800,130);
+        currentRideTableScrollPane =new JScrollPane(currentRideTable);
+        currentRideTableScrollPane.setBounds(0,70,1800,130);
         currentRideTable.setEnabled(false);
         currentRideTable.setRowHeight(100);
         currentRideTable.setBorder(bdr);
         currentRideTable.setFont(new Font("Times new roman",Font.BOLD,19));
-        jScrollPane.setBorder(bdr);
-        add(jScrollPane);
+        currentRideTableScrollPane.setBorder(bdr);
+        add(currentRideTableScrollPane);
         requestedRideDetails();
+
+        //Customizing scroll pane
+        currentRideTableScrollPane.getViewport().setBackground(new Color(255, 104, 132));
+        currentRideTableScrollPane.getViewport().setFont(font);
 
         //Button
         changingButton=new JButton("ENTER OTP");
@@ -133,9 +139,13 @@ public class ViewRides extends JPanel{
             availableRidesTable.setEnabled(false);
             availableRidesTable.setRowHeight(60);
             availableRidesTable.setFont(new Font("Times New Roman",Font.BOLD,19));
-            jScrollPane2=new JScrollPane(availableRidesTable);
-            jScrollPane2.setBounds(0,350,1500,600);
-            jScrollPane2.setBorder(bdr);
+            availabletableJScrollPane =new JScrollPane(availableRidesTable);
+            availabletableJScrollPane.setBounds(0,350,1500,600);
+            availabletableJScrollPane.setBorder(bdr);
+
+            //Customizing scroll pane
+            availabletableJScrollPane.getViewport().setBackground(new Color(216, 115, 255));
+            availabletableJScrollPane.getViewport().setFont(font);
 
             availableRidesTable.addMouseListener(new MouseListener() {
                 @Override
@@ -175,7 +185,7 @@ public class ViewRides extends JPanel{
 
                 }
             });
-            add(jScrollPane2);
+            add(availabletableJScrollPane);
         }
         catch(Exception e){
             System.out.println("requested ride details");
