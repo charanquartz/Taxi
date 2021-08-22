@@ -18,7 +18,7 @@ public class ViewRides extends JPanel{
     int index,noOfRides,input,currentRideOTP,selectedRow;
     private Ride currentRide;
     ViewRides(){
-        setBackground(new Color(3, 252, 240));
+        setBackground(new Color(255, 167, 88));
         setBounds(0,0,1900,1000);
         setVisible(true);
         setFont(new Font("Times New Roman",Font.BOLD,19));
@@ -50,8 +50,17 @@ public class ViewRides extends JPanel{
         chatButton=new JButton("CHAT WITH CUSTOMER");
 
         //Background
-        currentRideTable.setBackground(new Color(35, 176, 212));
-        availableRidesTable.setBackground(new Color(87, 236, 161));
+        currentRideTable.setBackground(new Color(255, 104, 132));
+        availableRidesTable.setBackground(new Color(216, 115, 255));
+
+        //Adding buttons
+        add(changingButton);
+        add(chatButton);
+        changingButton.setBounds(0,210,200,60);
+        chatButton.setBounds(210,210,200,60);
+
+        disableButton(changingButton);
+        disableButton(chatButton);
     }
     //Method to display details of available rides....
     private void requestedRideDetails(){
@@ -81,6 +90,7 @@ public class ViewRides extends JPanel{
             availableRidesTable.setBorder(bdr);
             availableRidesTable.setEnabled(false);
             availableRidesTable.setRowHeight(60);
+            availableRidesTable.setFont(new Font("Times New Roman",Font.BOLD,19));
             jScrollPane2=new JScrollPane(availableRidesTable);
             jScrollPane2.setBounds(0,350,1500,600);
             jScrollPane2.setBorder(bdr);
@@ -88,6 +98,10 @@ public class ViewRides extends JPanel{
             availableRidesTable.addMouseListener(new MouseListener() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
+                    if(changingButton.isEnabled()){
+                        JOptionPane.showMessageDialog(null,"Complete your current ride to accept new one");
+                        return;
+                    }
                     selectedRow=e.getY()/60;
                     if(selectedRow>=arr.length){
                         return;
@@ -142,11 +156,10 @@ public class ViewRides extends JPanel{
             currentRide.setDriverAssigned("true");
             currentRide.setOtp(currentRideOTP);
 
-            //Adding buttons
-            add(changingButton);
-            add(chatButton);
-            changingButton.setBounds(0,210,200,60);
-            chatButton.setBounds(210,210,200,60);
+            //Updating driver assigned to the ride
+            query="update ride set driverassigned='true' where otp="+currentRideOTP;
+            statement=TabServer.connection.createStatement();
+            statement.executeQuery(query);
 
             //Updating table values...
             currentRideTable.setValueAt(currentRide.getCustomerEmail(),0,0);
@@ -156,6 +169,16 @@ public class ViewRides extends JPanel{
             currentRideTable.setValueAt(-1,0,4);
             currentRideTable.setValueAt(getCustomerMobile(currentRide.getCustomerEmail()),0,5);
             JOptionPane.showMessageDialog(null,"Ride accepted successfully");
+
+            //Enabling buttons
+            enableButton(changingButton);
+            enableButton(chatButton);
+
+            statement=TabServer.connection.createStatement();
+            statement.executeQuery(query);
+
+            //SendMail of confirmation
+            TabServer.sendMail("Drive request approved","Your ride has been accepted by a driver.\nDriver name : "+TabServer.driver.getFname()+"\nDriver mobile number : "+TabServer.driver.getMobile(),currentRide.getCustomerEmail());
         }
         catch(Exception e){
             System.out.println("Accepted ride");
@@ -192,5 +215,13 @@ public class ViewRides extends JPanel{
             System.out.println(e);
         }
         return -1;
+    }
+    public boolean disableButton(JButton button){
+        button.setEnabled(false);
+        return true;
+    }
+    public boolean enableButton(JButton button){
+        button.setEnabled(true);
+        return true;
     }
 }

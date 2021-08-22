@@ -1,9 +1,13 @@
 package driver;
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.swing.*;
 import java.awt.*;
 import java.sql.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Properties;
 import java.util.regex.*;
 public class TabServer extends JFrame{
     static JTabbedPane tabs;
@@ -111,6 +115,54 @@ public class TabServer extends JFrame{
     }
     public static boolean disableSignUp(){
         tabs.setEnabledAt(1,false);
+        return true;
+    }
+    public static boolean sendMail(String subject,String text,String email){
+        final String username = "19eucs076@skcet.ac.in";
+        final String password = "krishna123";
+
+        final String from = "19eucs076@skcet.ac.in";
+        final String to = email;
+
+        Properties props = new Properties();
+
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.socketFactory.port", "465");
+        props.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.port", "465");
+
+
+
+
+        Authenticator a =new Authenticator() {
+
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+
+                return new PasswordAuthentication(username, password);
+
+            }
+
+        };
+
+        Session session = Session.getInstance(props, a);
+
+        try {
+
+            Message message = new MimeMessage(session);
+
+            message.setFrom(new InternetAddress(from));
+
+            message.setRecipients(Message.RecipientType.TO,InternetAddress.parse(to));
+            message.setSubject(subject);
+            message.setText(text);
+
+            Transport.send(message);
+
+        } catch (MessagingException e) {
+            System.out.println(e);
+        }
         return true;
     }
 }

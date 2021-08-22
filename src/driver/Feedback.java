@@ -13,7 +13,7 @@ public class Feedback extends JPanel{
         setVisible(true);
         setFont(new Font("Times New Roman",Font.BOLD,19));
         setLayout(null);
-        setBackground(new Color(3, 252, 240));
+        setBackground(new Color(255, 167, 88));
 
         lbl1=new Label("Enter your feedback : ");
         txtAr1=new JTextArea();
