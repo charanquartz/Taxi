@@ -3,6 +3,7 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.sql.*;
 import java.awt.event.*;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.regex.*;
 public class TabServer extends JFrame{
+    static Border bdr=BorderFactory.createLineBorder(Color.BLACK, 5);;
     static JTabbedPane tabs;
     static Pattern pattern;
     String s;
@@ -42,7 +44,7 @@ public class TabServer extends JFrame{
         tabs.addTab("VIEW RIDES",viewRide);
         tabs.addTab("VIEW PROFILE",update);
         tabs.addTab("PROVIDE FEEDBACK",feedback);
-//       // tabs.setEnabledAt(2,false);
+//        tabs.setEnabledAt(2,false);
 //        tabs.setEnabledAt(3,false);
 //        tabs.setEnabledAt(4,false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);

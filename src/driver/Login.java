@@ -116,6 +116,10 @@ public class Login extends JPanel{
         }
         if(isPresent(email)){
             if(pass(email).equals(password)){
+                if(!isApproved(email)){
+                    JOptionPane.showMessageDialog(null,"User not approved by admin...");
+                    return false;
+                }
                 JOptionPane.showMessageDialog(null,"Login success...");
                 TabServer.enableFeedback();
                 TabServer.enableViewProfile();
@@ -144,6 +148,18 @@ public class Login extends JPanel{
         }
         catch(Exception e){
             System.out.println(e);
+        }
+        return false;
+    }
+    public boolean isApproved(String email){
+        query="select approved from driver where email='"+email+"'";
+        try {
+            rs = statement.executeQuery(query);
+            rs.next();
+            return rs.getString(1).equals("true");
+        }
+        catch(Exception e){
+            System.out.println("isApproved"+e);
         }
         return false;
     }

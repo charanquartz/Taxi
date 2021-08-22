@@ -5,6 +5,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.*;
 import java.awt.*;
+import java.sql.Driver;
+
 public class ViewRides extends JPanel{
     Statement statement;
     ResultSet resultSet;
@@ -14,14 +16,16 @@ public class ViewRides extends JPanel{
     String query,otp;
     Border bdr=BorderFactory.createLineBorder(Color.BLACK, 5);;
     JButton changingButton,chatButton;
-    JScrollPane jScrollPane,jScrollPane2;
-    int index,noOfRides,input,currentRideOTP,selectedRow,endKM,hoursElapsed,fare,distanceTravelled;
+    JScrollPane currentRideTableScrollPane, availabletableJScrollPane;
+    private int index,noOfRides,input,currentRideOTP,selectedRow,endKM,hoursElapsed,fare,distanceTravelled;
     private Ride currentRide;
+    private Font font;
     ViewRides(){
         setBackground(new Color(255, 167, 88));
         setBounds(0,0,1900,1000);
         setVisible(true);
-        setFont(new Font("Times New Roman",Font.BOLD,19));
+        font=new Font("Times New Roman",Font.BOLD,19);
+        setFont(font);
         setLayout(null);
 
         //Label
@@ -35,15 +39,19 @@ public class ViewRides extends JPanel{
         //Table
         arr=new Object[][]{{"-","-","-","-","-","-"}};
         currentRideTable =new JTable(arr,new Object[]{"Customer email","Number of pasengers","Pickup place","Destination place","Kilometers at pickup","Customer mobile number"});
-        jScrollPane=new JScrollPane(currentRideTable);
-        jScrollPane.setBounds(0,70,1800,130);
+        currentRideTableScrollPane =new JScrollPane(currentRideTable);
+        currentRideTableScrollPane.setBounds(0,70,1800,130);
         currentRideTable.setEnabled(false);
         currentRideTable.setRowHeight(100);
         currentRideTable.setBorder(bdr);
         currentRideTable.setFont(new Font("Times new roman",Font.BOLD,19));
-        jScrollPane.setBorder(bdr);
-        add(jScrollPane);
+        currentRideTableScrollPane.setBorder(bdr);
+        add(currentRideTableScrollPane);
         requestedRideDetails();
+
+        //Customizing scroll pane
+        currentRideTableScrollPane.getViewport().setBackground(new Color(255, 104, 132));
+        currentRideTableScrollPane.getViewport().setFont(font);
 
         //Button
         changingButton=new JButton("ENTER OTP");
@@ -55,7 +63,7 @@ public class ViewRides extends JPanel{
 
         //Adding buttons
         add(changingButton);
-        add(chatButton);
+        //add(chatButton);
         changingButton.setBounds(0,210,200,60);
         chatButton.setBounds(210,210,200,60);
 
@@ -81,6 +89,34 @@ public class ViewRides extends JPanel{
                 else{
                     JOptionPane.showMessageDialog(null,"Wrong OTP entered");
                 }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+
+        //Mouse Event on chat button
+        chatButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                new DriverChatBox();
             }
 
             @Override
@@ -133,9 +169,13 @@ public class ViewRides extends JPanel{
             availableRidesTable.setEnabled(false);
             availableRidesTable.setRowHeight(60);
             availableRidesTable.setFont(new Font("Times New Roman",Font.BOLD,19));
-            jScrollPane2=new JScrollPane(availableRidesTable);
-            jScrollPane2.setBounds(0,350,1500,600);
-            jScrollPane2.setBorder(bdr);
+            availabletableJScrollPane =new JScrollPane(availableRidesTable);
+            availabletableJScrollPane.setBounds(0,350,1500,600);
+            availabletableJScrollPane.setBorder(bdr);
+
+            //Customizing scroll pane
+            availabletableJScrollPane.getViewport().setBackground(new Color(216, 115, 255));
+            availabletableJScrollPane.getViewport().setFont(font);
 
             availableRidesTable.addMouseListener(new MouseListener() {
                 @Override
@@ -175,7 +215,7 @@ public class ViewRides extends JPanel{
 
                 }
             });
-            add(jScrollPane2);
+            add(availabletableJScrollPane);
         }
         catch(Exception e){
             System.out.println("requested ride details");
@@ -190,10 +230,11 @@ public class ViewRides extends JPanel{
             statement = TabServer.connection.createStatement();
             resultSet= statement.executeQuery(query);
             currentRide=new Ride();
-            if(resultSet==null){
-                JOptionPane.showMessageDialog(null,"Sorry this ride is already in progress / completed by other driver....");
-            }
             resultSet.next();
+            if(driverAssignedForRide(currentRideOTP)){
+                JOptionPane.showMessageDialog(null,"Sorry this ride is already in progress / completed by other driver....");
+                return false;
+            }
             currentRide.setCustomerEmail(resultSet.getString(1));
             currentRide.setNoOfPassengers(resultSet.getInt(2));
             currentRide.setPickup(resultSet.getString(3));
@@ -309,5 +350,20 @@ public class ViewRides extends JPanel{
         disableButton(changingButton);
         disableButton(chatButton);
         return true;
+    }
+    //Function to check if ride is already assigned by someone or not
+    private boolean driverAssignedForRide(int otp){
+        try {
+            query ="select driverassigned from ride where otp="+otp;
+            statement=TabServer.connection.createStatement();
+            resultSet=statement.executeQuery(query);
+            if(resultSet.getString(2)=="true"){
+                return true;
+            }
+        }
+        catch(Exception e){
+            System.out.println("Driver assigned for ride() "+e);
+        }
+        return false;
     }
 }
