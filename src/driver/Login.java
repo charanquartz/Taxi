@@ -1,4 +1,6 @@
 package driver;
+import javafx.scene.control.Tab;
+
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -87,6 +89,10 @@ public class Login extends JPanel{
             }
         });
 
+        //Creating sample driver for TabServer
+        TabServer.driver=new Driver();
+        TabServer.driver.setEmail("NULL");
+
         //Borders
         pwdFld1.setBorder(bdr);
         txtFld1.setBorder(bdr);
@@ -159,6 +165,7 @@ public class Login extends JPanel{
         query="select * from driver where email = '"+txtFld1.getText()+"'";
         try {
             rs = statement.executeQuery(query);
+            rs.next();
             TabServer.driver=new Driver();
             TabServer.driver.setFname(rs.getString(1));
             TabServer.driver.setLname(rs.getString(2));
@@ -195,6 +202,7 @@ public class Login extends JPanel{
             }
         }
         catch(Exception e){
+            System.out.println("Exception while calling updateDriverFields()");
             System.out.println(e);
         }
         return true;

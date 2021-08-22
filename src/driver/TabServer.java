@@ -11,10 +11,10 @@ public class TabServer extends JFrame{
     String s;
     static Matcher matcher;
     JPanel login,signup,viewRide,feedback,update;
-    static Driver driver=null;
+    static Driver driver;
     static ArrayList<Car> cars;
     static Connection connection;
-    public TabServer(){
+    public TabServer() throws Exception{
         setBackground(new Color(35, 176, 212));
         setTitle("DRIVER'S HOME");
         tabs=new JTabbedPane();
@@ -23,6 +23,11 @@ public class TabServer extends JFrame{
         setLayout(new BorderLayout());
         setFont(new Font("Times new roman",Font.BOLD,18));
         add(tabs,BorderLayout.CENTER);
+
+        //Establishing connection to db
+       connection=DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:XE","madhi","java");
+       connection.setAutoCommit(true);
+
         login=new Login();
         signup=new SignUp();
         viewRide=new ViewRides();
@@ -38,13 +43,6 @@ public class TabServer extends JFrame{
         tabs.setEnabledAt(4,false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-        try{
-            connection=DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:XE","madhi","java");
-            connection.setAutoCommit(true);
-        }
-        catch(Exception e){
-            System.out.println(e);
-        }
         add(tabs);
     }
     static public boolean isValidEmail(String email){
