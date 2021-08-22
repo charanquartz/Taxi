@@ -29,14 +29,14 @@ public class ViewRides extends JPanel{
         currentRideLabel.setBounds(0,0,200,60);
         add(currentRideLabel);
         ridesAvailable=new Label("Rides available : ");
-        ridesAvailable.setBounds(0,210,200,60);
+        ridesAvailable.setBounds(0,280,200,60);
         add(ridesAvailable);
 
         //Table
         arr=new Object[][]{{"-","-","-","-","-","-"}};
         currentRideTable =new JTable(arr,new Object[]{"Customer email","Number of pasengers","Pickup place","Destination place","Kilometers at pickup","Customer mobile number"});
         jScrollPane=new JScrollPane(currentRideTable);
-        jScrollPane.setBounds(0,70,1100,130);
+        jScrollPane.setBounds(0,70,1800,130);
         currentRideTable.setEnabled(false);
         currentRideTable.setRowHeight(100);
         currentRideTable.setBorder(bdr);
@@ -50,8 +50,8 @@ public class ViewRides extends JPanel{
         chatButton=new JButton("CHAT WITH CUSTOMER");
 
         //Background
-        currentRideTable.setBackground(new Color(23, 234, 128));
-        availableRidesTable.setBackground(new Color(255, 44, 68));
+        currentRideTable.setBackground(new Color(35, 176, 212));
+        availableRidesTable.setBackground(new Color(87, 236, 161));
     }
     //Method to display details of available rides....
     private void requestedRideDetails(){
@@ -65,7 +65,6 @@ public class ViewRides extends JPanel{
             if(resultSet.next()){
                 noOfRides=resultSet.getInt(1);
             }
-            System.out.println(noOfRides);
 
             //Storing available rides details to table
             query="select * from ride where driverassigned='false'";
@@ -83,23 +82,20 @@ public class ViewRides extends JPanel{
             availableRidesTable.setEnabled(false);
             availableRidesTable.setRowHeight(60);
             jScrollPane2=new JScrollPane(availableRidesTable);
-            jScrollPane2.setBounds(0,270,1500,600);
+            jScrollPane2.setBounds(0,350,1500,600);
             jScrollPane2.setBorder(bdr);
 
-            //MouseListener for table
-            jScrollPane2.addMouseListener(new MouseListener() {
+            availableRidesTable.addMouseListener(new MouseListener() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    if(e.getClickCount()==2){
-                        selectedRow=e.getY()/60;
-                        if(selectedRow>=arr.length){
-                            return;
-                        }
-                        input=JOptionPane.showConfirmDialog(null,"Are you sure you want to accept the ride?");
-                        if(input==0){
-                            currentRideOTP=(Integer)arr[selectedRow][6];
-                            acceptRide(currentRideOTP);
-                        }
+                    selectedRow=e.getY()/60;
+                    if(selectedRow>=arr.length){
+                        return;
+                    }
+                    input=JOptionPane.showConfirmDialog(null,"Are you sure you want to accept the ride?");
+                    if(input==0){
+                        currentRideOTP=getOTP(arr[selectedRow][1].toString());
+                        acceptRide(currentRideOTP);
                     }
                 }
 
@@ -123,17 +119,17 @@ public class ViewRides extends JPanel{
 
                 }
             });
-
             add(jScrollPane2);
         }
         catch(Exception e){
+            System.out.println("requested ride details");
             System.out.println(e);
         }
     }
 
     //Functions to implement after the driver accepts a ride
     public boolean acceptRide(int currentRideOTP){
-        query="select from ride where otp="+currentRideOTP;
+        query="select * from ride where otp="+currentRideOTP;
         try {
             statement = TabServer.connection.createStatement();
             resultSet= statement.executeQuery(query);
@@ -146,15 +142,55 @@ public class ViewRides extends JPanel{
             currentRide.setDriverAssigned("true");
             currentRide.setOtp(currentRideOTP);
 
-            //changingButton.setBounds();
-            //chatButton.setBounds();
+            //Adding buttons
             add(changingButton);
             add(chatButton);
+            changingButton.setBounds(0,210,200,60);
+            chatButton.setBounds(210,210,200,60);
+
+            //Updating table values...
+            currentRideTable.setValueAt(currentRide.getCustomerEmail(),0,0);
+            currentRideTable.setValueAt(currentRide.getNoOfPassengers(),0,1);
+            currentRideTable.setValueAt(currentRide.getPickup(),0,2);
+            currentRideTable.setValueAt(currentRide.getDestination(),0,3);
+            currentRideTable.setValueAt(-1,0,4);
+            currentRideTable.setValueAt(getCustomerMobile(currentRide.getCustomerEmail()),0,5);
             JOptionPane.showMessageDialog(null,"Ride accepted successfully");
         }
         catch(Exception e){
+            System.out.println("Accepted ride");
             System.out.println(e);
         }
         return true;
+    }
+    public long getCustomerMobile(String email){
+        long number=-1;
+        try {
+            statement = TabServer.connection.createStatement();
+            query="select mobile from customer where email='"+email+"'";
+            resultSet=statement.executeQuery(query);
+            resultSet.next();
+            return resultSet.getLong(1);
+        }
+        catch(Exception e){
+            System.out.println("getCustomerMobile");
+            System.out.println(e);
+        }
+        return number;
+    }
+    //Getting otp of the ride with the help of customer email...
+    public int getOTP(String email){
+        try{
+            statement=TabServer.connection.createStatement();
+            query="select otp from ride where email='"+email+"'";
+            resultSet=statement.executeQuery(query);
+            resultSet.next();
+            return resultSet.getInt(1);
+        }
+        catch (Exception e){
+            System.out.println("get otp");
+            System.out.println(e);
+        }
+        return -1;
     }
 }
