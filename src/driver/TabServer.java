@@ -38,9 +38,9 @@ public class TabServer extends JFrame{
         tabs.addTab("VIEW RIDES",viewRide);
         tabs.addTab("VIEW PROFILE",update);
         tabs.addTab("PROVIDE FEEDBACK",feedback);
-        tabs.setEnabledAt(2,false);
-        tabs.setEnabledAt(3,false);
-        tabs.setEnabledAt(4,false);
+//       // tabs.setEnabledAt(2,false);
+//        tabs.setEnabledAt(3,false);
+//        tabs.setEnabledAt(4,false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         add(tabs);

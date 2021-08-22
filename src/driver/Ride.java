@@ -2,13 +2,30 @@ package driver;
 
 public class Ride {
     private String customerEmail,driverAssigned,destination,pickup;
+    private int noOfPassengers,otp,startKM;
 
-    public Ride(String customerEmail, String driverAssigned, String destination, String pickup) {
-        this.customerEmail = customerEmail;
-        this.driverAssigned = driverAssigned;
-        this.destination = destination;
-        this.pickup = pickup;
-        insertDB();
+    public int getStartKM() {
+        return startKM;
+    }
+
+    public void setStartKM(int startKM) {
+        this.startKM = startKM;
+    }
+
+    public int getNoOfPassengers() {
+        return noOfPassengers;
+    }
+
+    public void setNoOfPassengers(int noOfPassengers) {
+        this.noOfPassengers = noOfPassengers;
+    }
+
+    public int getOtp() {
+        return otp;
+    }
+
+    public void setOtp(int otp) {
+        this.otp = otp;
     }
 
     public String getCustomerEmail() {
