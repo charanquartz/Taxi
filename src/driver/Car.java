@@ -3,24 +3,15 @@ import javax.swing.*;
 import java.awt.Event.*;
 import java.awt.*;
 public class Car {
-    private String carID,company,model;
-    private Boolean AC,booked;
+    private String carID,company,model,ownerEmail,AC;
     private int capacity,farePerKM;
-    Car(String carID,String company,String model,boolean AC,int capacity,int farePerKM){
-        this.carID=carID;
-        this.company=company;
-        this.model=model;
-        this.AC=AC;
-        this.capacity=capacity;
-        this.farePerKM=farePerKM;
+
+    public String getOwnerEmail() {
+        return ownerEmail;
     }
 
-    public Boolean getBooked() {
-        return booked;
-    }
-
-    public void setBooked(Boolean booked) {
-        this.booked = booked;
+    public void setOwnerEmail(String ownerEmail) {
+        this.ownerEmail = ownerEmail;
     }
 
     public String getCarID() {
@@ -47,11 +38,11 @@ public class Car {
         this.model = model;
     }
 
-    public Boolean getAC() {
+    public String getAC() {
         return AC;
     }
 
-    public void setAC(Boolean AC) {
+    public void setAC(String AC) {
         this.AC = AC;
     }
 
