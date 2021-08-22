@@ -11,11 +11,11 @@ public class ViewRides extends JPanel{
     Label currentRideLabel,ridesAvailable;
     Object[][] arr;
     JTable currentRideTable, availableRidesTable;
-    String query;
+    String query,otp;
     Border bdr=BorderFactory.createLineBorder(Color.BLACK, 5);;
     JButton changingButton,chatButton;
     JScrollPane jScrollPane,jScrollPane2;
-    int index,noOfRides,input,currentRideOTP,selectedRow;
+    int index,noOfRides,input,currentRideOTP,selectedRow,endKM,hoursElapsed,fare,distanceTravelled;
     private Ride currentRide;
     ViewRides(){
         setBackground(new Color(255, 167, 88));
@@ -61,6 +61,48 @@ public class ViewRides extends JPanel{
 
         disableButton(changingButton);
         disableButton(chatButton);
+
+        //Mouse event on otp button
+        changingButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(changingButton.getText().equals("Ride complete")){
+                    rideComplete();
+                    return;
+                }
+                if(!changingButton.isEnabled()){
+                    return;
+                }
+                otp=JOptionPane.showInputDialog(null,"Enter the OTP of the ride : ");
+                if(Integer.parseInt(otp)==currentRideOTP){
+                    currentRide.setStartKM(Integer.parseInt(JOptionPane.showInputDialog(null,"Enter the start Kilometer of the ride : ")));
+                    changingButton.setText("Ride complete");
+                }
+                else{
+                    JOptionPane.showMessageDialog(null,"Wrong OTP entered");
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
     }
     //Method to display details of available rides....
     private void requestedRideDetails(){
@@ -148,6 +190,9 @@ public class ViewRides extends JPanel{
             statement = TabServer.connection.createStatement();
             resultSet= statement.executeQuery(query);
             currentRide=new Ride();
+            if(resultSet==null){
+                JOptionPane.showMessageDialog(null,"Sorry this ride is already in progress / completed by other driver....");
+            }
             resultSet.next();
             currentRide.setCustomerEmail(resultSet.getString(1));
             currentRide.setNoOfPassengers(resultSet.getInt(2));
@@ -161,6 +206,10 @@ public class ViewRides extends JPanel{
             statement=TabServer.connection.createStatement();
             statement.executeQuery(query);
 
+            //Enabling buttons
+            enableButton(changingButton);
+            enableButton(chatButton);
+
             //Updating table values...
             currentRideTable.setValueAt(currentRide.getCustomerEmail(),0,0);
             currentRideTable.setValueAt(currentRide.getNoOfPassengers(),0,1);
@@ -169,10 +218,6 @@ public class ViewRides extends JPanel{
             currentRideTable.setValueAt(-1,0,4);
             currentRideTable.setValueAt(getCustomerMobile(currentRide.getCustomerEmail()),0,5);
             JOptionPane.showMessageDialog(null,"Ride accepted successfully");
-
-            //Enabling buttons
-            enableButton(changingButton);
-            enableButton(chatButton);
 
             statement=TabServer.connection.createStatement();
             statement.executeQuery(query);
@@ -222,6 +267,47 @@ public class ViewRides extends JPanel{
     }
     public boolean enableButton(JButton button){
         button.setEnabled(true);
+        return true;
+    }
+    private boolean rideComplete(){
+        fare=0;
+        endKM=Integer.parseInt(JOptionPane.showInputDialog(null,"Enter the end kilometer : "));
+        hoursElapsed=Integer.parseInt(JOptionPane.showInputDialog(null,"Enter the hours of travel : "));
+
+        //To find the fare of the car per km
+        try {
+            query="select fareperkm from car where carid='"+TabServer.driver.getCarID()+"'";
+            statement = TabServer.connection.createStatement();
+            resultSet=statement.executeQuery(query);
+            resultSet.next();
+            distanceTravelled=endKM- currentRide.getStartKM();
+            fare+=distanceTravelled*resultSet.getInt(1);
+            fare+=hoursElapsed*150;
+            TabServer.sendMail("Taxi-Ride complete!!!","Diatance Travelled : "+distanceTravelled+"km -----> Charge : ₹"+distanceTravelled*resultSet.getInt(1)+"\nHours of travel : "+hoursElapsed+"hours----->Charge : ₹"+hoursElapsed*150+"\nGrand total : ₹"+fare+"\nThanks for the ride with us!!!\nPlease give your feedback about our services...", currentRide.getCustomerEmail());
+
+            //Deleting current ride form ride table
+            query="delete from ride where otp="+otp;
+            statement.executeQuery(query);
+
+            //Setting availability of the driver to true
+            query="update table driver set availability = 'true' where email='"+TabServer.driver.getEmail()+"'";
+
+
+            //Setting current ride to empty
+            setCurrentRideToEmpty();
+        }
+        catch (Exception e){
+            System.out.println("Ride complete()"+e);
+        }
+        return true;
+    }
+    private boolean setCurrentRideToEmpty(){
+        for(int i=0;i<6;i++){
+            currentRideTable.setValueAt("-",0,i);
+        }
+        changingButton.setText("Enter OTP : ");
+        disableButton(changingButton);
+        disableButton(chatButton);
         return true;
     }
 }
