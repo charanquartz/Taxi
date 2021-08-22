@@ -19,7 +19,7 @@ public class Login extends JPanel{
     String query;
     Login(){
         f=new Font("Times New Roman",Font.BOLD,19);
-        setBackground(new Color(3, 252, 240));
+        setBackground(new Color(255, 167, 88));
         setLayout(null);
         setVisible(true);
         setFont(new Font("TIMES NEW ROMAN",Font.BOLD,18));
