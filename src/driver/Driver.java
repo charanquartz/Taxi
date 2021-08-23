@@ -1,11 +1,15 @@
 package driver;
 import java.util.*;
 public class Driver {
-    private String fname,lname,carID,gender,dob,nationality,city,address,email,pass,approved,availability;
+    private String fname,lname,carID,gender,nationality,city,address,email,pass,approved,availability,licenseId;
+    private Date dob;
     private int portNUmber;
-    private ArrayList<Car> cars=new ArrayList<>();
+    private ArrayList<Car> cars;
     private long mobile,driverExp,xp;
 
+    Driver(){
+        cars=new ArrayList<>();
+    }
     public ArrayList<Car> getCars() {
         return cars;
     }
@@ -14,20 +18,6 @@ public class Driver {
         this.cars = cars;
     }
 
-    public Driver(String fname, String lname, String carID, String gender, String dob, String nationality, String city, String address, String email, String pass, long mobile, long driverExp) {
-        this.fname = fname;
-        this.lname = lname;
-        this.carID = carID;
-        this.gender = gender;
-        this.dob = dob;
-        this.nationality = nationality;
-        this.city = city;
-        this.address = address;
-        this.email = email;
-        this.pass = pass;
-        this.mobile = mobile;
-        this.driverExp = driverExp;
-    }
     public int getPortNUmber() {
         return portNUmber;
     }
@@ -84,11 +74,11 @@ public class Driver {
         this.gender = gender;
     }
 
-    public String getDob() {
+    public Date getDob() {
         return dob;
     }
 
-    public void setDob(String dob) {
+    public void setDob(Date dob) {
         this.dob = dob;
     }
 
@@ -148,4 +138,19 @@ public class Driver {
         this.driverExp = driverExp;
     }
 
+    public String getLicenseId() {
+        return licenseId;
+    }
+
+    public void setLicenseId(String licenseId) {
+        this.licenseId = licenseId;
+    }
+
+    public long getXp() {
+        return xp;
+    }
+
+    public void setXp(long xp) {
+        this.xp = xp;
+    }
 }

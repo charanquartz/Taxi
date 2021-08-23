@@ -1,183 +1,191 @@
 package driver;
 import java.awt.*;
 import javax.swing.*;
-import java.util.*;
-import java.awt.Event.*;
+import java.sql.*;
 import javax.swing.border.Border;
 import javax.swing.BorderFactory;
-import javax.swing.text.JTextComponent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 public class ViewProfile extends JPanel{
     int flag=0;
-    Label lbl1,lbl2,lbl3,lbl4,lbl5,lbl6,lbl7,lbl8,lbl9,lbl10,lbl11,lbl12,lbl13,lbl14,lbl15,lbl16,lbl17,lbl18,lbl19;
-    JTextField txtFld1,txtFld2,txtFld3,txtFld4,txtFld5,txtFld6,txtFld7,txtFld8,txtFld11,txtFld12,txtFld13,txtFld14,txtFld15,txtFld16,txtFld17,txtFld18;
-    JPasswordField txtFld9;
-    JComboBox<String> list1,list2;
-    Button btn1,btn2,btn3;
+    Label firstNameLabel, lastNameLabel, genderLabel, dobLabel, drivingExperienceLabel, addressLabel, cityLabel, nationalityLabel, mobileNumberLabel, emailLabel, driverLicenseLabel, carIDLabel, companyLabel, modelLabel, capacityLabel, ACLabel, FarePerKMLabel;
+    JTextField firstNameTextField, lastNameTextField, DOBTextField, drivingExpTextField, addressTextField, cityTextField, mobileNoTextField, emailTextField,txtFld11, companyTextField, modelTextField, capacityTextField, ACTextField, fareTextField, licenseTextField;
+    JComboBox<String> NationalityJComboBox, carJComboBox;
+    JButton editButton, addCarButton, changePasswordButton,refreshButton;
     String[] arr;
-    JRadioButton radBtn1,radBtn2,radBtn3;
+    JRadioButton maleJRadioButton, femaleJRadioButton, othersJRadioButton;
     ButtonGroup btnGrp1;
     Border bdr=BorderFactory.createLineBorder(Color.BLACK,5);
-    ArrayList<Car> cars;
-
+    String currentCarId,query,gender,driverEmail,date;
+    ResultSet resultSet;
+    Car car;
+    int index;
     ViewProfile(){
-        setBackground(new Color(3, 252, 240));
+        setBackground(new Color(255, 167, 88));
         setBounds(0,0,2000,1900);
-        setFont(new  Font("Times New Roman",Font.BOLD,19));
+        setFont(TabServer.font);
         setVisible(true);
         setLayout(null);
 
         //Label
-        lbl1=new Label("FirstName : ");
-        lbl2=new Label("LastName : ");
-        lbl3=new Label("Gender : ");
-        lbl4=new Label("Date of Birth : ");
-        lbl5=new Label("Driving Experience : ");
-        lbl6=new Label("Address : ");
-        lbl7=new Label("City : ");
-        lbl8=new Label("Nationality : ");
-        lbl9=new Label("Mobile Number : ");
-        lbl10=new Label("Email : ");
-        lbl11=new Label("Password : ");
-        lbl13=new Label("Driver Lisence ID : ");
-        lbl14=new Label("Car ID : ");
-        lbl15=new Label("Company : ");
-        lbl16=new Label("Model : ");
-        lbl17=new Label("Capacity : ");
-        lbl18=new Label("AC : ");
-        lbl19=new Label("Fare/KM: ");
+        firstNameLabel =new Label("FirstName : ");
+        lastNameLabel =new Label("LastName : ");
+        genderLabel =new Label("Gender : ");
+        dobLabel =new Label("Date of Birth : ");
+        drivingExperienceLabel =new Label("Driving Experience : ");
+        addressLabel =new Label("Address : ");
+        cityLabel =new Label("City : ");
+        nationalityLabel =new Label("Nationality : ");
+        mobileNumberLabel =new Label("Mobile Number : ");
+        emailLabel =new Label("Email : ");
+        driverLicenseLabel =new Label("Driver License ID : ");
+        carIDLabel =new Label("Car ID : ");
+        companyLabel =new Label("Company : ");
+        modelLabel =new Label("Model : ");
+        capacityLabel =new Label("Capacity : ");
+        ACLabel =new Label("AC : ");
+        FarePerKMLabel =new Label("Fare/KM: ");
 
         //TextField
-        txtFld1=new JTextField();
-        txtFld2=new JTextField();
-        txtFld3=new JTextField();
-        txtFld4=new JTextField();
-        txtFld5=new JTextField();
-        txtFld6=new JTextField();
-        txtFld7=new JTextField();
-        txtFld8=new JTextField();
+        firstNameTextField =new JTextField();
+        lastNameTextField =new JTextField();
+        DOBTextField =new JTextField();
+        drivingExpTextField =new JTextField();
+        addressTextField =new JTextField();
+        cityTextField =new JTextField();
+        mobileNoTextField =new JTextField();
+        emailTextField =new JTextField();
         txtFld11=new JTextField();
-        txtFld12=new JTextField();
-        txtFld13=new JTextField();
-        txtFld14=new JTextField();
-        txtFld15=new JTextField();
-        txtFld16=new JTextField();
-        txtFld17=new JTextField();
-
-        //PasswordFields
-        txtFld9=new JPasswordField();
+        companyTextField =new JTextField();
+        modelTextField =new JTextField();
+        capacityTextField =new JTextField();
+        ACTextField =new JTextField();
+        fareTextField =new JTextField();
+        licenseTextField =new JTextField();
 
         //Button
-        btn1=new Button("EDIT");
-        btn2=new Button("ADD CAR");
-        btn3=new Button("CHANGE PASSWORD");
+        editButton =new JButton("EDIT");
+        addCarButton =new JButton("ADD CAR");
+        changePasswordButton =new JButton("CHANGE PASSWORD");
+        refreshButton=new JButton("REFRESH");
 
         //JCombo box
         arr=new String[]{"Afghanistan","Albania","Algeria","Andorra","Angola","Anguilla","Antigua &amp; Barbuda","Argentina","Armenia","Aruba","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia &amp; Herzegovina","Botswana","Brazil","British Virgin Islands","Brunei","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Cape Verde","Cayman Islands","Chad","Chile","China","Colombia","Congo","Cook Islands","Costa Rica","Cote D Ivoire","Croatia","Cruise Ship","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Estonia","Ethiopia","Falkland Islands","Faroe Islands","Fiji","Finland","France","French Polynesia","French West Indies","Gabon","Gambia","Georgia","Germany","Ghana","Gibraltar","Greece","Greenland","Grenada","Guam","Guatemala","Guernsey","Guinea","Guinea Bissau","Guyana","Haiti","Honduras","Hong Kong","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Isle of Man","Israel","Italy","Jamaica","Japan","Jersey","Jordan","Kazakhstan","Kenya","Kuwait","Kyrgyz Republic","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Macau","Macedonia","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Mauritania","Mauritius","Mexico","Moldova","Monaco","Mongolia","Montenegro","Montserrat","Morocco","Mozambique","Namibia","Nepal","Netherlands","Netherlands Antilles","New Caledonia","New Zealand","Nicaragua","Niger","Nigeria","Norway","Oman","Pakistan","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Puerto Rico","Qatar","Reunion","Romania","Russia","Rwanda","Saint Pierre &amp; Miquelon","Samoa","San Marino","Satellite","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","South Africa","South Korea","Spain","Sri Lanka","St Kitts &amp; Nevis","St Lucia","St Vincent","St. Lucia","Sudan","Suriname","Swaziland","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor L'Este","Togo","Tonga","Trinidad &amp; Tobago","Tunisia","Turkey","Turkmenistan","Turks &amp; Caicos","Uganda","Ukraine","United Arab Emirates","United Kingdom","Uruguay","Uzbekistan","Venezuela","Vietnam","Virgin Islands (US)","Yemen","Zambia","Zimbabwe"};
-        list1=new JComboBox<>(arr);
-        /*cars=TabServer.driver.getCars();
-        arr=new String[cars.size()];
-        for(int i=0;i<cars.size();i++){
-            arr[i]=cars.get(i).getCarID();
-        }*/
+        NationalityJComboBox =new JComboBox<>(arr);
+
         arr=new String[]{};
-        list2=new JComboBox<>(arr);
+        carJComboBox =new JComboBox<>(arr);
 
         //RadioButton
-        radBtn1=new JRadioButton("Male");
-        radBtn2=new JRadioButton("Female");
-        radBtn3=new JRadioButton("Others");
+        maleJRadioButton =new JRadioButton("Male");
+        femaleJRadioButton =new JRadioButton("Female");
+        othersJRadioButton =new JRadioButton("Others");
 
         //Button Group
         btnGrp1=new ButtonGroup();
-        btnGrp1.add(radBtn1);
-        btnGrp1.add(radBtn2);
-        btnGrp1.add(radBtn3);
+        btnGrp1.add(maleJRadioButton);
+        btnGrp1.add(femaleJRadioButton);
+        btnGrp1.add(othersJRadioButton);
 
         //SetBounds for Label
-        lbl1.setBounds(10,10,250,60);//FirstName
-        lbl2.setBounds(10,80,250,60);//LastName
-        lbl3.setBounds(10,150,250,60);//Gender
-        lbl4.setBounds(10,220,250,60);//DOB
-        lbl5.setBounds(10,290,250,60);//Driving experience
-        lbl6.setBounds(10,360,250,60);//Address
-        lbl7.setBounds(10,430,250,60);//City
-        lbl8.setBounds(10,500,250,60);//Nationality
-        lbl9.setBounds(10,570,250,60);//MobileNo
-        lbl10.setBounds(10,640,250,60);//Email
-        lbl11.setBounds(10,710,250,60);//Password
-        lbl13.setBounds(530,220,250,60);//Lisence ID
-        lbl14.setBounds(530,290,250,60);
-        lbl15.setBounds(530,360,250,60);
-        lbl16.setBounds(530,430,250,60);
-        lbl17.setBounds(530,500,250,60);
-        lbl18.setBounds(530,570,250,60);
-        lbl19.setBounds(530,640,250,60);
+        firstNameLabel.setBounds(10,10,250,60);
+        lastNameLabel.setBounds(10,80,250,60);
+        genderLabel.setBounds(10,150,250,60);
+        dobLabel.setBounds(10,220,250,60);
+        drivingExperienceLabel.setBounds(10,290,250,60);
+        addressLabel.setBounds(10,360,250,60);
+        cityLabel.setBounds(10,430,250,60);
+        nationalityLabel.setBounds(10,500,250,60);
+        mobileNumberLabel.setBounds(10,570,250,60);
+        emailLabel.setBounds(10,640,250,60);//Email
+        driverLicenseLabel.setBounds(530,220,250,60);
+        carIDLabel.setBounds(530,290,250,60);
+        companyLabel.setBounds(530,360,250,60);
+        modelLabel.setBounds(530,430,250,60);
+        capacityLabel.setBounds(530,500,250,60);
+        ACLabel.setBounds(530,570,250,60);
+        FarePerKMLabel.setBounds(530,640,250,60);
 
         //SetBounds for textFields
-        txtFld1.setBounds(270,10,250,60);//FirstName
-        txtFld2.setBounds(270,80,250,60);//LastName
-        txtFld3.setBounds(270,220,250,60);//DOB
-        txtFld4.setBounds(270,290,250,60);//Driving Experience
-        txtFld5.setBounds(270,360,250,60);//Address
-        txtFld6.setBounds(270,430,250,60);//City
-        txtFld7.setBounds(270,570,250,60);//Mobile No
-        txtFld8.setBounds(270,640,250,60);//Email
-        txtFld9.setBounds(270,710,250,60);//Password
-        txtFld12.setBounds(790,360,250,60);//Company
-        txtFld13.setBounds(790,430,250,60);//Model
-        txtFld14.setBounds(790,500,250,60);//Capacity
-        txtFld15.setBounds(790,570,250,60);//AC
-        txtFld16.setBounds(790,640,250,60);//Fare
-        txtFld17.setBounds(790,220,250,60);//License ID
+        firstNameTextField.setBounds(270,10,250,60);
+        lastNameTextField.setBounds(270,80,250,60);
+        DOBTextField.setBounds(270,220,250,60);
+        drivingExpTextField.setBounds(270,290,250,60);
+        addressTextField.setBounds(270,360,250,60);
+        cityTextField.setBounds(270,430,250,60);
+        mobileNoTextField.setBounds(270,570,250,60);
+        emailTextField.setBounds(270,640,250,60);
+        companyTextField.setBounds(790,360,250,60);
+        modelTextField.setBounds(790,430,250,60);
+        capacityTextField.setBounds(790,500,250,60);
+        ACTextField.setBounds(790,570,250,60);
+        fareTextField.setBounds(790,640,250,60);
+        licenseTextField.setBounds(790,220,250,60);
 
         //setBounds for buttons
-        btn1.setBounds(270,780,250,60);
-        btn2.setBounds(530,710,250,60);
-        btn3.setBounds(800,710,250,60);
+        refreshButton.setBounds(0,710,250,60);
+        editButton.setBounds(270,710,250,60);
+        addCarButton.setBounds(530,710,250,60);
+        changePasswordButton.setBounds(800,710,250,60);
+        //refreshButton.setBounds()
 
         //setBounds for Radio buttons
-        radBtn1.setBounds(270,150,250,60);
-        radBtn2.setBounds(530,150,250,60);
-        radBtn3.setBounds(790,150,250,60);
+        maleJRadioButton.setBounds(270,150,250,60);
+        femaleJRadioButton.setBounds(530,150,250,60);
+        othersJRadioButton.setBounds(790,150,250,60);
 
         //Setbounds for JCombo box
-        list1.setBounds(270,500,250,60);
-        list2.setBounds(790,290,250,60);
+        NationalityJComboBox.setBounds(270,500,250,60);
+        carJComboBox.setBounds(790,290,250,60);
 
         //adding borders
-        txtFld1.setBorder(bdr);
-        txtFld2.setBorder(bdr);
-        txtFld3.setBorder(bdr);
-        txtFld4.setBorder(bdr);
-        txtFld5.setBorder(bdr);
-        txtFld6.setBorder(bdr);
-        txtFld7.setBorder(bdr);
-        txtFld8.setBorder(bdr);
-        txtFld9.setBorder(bdr);
-        txtFld12.setBorder(bdr);
-        txtFld13.setBorder(bdr);
-        txtFld14.setBorder(bdr);
-        txtFld15.setBorder(bdr);
-        txtFld16.setBorder(bdr);
-        txtFld17.setBorder(bdr);
+        firstNameTextField.setBorder(bdr);
+        lastNameTextField.setBorder(bdr);
+        DOBTextField.setBorder(bdr);
+        drivingExpTextField.setBorder(bdr);
+        addressTextField.setBorder(bdr);
+        cityTextField.setBorder(bdr);
+        mobileNoTextField.setBorder(bdr);
+        emailTextField.setBorder(bdr);
+        companyTextField.setBorder(bdr);
+        modelTextField.setBorder(bdr);
+        capacityTextField.setBorder(bdr);
+        ACTextField.setBorder(bdr);
+        fareTextField.setBorder(bdr);
+        licenseTextField.setBorder(bdr);
 
-        btn1.addMouseListener(new MouseListener() {
+        //Set font for all fields
+        setTextFieldFont(firstNameTextField);
+        setTextFieldFont(lastNameTextField);
+        setTextFieldFont(DOBTextField);
+        setTextFieldFont(drivingExpTextField);
+        setTextFieldFont(addressTextField);
+        setTextFieldFont(cityTextField);
+        setTextFieldFont(mobileNoTextField);
+        setTextFieldFont(emailTextField);
+        setTextFieldFont(companyTextField);
+        setTextFieldFont(modelTextField);
+        setTextFieldFont(capacityTextField);
+        setTextFieldFont(ACTextField);
+        setTextFieldFont(fareTextField);
+        setTextFieldFont(licenseTextField);
+
+        editButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if(flag%2==0) {
                     flag++;
-                    btn1.setLabel("UPDATE");
+                    editButton.setText("UPDATE");
                     enableEdit();
                     return;
                 }
-                if(validateEntries()){
+                if(validEntries()){
                     dbInsert();
                     flag++;
                     disableEdit();
-                    btn1.setLabel("EDIT");
+                    editButton.setText("EDIT");
                     JOptionPane.showMessageDialog(null,"Updation success...");
                 }
             }
@@ -203,7 +211,7 @@ public class ViewProfile extends JPanel{
             }
         });
 
-        btn2.addMouseListener(new MouseListener() {
+        addCarButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 new CarTab();
@@ -229,7 +237,7 @@ public class ViewProfile extends JPanel{
 
             }
         });
-        btn3.addMouseListener(new MouseListener() {
+        changePasswordButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 new ChangePassword();
@@ -255,97 +263,306 @@ public class ViewProfile extends JPanel{
 
             }
         });
+
+        refreshButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                refreshOtherFields();
+                refreshCarFields();
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+
         //Adding lists
-        add(list1);
-        add(list2);
+        add(NationalityJComboBox);
+        add(carJComboBox);
         disableEdit();
 
         //Adding Labels
-        add(lbl1);
-        add(lbl2);
-        add(lbl3);
-        add(lbl4);
-        add(lbl5);
-        add(lbl6);
-        add(lbl7);
-        add(lbl8);
-        add(lbl9);
-        add(lbl10);
-        add(lbl11);
-        add(lbl13);
-        add(lbl14);
-        add(lbl15);
-        add(lbl16);
-        add(lbl17);
-        add(lbl18);
-        add(lbl19);
+        add(firstNameLabel);
+        add(lastNameLabel);
+        add(genderLabel);
+        add(dobLabel);
+        add(drivingExperienceLabel);
+        add(addressLabel);
+        add(cityLabel);
+        add(nationalityLabel);
+        add(mobileNumberLabel);
+        add(emailLabel);
+        add(driverLicenseLabel);
+        add(carIDLabel);
+        add(companyLabel);
+        add(modelLabel);
+        add(capacityLabel);
+        add(ACLabel);
+        add(FarePerKMLabel);
 
         //Adding txtfields
-        add(txtFld1);
-        add(txtFld2);
-        add(txtFld3);
-        add(txtFld4);
-        add(txtFld5);
-        add(txtFld6);
-        add(txtFld7);
-        add(txtFld8);
-        add(txtFld9);
-        add(txtFld12);
-        add(txtFld13);
-        add(txtFld14);
-        add(txtFld15);
-        add(txtFld16);
-        add(txtFld17);
+        add(firstNameTextField);
+        add(lastNameTextField);
+        add(DOBTextField);
+        add(drivingExpTextField);
+        add(addressTextField);
+        add(cityTextField);
+        add(mobileNoTextField);
+        add(emailTextField);
+        add(companyTextField);
+        add(modelTextField);
+        add(capacityTextField);
+        add(ACTextField);
+        add(fareTextField);
+        add(licenseTextField);
 
         //Adding Buttons
-        add(btn1);
-        add(btn2);
-        add(btn3);
+        add(editButton);
+        add(addCarButton);
+        add(changePasswordButton);
+        add(refreshButton);
 
         //Adding Radio Buttons
-        add(radBtn1);
-        add(radBtn2);
-        add(radBtn3);
+        add(maleJRadioButton);
+        add(femaleJRadioButton);
+        add(othersJRadioButton);
     }
 
-    public boolean validateEntries(){
-        //
+    public boolean validEntries(){
+        //FirstName
+        if(firstNameTextField.getText().equals("")){
+            JOptionPane.showMessageDialog(null,"Please enter your first name");
+            return false;
+        }
+        if( !TabServer.isValidName(firstNameTextField.getText())){
+            JOptionPane.showMessageDialog(null,"Invalid first Name");
+            return false;
+        }
+        //Last name
+        if(lastNameTextField.getText().equals("")){
+            JOptionPane.showMessageDialog(null,"Please enter your last name");
+            return false;
+        }
+        if(!TabServer.isValidName(lastNameTextField.getText())){
+            JOptionPane.showMessageDialog(null,"Invalid last Name");
+            return false;
+        }
+        //Gender
+        if(btnGrp1.getSelection()==null){
+            JOptionPane.showMessageDialog(null,"Please select gender");
+            return false;
+        }
+        //DOB
+        if(DOBTextField.getText().equals("")){
+            JOptionPane.showMessageDialog(null,"Please enter your DOB");
+            return false;
+        }
+        if(!TabServer.isValidDate(DOBTextField.getText())){
+            JOptionPane.showMessageDialog(null,"Please enter your DOB in format DD/MM/YYYY");
+            return false;
+        }
+        //Address
+        if(addressTextField.getText().equals("")){
+            JOptionPane.showMessageDialog(null,"Please enter your address");
+            return false;
+        }
+        if(addressTextField.getText().length()<10){
+            JOptionPane.showMessageDialog(null,"Please enter your proper address");
+            return false;
+        }
+        //City
+        if(cityTextField.getText().equals("")){
+            JOptionPane.showMessageDialog(null,"Please enter your city");
+            return false;
+        }
+        if(!TabServer.isValidName(cityTextField.getText())){
+            JOptionPane.showMessageDialog(null,"Please enter a  valid city name");
+            return false;
+        }
+        //Mobile number
+        if(mobileNoTextField.getText().equals("")){
+            JOptionPane.showMessageDialog(null,"Please enter your mobile number");
+            return false;
+        }
+        if(!TabServer.isValidNumber(mobileNoTextField.getText())){
+            JOptionPane.showMessageDialog(null,"Please enter a valid mobile number");
+            return false;
+        }
+        if(licenseTextField.getText().equals("")){
+            System.out.println(licenseTextField.getText());
+            JOptionPane.showMessageDialog(null,"Please enter your license ID");
+            return false;
+        }
+        if(!TabServer.isValidID(licenseTextField.getText())){
+            JOptionPane.showMessageDialog(null,"Please enter valid license ID");
+            return false;
+        }
         return true;
     }
     public boolean dbInsert(){
+        driverEmail=TabServer.driver.getEmail();
+        if(maleJRadioButton.isSelected()){
+            gender="male";
+        }
+        else if(femaleJRadioButton.isSelected()){
+            gender="female";
+        }
+        else{
+            gender="others";
+        }
+        try {
+            query = "update driver set fname='" + firstNameTextField.getText() + "'where email='" + driverEmail + "'";
+            TabServer.statement.executeQuery(query);
+            query="update driver set lname ='"+lastNameTextField.getText()+"' where email ='"+driverEmail+"'";
+            TabServer.statement.executeQuery(query);
+            query="update driver set gender ='"+gender+"' where email ='"+driverEmail+"'";
+            TabServer.statement.executeQuery(query);
+            date=DOBTextField.getText();
+            date=date.substring(6,10)+"-"+date.substring(3,5)+"-"+date.substring(0,2);
+            query="update driver set dob =TO_DATE('"+date+"','YYYY-MM-DD') where email ='"+driverEmail+"'";
+            TabServer.statement.executeQuery(query);
+            query="update driver set drivingexp ='"+Integer.parseInt(drivingExpTextField.getText())+"' where email ='"+driverEmail+"'";
+            TabServer.statement.executeQuery(query);
+            query="update driver set address ='"+addressTextField.getText()+"' where email ='"+driverEmail+"'";
+            TabServer.statement.executeQuery(query);
+            query="update driver set city ='"+cityTextField.getText()+"' where email ='"+driverEmail+"'";
+            TabServer.statement.executeQuery(query);
+            query="update driver set nationality ='"+NationalityJComboBox.getSelectedItem().toString()+"' where email ='"+driverEmail+"'";
+            TabServer.statement.executeQuery(query);
+            query="update driver set mobile ="+mobileNoTextField.getText()+" where email ='"+driverEmail+"'";
+            TabServer.statement.executeQuery(query);
+        }
+        catch(Exception e){
+            System.out.println("DB Inert()"+e);
+        }
         return true;
     }
     private boolean disableEdit(){
-        txtFld1.setEditable(false);
-        txtFld2.setEditable(false);
-        txtFld3.setEditable(false);
-        txtFld4.setEditable(false);
-        txtFld5.setEditable(false);
-        txtFld6.setEditable(false);
-        txtFld7.setEditable(false);
-        txtFld8.setEditable(false);
+        firstNameTextField.setEditable(false);
+        lastNameTextField.setEditable(false);
+        DOBTextField.setEditable(false);
+        drivingExpTextField.setEditable(false);
+        addressTextField.setEditable(false);
+        cityTextField.setEditable(false);
+        mobileNoTextField.setEditable(false);
+        emailTextField.setEditable(false);
         txtFld11.setEditable(false);
-        txtFld12.setEditable(false);
-        txtFld13.setEditable(false);
-        txtFld14.setEditable(false);
-        txtFld15.setEditable(false);
-        txtFld16.setEditable(false);
-        txtFld17.setEditable(false);
-        list1.setEditable(false);
+        companyTextField.setEditable(false);
+        modelTextField.setEditable(false);
+        capacityTextField.setEditable(false);
+        ACTextField.setEditable(false);
+        fareTextField.setEditable(false);
+        licenseTextField.setEditable(false);
+        NationalityJComboBox.setEnabled(false);
         return true;
     }
     private boolean enableEdit(){
-        txtFld1.setEditable(true);
-        txtFld2.setEditable(true);
-        txtFld3.setEditable(true);
-        txtFld4.setEditable(true);
-        txtFld5.setEditable(true);
-        txtFld6.setEditable(true);
-        txtFld7.setEditable(true);
-        txtFld8.setEditable(true);
+        firstNameTextField.setEditable(true);
+        lastNameTextField.setEditable(true);
+        DOBTextField.setEditable(true);
+        drivingExpTextField.setEditable(true);
+        addressTextField.setEditable(true);
+        cityTextField.setEditable(true);
+        mobileNoTextField.setEditable(true);
         txtFld11.setEditable(true);
-        list1.setEditable(false);
+        NationalityJComboBox.setEditable(false);
         return true;
     }
+    public boolean refreshCarFields(){
+        try {
+            currentCarId=TabServer.driver.getCarID();
+            //Adding all cars owned by driver to TabServer.driver
+            query="select * from car where owneremail ='"+TabServer.driver.getEmail()+"'";
+            resultSet=TabServer.statement.executeQuery(query);
+            TabServer.driver.setCars(new ArrayList<>());
+            while(resultSet.next()){
+                car=new Car();
+                car.setCarID(resultSet.getString(2));
+                car.setOwnerEmail(resultSet.getString(1));
+                car.setCompany(resultSet.getString(3));
+                car.setModel(resultSet.getString(4));
+                car.setCapacity(resultSet.getInt(5));
+                car.setAC(resultSet.getString(6));
+                car.setFarePerKM(resultSet.getInt(7));
+                TabServer.driver.getCars().add(car);
+            }
 
+            //Updating carId jcombobox
+            carJComboBox.removeAllItems();
+            for(Car car:TabServer.driver.getCars()){
+                carJComboBox.addItem(car.getCarID());
+            }
+
+            //Updating fields in the tab
+            query="select * from car where carid='"+currentCarId+"'";
+            resultSet = TabServer.statement.executeQuery(query);
+            resultSet.next();
+            carJComboBox.setSelectedItem(currentCarId);
+            companyTextField.setText(resultSet.getString(3));
+            modelTextField.setText(resultSet.getString(4));
+            capacityTextField.setText(((Integer)resultSet.getInt(5)).toString());
+            ACTextField.setText(resultSet.getString(6));
+            fareTextField.setText(resultSet.getString(7));
+        }
+        catch(Exception e){
+            System.out.println("refreshCarFields()"+e);
+        }
+        return true;
+    }
+    public boolean refreshOtherFields(){
+        query="select * from driver where email ='"+TabServer.driver.getEmail()+"'";
+        try{
+            resultSet=TabServer.statement.executeQuery(query);
+            resultSet.next();
+            firstNameTextField.setText(resultSet.getString(1));
+            lastNameTextField.setText(resultSet.getString(2));
+            gender=resultSet.getString(4);
+            if(gender.substring(0,4).equals("male")){
+                maleJRadioButton.setSelected(true);
+            }
+            else if(resultSet.getString(4).substring(0,6).equals("female")){
+                femaleJRadioButton.setSelected(true);
+            }
+            else{
+                othersJRadioButton.setSelected(true);
+            }
+            DOBTextField.setText(resultSet.getString(5).substring(0,10));
+            drivingExpTextField.setText(resultSet.getString(8));
+            addressTextField.setText(resultSet.getString(7));
+            cityTextField.setText(resultSet.getString(6));
+            NationalityJComboBox.setSelectedItem(resultSet.getString(10).substring(0,resultSet.getString(10).length()/6));
+            mobileNoTextField.setText(resultSet.getString(11));
+            emailTextField.setText(resultSet.getString(12));
+            licenseTextField.setText(resultSet.getString(9));
+            TabServer.driver.setCarID(carJComboBox.getSelectedItem().toString());
+        }
+        catch (Exception e){
+            System.out.println("refreshOtherFields()"+e);
+        }
+        return true;
+    }
+    public boolean setButtonFont(JButton button){
+        button.setFont(TabServer.font);
+        return true;
+    }
+    public boolean setTextFieldFont(JTextField button){
+        button.setFont(TabServer.font);
+        return true;
+    }
 }

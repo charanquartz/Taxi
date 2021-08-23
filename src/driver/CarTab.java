@@ -1,11 +1,17 @@
 package driver;
+import javafx.scene.control.Tab;
+
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
-public class CarTab extends Frame{
-    Label lbl1,lbl2,lbl3,lbl4,lbl5,lbl6;
-    JTextField txtFld1,txtFld2,txtFld3,txtFld4,txtFld5,txtFld6;
-    JButton btn1;
+import java.sql.*;
+public class CarTab extends JFrame{
+    private Label carIDLabel, companyLabel, modelLabel, capacityLabel, ACLabel, fareLabel;
+    private JTextField carIDTextField, companyTextField, modelTextField, capacityTextField, ACTextField, fareTextField;
+    private JButton addButton;
+    private String query;
+    private ResultSet resultSet;
+    private Car car;
     CarTab(){
         setBackground(new Color(3, 252, 240));
         setBounds(0,0,1900,1000);
@@ -13,61 +19,63 @@ public class CarTab extends Frame{
         setLayout(null);
 
         //Label
-        lbl1=new Label("Car ID : ");
-        lbl2=new Label("Company : ");
-        lbl3=new Label("Model : ");
-        lbl4=new Label("Capacity : ");
-        lbl5=new Label("AC : ");
-        lbl6=new Label("Fare/KM: ");
+        carIDLabel =new Label("Car ID : ");
+        companyLabel =new Label("Company : ");
+        modelLabel =new Label("Model : ");
+        capacityLabel =new Label("Capacity : ");
+        ACLabel =new Label("AC : ");
+        fareLabel =new Label("Fare/KM: ");
 
         //TextField
-        txtFld1=new JTextField();
-        txtFld2=new JTextField();
-        txtFld3=new JTextField();
-        txtFld4=new JTextField();
-        txtFld5=new JTextField();
-        txtFld6=new JTextField();
+        carIDTextField =new JTextField();
+        companyTextField =new JTextField();
+        modelTextField =new JTextField();
+        capacityTextField =new JTextField();
+        ACTextField =new JTextField();
+        fareTextField =new JTextField();
 
         //Button
-        btn1=new JButton("ADD");
+        addButton =new JButton("ADD");
 
         //set bounds for label
-        lbl1.setBounds(20,50,250,60);
-        lbl2.setBounds(20,120,250,60);
-        lbl3.setBounds(20,190,250,60);
-        lbl4.setBounds(20,260,250,60);
-        lbl5.setBounds(20,330,250,60);
-        lbl6.setBounds(20,400,250,60);
+        carIDLabel.setBounds(20,50,250,60);
+        companyLabel.setBounds(20,120,250,60);
+        modelLabel.setBounds(20,190,250,60);
+        capacityLabel.setBounds(20,260,250,60);
+        ACLabel.setBounds(20,330,250,60);
+        fareLabel.setBounds(20,400,250,60);
 
         //Set Bounds for textFields
-        txtFld1.setBounds(280,50,250,60);
-        txtFld2.setBounds(280,120,250,60);
-        txtFld3.setBounds(280,190,250,60);
-        txtFld4.setBounds(280,260,250,60);
-        txtFld5.setBounds(280,330,250,60);
-        txtFld6.setBounds(280,400,250,60);
+        carIDTextField.setBounds(280,50,250,60);
+        companyTextField.setBounds(280,120,250,60);
+        modelTextField.setBounds(280,190,250,60);
+        capacityTextField.setBounds(280,260,250,60);
+        ACTextField.setBounds(280,330,250,60);
+        fareTextField.setBounds(280,400,250,60);
 
         //set bounds
-        btn1.setBounds(280,470,250,60);
+        addButton.setBounds(280,470,250,60);
 
         //Adding Labels
-        add(lbl1);
-        add(lbl2);
-        add(lbl3);
-        add(lbl4);
-        add(lbl5);
-        add(lbl6);
+        add(carIDLabel);
+        add(companyLabel);
+        add(modelLabel);
+        add(capacityLabel);
+        add(ACLabel);
+        add(fareLabel);
+
+        car=new Car();
 
         //Adding labels
-        add(txtFld1);
-        add(txtFld2);
-        add(txtFld3);
-        add(txtFld4);
-        add(txtFld5);
-        add(txtFld6);
+        add(carIDTextField);
+        add(companyTextField);
+        add(modelTextField);
+        add(capacityTextField);
+        add(ACTextField);
+        add(fareTextField);
 
         //Adding buttons
-        add(btn1);
+        add(addButton);
 
         //Window listener
         addWindowListener(new WindowAdapter() {
@@ -77,12 +85,16 @@ public class CarTab extends Frame{
             }
         });
 
-        btn1.addMouseListener(new MouseListener(){
+        addButton.addMouseListener(new MouseListener(){
             @Override
             public void mouseClicked(MouseEvent e) {
                 if(validData()){
                     if(!alreadyPresent()){
+                        insertCar();
                         JOptionPane.showMessageDialog(null,"Car added successfully....");
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(null,"Car already added...");
                     }
                 }
             }
@@ -110,9 +122,80 @@ public class CarTab extends Frame{
         setVisible(true);
     }
     public boolean validData(){
+        //Car ID
+        if(carIDTextField.getText().equals("")){
+            JOptionPane.showMessageDialog(null,"Please enter your Car ID");
+            return false;
+        }
+        if(!TabServer.isValidID(carIDTextField.getText()) ){
+            JOptionPane.showMessageDialog(null,"Please enter valid car ID");
+            return false;
+        }
+        car.setCarID(carIDTextField.getText());
+        //Company
+        if(companyTextField.getText().equals("")){
+            JOptionPane.showMessageDialog(null,"Please enter the company name of your car");
+            return false;
+        }
+        if(!TabServer.isValidName(companyTextField.getText())){
+            JOptionPane.showMessageDialog(null,"Please enter a valid company name");
+            return false;
+        }
+        car.setCompany(companyTextField.getText());
+        //Model
+        if(modelTextField.getText().equals("")){
+            JOptionPane.showMessageDialog(null,"Please enter the model name of your car");
+            return false;
+        }
+        if(!TabServer.isValidID(modelTextField.getText())){
+            JOptionPane.showMessageDialog(null,"Please enter a valid model name");
+            return false;
+        }
+        car.setModel(modelTextField.getText());
+        //Capacity
+        if(capacityTextField.getText().equals("")){
+            JOptionPane.showMessageDialog(null,"Please enter your car's capacity");
+            return false;
+        }
+        if(!TabServer.isValidNumber(capacityTextField.getText())){
+            JOptionPane.showMessageDialog(null,"Please enter valid capacity of your car");
+            return false;
+        }
+        car.setCapacity(Integer.parseInt(capacityTextField.getText()));
+        //Fare
+        if(fareTextField.getText().equals("")){
+            JOptionPane.showMessageDialog(null,"Please enter your car's fare per KM");
+            return false;
+        }
+        if(!TabServer.isValidNumber(fareTextField.getText())){
+            JOptionPane.showMessageDialog(null,"Please enter valid fare for your car");
+            return false;
+        }
+        car.setFarePerKM(Integer.parseInt(fareTextField.getText()));
+        car.setAC(ACTextField.getText());
         return true;
     }
     public boolean alreadyPresent(){
+        query="select * from car where carid='"+carIDTextField.getText()+"'";
+        try {
+            resultSet = TabServer.statement.executeQuery(query);
+            if(resultSet.next()){
+                return true;
+            }
+        }
+        catch(Exception e){
+            System.out.println("alreadyPresent()"+e);
+        }
         return false;
+    }
+    public boolean insertCar(){
+        try{
+            query="insert into car values('"+TabServer.driver.getEmail()+"','"+car.getCarID()+"','"+car.getCompany()+"','"+car.getModel()+"',"+car.getCapacity()+",'"+car.getAC()+"',"+car.getFarePerKM()+")";
+            TabServer.statement.executeQuery(query);
+        }
+        catch(Exception e){
+            System.out.println("InsertCar()"+e);
+        }
+        return true;
     }
 }

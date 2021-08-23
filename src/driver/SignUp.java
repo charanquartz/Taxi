@@ -23,7 +23,7 @@ public class SignUp extends JPanel{
     Border bdr=BorderFactory.createLineBorder(Color.BLACK,5);
     SignUp(){
         f=new Font("Times New Roman",Font.BOLD,19);
-        setBackground(new Color(3, 252, 240));
+        setBackground(new Color(255, 167, 88));
         setBounds(0,0,2000,1900);
         setFont(new Font("Times New Roman",Font.BOLD,19));
         setVisible(true);
@@ -563,52 +563,9 @@ public class SignUp extends JPanel{
 
     //Funcion to send OTP to the email after submit...
     public void sendOTP(int num){
-        final String username = "19eucs076@skcet.ac.in";
-        final String password = "krishna123";
-
-        final String from = "19eucs076@skcet.ac.in";
-        final String to = txtFld8.getText();
-
-        Properties props = new Properties();
-
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.socketFactory.port", "465");
-        props.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.port", "465");
-
-
-
-
-        Authenticator a =new Authenticator() {
-
-            @Override
-            protected PasswordAuthentication getPasswordAuthentication() {
-
-                return new PasswordAuthentication(username, password);
-
-            }
-
-        };
-
-        Session session = Session.getInstance(props, a);
-
-        try {
-
-            Message message = new MimeMessage(session);
-
-            message.setFrom(new InternetAddress(from));
-
-            message.setRecipients(Message.RecipientType.TO,InternetAddress.parse(to));
-            message.setSubject("Registration Confirmation!!!");
-            message.setText("Your OTP for taxi driver registration is : "+num);
-
-            Transport.send(message);
-
-        } catch (MessagingException e) {
-            System.out.println(e);
-        }
+        TabServer.sendMail("Registration Confirmation!!!","Your OTP for taxi driver registration is : "+num,txtFld8.getText());
     }
+
     //Function for generating random number....
     private int generateRandomNumber(){
         long num=0;
