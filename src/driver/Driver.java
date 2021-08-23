@@ -4,9 +4,12 @@ public class Driver {
     private String fname,lname,carID,gender,nationality,city,address,email,pass,approved,availability,licenseId;
     private Date dob;
     private int portNUmber;
-    private ArrayList<Car> cars=new ArrayList<>();
+    private ArrayList<Car> cars;
     private long mobile,driverExp,xp;
 
+    Driver(){
+        cars=new ArrayList<>();
+    }
     public ArrayList<Car> getCars() {
         return cars;
     }

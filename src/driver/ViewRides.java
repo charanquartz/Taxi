@@ -33,17 +33,17 @@ public class ViewRides extends JPanel{
         currentRideLabel.setBounds(0,0,200,60);
         add(currentRideLabel);
         ridesAvailable=new Label("Rides available : ");
-        ridesAvailable.setBounds(0,280,200,60);
+        ridesAvailable.setBounds(0,220,200,60);
         add(ridesAvailable);
 
         //Table
         arr=new Object[][]{{"-","-","-","-","-","-"}};
         currentRideTable =new JTable(arr,new Object[]{"Customer email","Number of pasengers","Pickup place","Destination place","Kilometers at pickup","Customer mobile number"});
         currentRideTableScrollPane =new JScrollPane(currentRideTable);
-        currentRideTableScrollPane.setBounds(0,70,1800,130);
+        currentRideTableScrollPane.setBounds(0,70,1800,70);
         currentRideTable.setEnabled(false);
-        currentRideTable.setRowHeight(100);
-        currentRideTable.setBorder(bdr);
+        currentRideTable.setRowHeight(60);
+        //currentRideTable.setBorder(bdr);
         currentRideTable.setFont(new Font("Times new roman",Font.BOLD,19));
         currentRideTableScrollPane.setBorder(bdr);
         add(currentRideTableScrollPane);
@@ -64,8 +64,8 @@ public class ViewRides extends JPanel{
         //Adding buttons
         add(changingButton);
         //add(chatButton);
-        changingButton.setBounds(0,210,200,60);
-        chatButton.setBounds(210,210,200,60);
+        changingButton.setBounds(0,150,200,60);
+        chatButton.setBounds(210,150,200,60);
 
         disableButton(changingButton);
         disableButton(chatButton);
@@ -165,12 +165,12 @@ public class ViewRides extends JPanel{
                 index++;
             }
             availableRidesTable =new JTable(arr,new Object[]{"S.No","Customer email","Number of pasengers","Pickup place","Destination place"});
-            availableRidesTable.setBorder(bdr);
+            //availableRidesTable.setBorder(bdr);
             availableRidesTable.setEnabled(false);
             availableRidesTable.setRowHeight(60);
             availableRidesTable.setFont(new Font("Times New Roman",Font.BOLD,19));
             availabletableJScrollPane =new JScrollPane(availableRidesTable);
-            availabletableJScrollPane.setBounds(0,350,1500,600);
+            availabletableJScrollPane.setBounds(0,290,1500,600);
             availabletableJScrollPane.setBorder(bdr);
 
             //Customizing scroll pane

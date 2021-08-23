@@ -20,6 +20,8 @@ public class TabServer extends JFrame{
     static Driver driver;
     static ArrayList<Car> cars;
     static Connection connection;
+    static Statement statement;
+    static Font font=new Font("Times new roman",Font.BOLD,19);
     public TabServer() throws Exception{
         setBackground(new Color(35, 176, 212));
         setTitle("DRIVER'S HOME");
@@ -27,12 +29,13 @@ public class TabServer extends JFrame{
         setBounds(0,0,1900,1000);
         setVisible(true);
         setLayout(new BorderLayout());
-        setFont(new Font("Times new roman",Font.BOLD,18));
+        setFont(font);
         add(tabs,BorderLayout.CENTER);
 
         //Establishing connection to db
        connection=DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:XE","madhi","java");
        connection.setAutoCommit(true);
+       statement= connection.createStatement();
 
         login=new Login();
         signup=new SignUp();
@@ -120,10 +123,10 @@ public class TabServer extends JFrame{
         return true;
     }
     public static boolean sendMail(String subject,String text,String email){
-        final String username = "19eucs076@skcet.ac.in";
-        final String password = "krishna123";
+        final String username = "taxi.booking.service.java@gmail.com";
+        final String password = "projectcab";
 
-        final String from = "19eucs076@skcet.ac.in";
+        final String from = "taxi.booking.service.java@gmail.com";
         final String to = email;
 
         Properties props = new Properties();

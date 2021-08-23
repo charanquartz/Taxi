@@ -120,6 +120,7 @@ public class Login extends JPanel{
                     JOptionPane.showMessageDialog(null,"User not approved by admin...");
                     return false;
                 }
+
                 JOptionPane.showMessageDialog(null,"Login success...");
                 TabServer.enableFeedback();
                 TabServer.enableViewProfile();
@@ -156,7 +157,7 @@ public class Login extends JPanel{
         try {
             rs = statement.executeQuery(query);
             rs.next();
-            return rs.getString(1).equals("true");
+            return rs.getString(1).substring(0,4).equals("true");
         }
         catch(Exception e){
             System.out.println("isApproved"+e);
