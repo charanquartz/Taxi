@@ -47,9 +47,9 @@ public class TabServer extends JFrame{
         tabs.addTab("VIEW RIDES",viewRide);
         tabs.addTab("VIEW PROFILE",update);
         tabs.addTab("PROVIDE FEEDBACK",feedback);
-//        tabs.setEnabledAt(2,false);
-//        tabs.setEnabledAt(3,false);
-//        tabs.setEnabledAt(4,false);
+        tabs.setEnabledAt(2,false);
+        tabs.setEnabledAt(3,false);
+        tabs.setEnabledAt(4,false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         add(tabs);
@@ -73,7 +73,7 @@ public class TabServer extends JFrame{
         return true;
     }
     static public boolean isValidDate(String txt){
-        pattern=Pattern.compile("^(0?[1-9]|[12][0-9]|3[01])[\\/\\-](0?[1-9]|1[012])[\\/\\-]\\d{4}$");
+        pattern=Pattern.compile("\\d{4}-\\d{2}-\\d{2}");
         matcher=pattern.matcher(txt);
         return matcher.matches();
     }
