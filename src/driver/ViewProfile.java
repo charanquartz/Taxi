@@ -374,7 +374,7 @@ public class ViewProfile extends JPanel{
             return false;
         }
         if(!TabServer.isValidDate(DOBTextField.getText())){
-            JOptionPane.showMessageDialog(null,"Please enter your DOB in format DD/MM/YYYY");
+            JOptionPane.showMessageDialog(null,"Please enter your DOB in format YYYY-MM-DD");
             return false;
         }
         //Address

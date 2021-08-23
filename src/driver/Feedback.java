@@ -1,13 +1,20 @@
 package driver;
 import javax.swing.*;
 import javax.swing.border.Border;
-import java.awt.Event.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.sql.ResultSet;
+
 public class Feedback extends JPanel{
-    Label lbl1;
-    JTextArea txtAr1;
-    JButton btn1;
-    Border bdr;
+    private final Label FeedbackLabel,ratingLabel;
+    private final JTextArea feedBackTextArea;
+    private final JComboBox<Object> ratingComboBox;
+    private final Object[] arr=new Object[]{"Select",1,2,3,4,5};
+    private final JButton submitButton;
+    private int count,ratings;
+    private String query;
+    private ResultSet resultSet;
     Feedback(){
         setBounds(0,0,1900,1000);
         setVisible(true);
@@ -15,20 +22,99 @@ public class Feedback extends JPanel{
         setLayout(null);
         setBackground(new Color(255, 167, 88));
 
-        lbl1=new Label("Enter your feedback : ");
-        txtAr1=new JTextArea();
-        btn1=new JButton("Submit");
+        //Label
+        FeedbackLabel=new Label("Enter your feedback : ");
+        ratingLabel=new Label("Rate us : ");
 
-        lbl1.setBounds(10,10,250,60);
-        txtAr1.setBounds(10,80,1000,500);
+        //Button
+        submitButton =new JButton("Submit");
 
-        btn1.setBounds(750,590,250,60);
-        bdr=BorderFactory.createLineBorder(Color.BLACK,5);
-        txtAr1.setBorder(bdr);
-        btn1.setBorder(bdr);
+        //TextArea
+        feedBackTextArea =new JTextArea();
 
-        add(lbl1);
-        add(txtAr1);
-        add(btn1);
+        //JComboBox
+        ratingComboBox=new JComboBox<>(arr);
+
+        //SetBounds label
+        FeedbackLabel.setBounds(10,10,250,60);
+        ratingLabel.setBounds(10,590,250,60);
+
+        //SetBounds textArea
+        feedBackTextArea.setBounds(10,80,1000,500);
+
+        //setBounds button
+        submitButton.setBounds(10,660,250,60);
+
+        //SetBounds JcomboBox
+        ratingComboBox.setBounds(150,590,250,60);
+
+        //set border
+        feedBackTextArea.setBorder(TabServer.bdr);
+        submitButton.setBorder(TabServer.bdr);
+
+        //MouseEvent for button
+        submitButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(feedBackTextArea.getText().equals("")){
+                    JOptionPane.showMessageDialog(null,"Please enter some feedback before submitting");
+                    return;
+                }
+                dbInsert();
+                JOptionPane.showMessageDialog(null,"Thanks for your feedback");
+                ratingComboBox.setSelectedItem(ratingComboBox.getItemAt(0));
+                feedBackTextArea.setText("");
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+
+        //add components to panel
+        add(FeedbackLabel);
+        add(feedBackTextArea);
+        add(submitButton);
+        add(ratingComboBox);
+        add(ratingLabel);
+    }
+    public boolean dbInsert(){
+        try {
+            //To find number of entries in driver feedback...
+            query="select count(email) from driverFeedback ";
+            resultSet = TabServer.statement.executeQuery(query);
+            resultSet.next();
+            count=resultSet.getInt(1)+1;
+
+            if(ratingComboBox.getSelectedIndex()==0){
+                ratings=-1;
+            }
+            else{
+                ratings=ratingComboBox.getSelectedIndex();
+            }
+            //Entering into query
+            query="insert into driverFeedback values("+count+",'"+TabServer.driver.getEmail()+"','"+feedBackTextArea.getText()+"',"+ratings+")";
+            TabServer.statement.executeQuery(query);
+        }
+        catch(Exception e){
+            System.out.println("dbInsert()"+e);
+        }
+        return true;
     }
 }

@@ -368,7 +368,7 @@ public class SignUp extends JPanel{
             return false;
         }
         if(!TabServer.isValidDate(txtFld3.getText())){
-            JOptionPane.showMessageDialog(null,"Please enter your DOB in format DD/MM/YYYY");
+            JOptionPane.showMessageDialog(null,"Please enter your DOB in format YYYY-MM-DD");
             return false;
         }
         //Driving Experience

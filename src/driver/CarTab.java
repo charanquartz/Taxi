@@ -10,7 +10,7 @@ public class CarTab extends JFrame{
     private JTextField carIDTextField, companyTextField, modelTextField, capacityTextField, ACTextField, fareTextField;
     private JButton addButton;
     private String query;
-    private ResultSet resultSet;
+    private ResultSet resultSet ;
     private Car car;
     CarTab(){
         setBackground(new Color(3, 252, 240));
