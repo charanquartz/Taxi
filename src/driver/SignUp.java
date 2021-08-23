@@ -529,7 +529,6 @@ public class SignUp extends JPanel{
     public boolean dbInsert(){
         try{
             String gender,date=txtFld3.getText();
-            date=date.substring(6,10)+"-"+date.substring(3,5)+"-"+date.substring(0,2);
             if(radBtn1.isSelected()){
                 gender="male";
             }
@@ -541,7 +540,7 @@ public class SignUp extends JPanel{
             }
             PreparedStatement statement;
             query="insert into driver values('"+txtFld1.getText()+"','"+txtFld2.getText()+"','"+txtFld11.getText()+"','"+gender+"',TO_DATE('"+date+"','YYYY-MM-DD')"+",'"+txtFld6.getText()+"','"+txtFld5.getText()+"',"+Integer.parseInt(txtFld4.getText())+",'"+txtFld17.getText()+"','"+list1.getItemAt(list1.getSelectedIndex())+"',"+Long.parseLong(txtFld7.getText())+",'"+txtFld8.getText()+"','"+txtFld9.getText()+"','false','false',0)";
-            System.out.println(query);Statement statement1=TabServer.connection.createStatement();
+            Statement statement1=TabServer.connection.createStatement();
             statement1.executeQuery(query);
 
             statement=TabServer.connection.prepareStatement("insert into car values(?,?,?,?,?,?,?)");
