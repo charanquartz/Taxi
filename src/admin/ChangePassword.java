@@ -1,14 +1,13 @@
-package driver;
+package admin;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-
-public class ChangePassword extends Frame implements WindowListener{
-    TextField oldPasswordTextField, newPasswordTextField, confirmPasswordTextField;
+public class ChangePassword extends JPanel{
+    JTextField oldPasswordTextField, newPasswordTextField, confirmPasswordTextField;
     Label oldPasswordLabel, newPasswordLabel, confirmPasswordLabel;
-    Button changePasswordButton;
-    String s;
+    JButton changePasswordButton;
+    String query;
     ChangePassword(){
         setBackground(new Color(3, 252, 240));
         setBounds(10,10,1000,1000);
@@ -17,31 +16,29 @@ public class ChangePassword extends Frame implements WindowListener{
         oldPasswordLabel =new Label("Old Password : ");
         newPasswordLabel =new Label("New Password : ");
         confirmPasswordLabel =new Label("Confirm Password : ");
-        oldPasswordTextField =new TextField();
-        newPasswordTextField =new TextField();
-        confirmPasswordTextField =new TextField();
+        oldPasswordTextField =new JTextField();
+        newPasswordTextField =new JTextField();
+        confirmPasswordTextField =new JTextField();
 
-        oldPasswordLabel.setBounds(20,50,180,50);
-        newPasswordLabel.setBounds(20,100,180,50);
-        confirmPasswordLabel.setBounds(20,150,180,50);
-        oldPasswordTextField.setEchoChar('*');
-        newPasswordTextField.setEchoChar('*');
-        confirmPasswordTextField.setEchoChar('*');
+        oldPasswordLabel.setBounds(0,20,180,60);
+        newPasswordLabel.setBounds(0,90,180,60);
+        confirmPasswordLabel.setBounds(0,160,180,60);
 
-        oldPasswordTextField.setBounds(200,50,180,50);
-        newPasswordTextField.setBounds(200,100,180,50);
-        confirmPasswordTextField.setBounds(200,150,180,50);
+        oldPasswordTextField.setBounds(190,20,180,60);
+        newPasswordTextField.setBounds(190,90,180,60);
+        confirmPasswordTextField.setBounds(190,160,180,60);
 
-        changePasswordButton =new Button("Change");
-        changePasswordButton.setBounds(200,200,180,50);
+        changePasswordButton =new JButton("Change");
+        changePasswordButton.setBounds(190,230,180,60);
         changePasswordButton.addMouseListener(new MouseListener(){
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(TabServer.driver.getPass().equals(oldPasswordTextField.getText())){
+                if(TabServer.admin.getPassword().equals(oldPasswordTextField.getText())){
                     if(TabServer.isValidPassword(newPasswordTextField.getText())){
                         if(newPasswordTextField.getText().equals(confirmPasswordTextField.getText())){
-                            TabServer.driver.setPass(confirmPasswordTextField.getText());
+                            TabServer.admin.setPassword(confirmPasswordTextField.getText());
                             clear();
+                            dbUpdate();
                         }
                         else{
                             JOptionPane.showMessageDialog(null,"Passwords do no match");
@@ -84,46 +81,20 @@ public class ChangePassword extends Frame implements WindowListener{
         add(confirmPasswordTextField);
         add(confirmPasswordLabel);
         setVisible(true);
-        addWindowListener(this);
-    }
-
-    @Override
-    public void windowOpened(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowClosing(WindowEvent e) {
-        dispose();
-    }
-
-    @Override
-    public void windowClosed(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowIconified(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowDeiconified(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowActivated(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowDeactivated(WindowEvent e) {
-
     }
     public void clear(){
         oldPasswordTextField.setText("");
         newPasswordTextField.setText("");
         confirmPasswordTextField.setText("");
+    }
+    public boolean dbUpdate(){
+        query="update admin set password='"+TabServer.admin.getPassword()+"' where email='"+TabServer.admin.getEmail()+"'";
+        try {
+            TabServer.statement.executeQuery(query);
+        }
+        catch(Exception e){
+            System.out.println("dbUpdate"+e);
+        }
+        return true;
     }
 }

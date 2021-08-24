@@ -55,7 +55,7 @@ public class Login extends JPanel{
         pwdFld1.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                login(txtFld1.getText(),txtFld2.getText());
+                login(txtFld1.getText(),pwdFld1.getText());
             }
         });
         btn1.setBounds(260,160,250,60);

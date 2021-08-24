@@ -241,7 +241,6 @@ public class ViewRides extends JPanel{
             currentRide.setDestination(resultSet.getString(4));
             currentRide.setDriverAssigned("true");
             currentRide.setOtp(currentRideOTP);
-
             //Updating driver assigned to the ride
             query="update ride set driverassigned='true' where otp="+currentRideOTP;
             statement=TabServer.connection.createStatement();
@@ -267,8 +266,7 @@ public class ViewRides extends JPanel{
             TabServer.sendMail("Drive request approved","Your ride has been accepted by a driver.\nDriver name : "+TabServer.driver.getFname()+"\nDriver mobile number : "+TabServer.driver.getMobile(),currentRide.getCustomerEmail());
         }
         catch(Exception e){
-            System.out.println("Accepted ride");
-            System.out.println(e);
+            System.out.println("Accept ride() "+e);
         }
         return true;
     }
@@ -357,7 +355,8 @@ public class ViewRides extends JPanel{
             query ="select driverassigned from ride where otp="+otp;
             statement=TabServer.connection.createStatement();
             resultSet=statement.executeQuery(query);
-            if(resultSet.getString(2)=="true"){
+            resultSet.next();
+            if(resultSet.getString(1).equals("true")){
                 return true;
             }
         }

@@ -447,9 +447,11 @@ public class ViewProfile extends JPanel{
             TabServer.statement.executeQuery(query);
             query="update driver set mobile ="+mobileNoTextField.getText()+" where email ='"+driverEmail+"'";
             TabServer.statement.executeQuery(query);
+            query="update driver set passwword ='"+TabServer.driver.getPass()+"' where email='"+driverEmail+"'";
+            TabServer.statement.executeUpdate(query);
         }
         catch(Exception e){
-            System.out.println("DB Inert()"+e);
+            System.out.println("DB Insert()"+e);
         }
         return true;
     }
