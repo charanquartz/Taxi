@@ -254,7 +254,7 @@ public class signup extends JFrame implements ActionListener {
 	                 Statement stmt=con.createStatement();
 	                
 	                
-	                String query="insert into signup values('"+txtFld1.getText()+"','"+txtFld2.getText()+"','"+txtFld2.getText()+"','"+txtFld4.getText()+"','"+str_gender+"','"+jcSta+"','"+txtFld5.getText()+"')";
+	                String query="insert into signup values('"+txtFld1.getText()+"','"+txtFld2.getText()+"','"+txtFld3.getText()+"','"+txtFld4.getText()+"','"+str_gender+"','"+jcSta+"','"+txtFld5.getText()+"')";
 	                 stmt.executeUpdate(query);
 	                 con.setAutoCommit(true);
 	                 JOptionPane.showMessageDialog(this, "Registration Success!");
