@@ -2,11 +2,14 @@ package admin;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import java.sql.*;
 public class Login extends JPanel{
-    TextField txtFld1;
+    JTextField txtFld1;
     JPasswordField passwordTextField;
     Label lbl1,lbl2,lbl3;
-    Button btn1;
+    JButton btn1;
+    String query;
+    ResultSet resultSet;
     public Login(){
         setBackground(new Color(3, 252, 240));
         setLayout(null);
@@ -20,11 +23,11 @@ public class Login extends JPanel{
         lbl3=new Label("Forgot password");
 
         //TextField
-        txtFld1=new TextField();
+        txtFld1=new JTextField();
         passwordTextField =new JPasswordField();
 
         //Button
-        btn1=new Button("LOGIN");
+        btn1=new JButton("LOGIN");
 
         lbl1.setBounds(10,10,250,70);
         lbl2.setBounds(10,80,250,70);
@@ -35,6 +38,10 @@ public class Login extends JPanel{
         passwordTextField.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
+                if(!TabServer.tabs.isEnabledAt(0)){
+                    JOptionPane.showMessageDialog(null,"Already logged in...");
+                    return;
+                }
                 login(txtFld1.getText(), passwordTextField.getText());
             }
         });
@@ -43,6 +50,10 @@ public class Login extends JPanel{
         btn1.addMouseListener(new MouseListener(){
             @Override
             public void mouseClicked(MouseEvent e) {
+                if(!TabServer.tabs.isEnabledAt(0)){
+                    JOptionPane.showMessageDialog(null,"Already logged in...");
+                    return;
+                }
                 login(txtFld1.getText(), passwordTextField.getText());
             }
 
@@ -73,7 +84,30 @@ public class Login extends JPanel{
         add(passwordTextField);
         add(btn1);
     }
-    public boolean login(String username,String password){
+    public boolean login(String email,String password){
+        query="select * from admin where email='"+email+"'";
+        try {
+            resultSet=TabServer.statement.executeQuery(query);
+            if(!resultSet.next()){
+                JOptionPane.showMessageDialog(null,"Please enter correct email");
+                return false;
+            }
+            if(!resultSet.getString(2).equals(password)){
+                JOptionPane.showMessageDialog(null,"Please enter correct password...");
+                return false;
+            }
+            JOptionPane.showMessageDialog(null,"Login success...");
+            TabServer.tabs.setEnabledAt(1,true);
+            TabServer.tabs.setEnabledAt(2,true);
+            TabServer.tabs.setEnabledAt(3,true);
+            TabServer.tabs.setEnabledAt(4,true);
+            TabServer.tabs.setEnabledAt(0,false);
+            TabServer.admin.setEmail(txtFld1.getText());
+            TabServer.admin.setPassword(passwordTextField.getText());
+        }
+        catch(Exception e){
+            System.out.println("login()"+e);
+        }
         return true;
     }
 }
