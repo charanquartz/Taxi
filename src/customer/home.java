@@ -9,6 +9,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -108,7 +113,29 @@ public class home extends JFrame implements ActionListener {
 	    	 jb oj = new jb();
 	    	 oj.setMob(txtFld1.getText().toString());
 	    	 oj.setPass(txtFld2.getText().toString());
-	    	 
+	    	 String pass = oj.getPass();
+	    	 Long mob = oj.getMob();
+	    	 try{
+	    		 Class.forName("oracle.jdbc.driver.OracleDriver");
+                 Connection con=DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:XE","test","sql");
+                 String query="select mob from std1 where pass=?"; 
+                 PreparedStatement pstmt = con.prepareStatement(query);
+                 pstmt.setString(1,pass);
+                 ResultSet rst=pstmt.executeQuery();
+                 if(rst.next()) {
+                	 if(mob.equals(rst.getString("mob"))) {
+                		 
+                	 }
+                	 else {
+                		 JOptionPane.showMessageDialog(null,"Mobile Number or Password wrong");
+                	 }
+                 }
+                 
+                 
+	    	 }
+	    	 catch(Exception ex){
+	                JOptionPane.showMessageDialog(this, ex.toString());
+	            }
 	    	 
 	     }
 	     if(obj == forgetpass) {
@@ -126,4 +153,5 @@ public class home extends JFrame implements ActionListener {
 	}
 
 }
+
 
