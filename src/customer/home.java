@@ -1,5 +1,5 @@
 package proj;
-
+import proj.jb;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
@@ -105,6 +105,10 @@ public class home extends JFrame implements ActionListener {
 			
 	     Object obj=e.getSource();
 	     if(obj == jb_login) {
+	    	 jb oj = new jb();
+	    	 oj.setMob(txtFld1.getText().toString());
+	    	 oj.setPass(txtFld2.getText().toString());
+	    	 
 	    	 
 	     }
 	     if(obj == forgetpass) {
