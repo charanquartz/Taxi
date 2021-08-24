@@ -1,6 +1,5 @@
 package admin;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.JTabbedPane;
 import java.awt.*;
 import java.util.regex.Pattern;
@@ -27,7 +26,7 @@ public class TabServer extends JFrame {
         changepassword=new ChangePassword();
 
         tabs.addTab("LOGIN",login);
-        tabs.addTab("CHANGE PASSWORD : ",changepassword);
+        tabs.addTab("CHANGE PASSWORD",changepassword);
         tabs.addTab("VIEW EMPLOYEE",viewDriver);
         tabs.addTab("REMOVE EMPLOYEE",removeDriver);
         tabs.addTab("VIEW FEEDBACKS",feedback);

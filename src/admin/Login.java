@@ -3,7 +3,8 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 public class Login extends JPanel{
-    TextField txtFld1,txtFld2;
+    TextField txtFld1;
+    JPasswordField passwordTextField;
     Label lbl1,lbl2,lbl3;
     Button btn1;
     public Login(){
@@ -20,7 +21,7 @@ public class Login extends JPanel{
 
         //TextField
         txtFld1=new TextField();
-        txtFld2=new TextField();
+        passwordTextField =new JPasswordField();
 
         //Button
         btn1=new Button("LOGIN");
@@ -29,12 +30,12 @@ public class Login extends JPanel{
         lbl2.setBounds(10,80,250,70);
 
         txtFld1.setBounds(260,10,250,70);
-        txtFld2.setBounds(260,80,250,70);
-        txtFld2.setEchoChar('*');
-        txtFld2.addActionListener(new ActionListener(){
+        passwordTextField.setBounds(260,80,250,70);
+        passwordTextField.setEchoChar('*');
+        passwordTextField.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                login(txtFld1.getText(),txtFld2.getText());
+                login(txtFld1.getText(), passwordTextField.getText());
             }
         });
 
@@ -42,7 +43,7 @@ public class Login extends JPanel{
         btn1.addMouseListener(new MouseListener(){
             @Override
             public void mouseClicked(MouseEvent e) {
-                login(txtFld1.getText(),txtFld2.getText());
+                login(txtFld1.getText(), passwordTextField.getText());
             }
 
             @Override
@@ -69,7 +70,7 @@ public class Login extends JPanel{
         add(lbl1);
         add(lbl2);
         add(txtFld1);
-        add(txtFld2);
+        add(passwordTextField);
         add(btn1);
     }
     public boolean login(String username,String password){
