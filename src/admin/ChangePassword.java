@@ -1,10 +1,10 @@
-package driver;
+package admin;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class ChangePassword extends Frame implements WindowListener{
+public class ChangePassword extends JPanel{
     TextField oldPasswordTextField, newPasswordTextField, confirmPasswordTextField;
     Label oldPasswordLabel, newPasswordLabel, confirmPasswordLabel;
     Button changePasswordButton;
@@ -37,10 +37,10 @@ public class ChangePassword extends Frame implements WindowListener{
         changePasswordButton.addMouseListener(new MouseListener(){
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(TabServer.driver.getPass().equals(oldPasswordTextField.getText())){
+                if(TabServer.admin.getPassword().equals(oldPasswordTextField.getText())){
                     if(TabServer.isValidPassword(newPasswordTextField.getText())){
                         if(newPasswordTextField.getText().equals(confirmPasswordTextField.getText())){
-                            TabServer.driver.setPass(confirmPasswordTextField.getText());
+                            TabServer.admin.setPassword(confirmPasswordTextField.getText());
                             clear();
                         }
                         else{
@@ -84,42 +84,6 @@ public class ChangePassword extends Frame implements WindowListener{
         add(confirmPasswordTextField);
         add(confirmPasswordLabel);
         setVisible(true);
-        addWindowListener(this);
-    }
-
-    @Override
-    public void windowOpened(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowClosing(WindowEvent e) {
-        dispose();
-    }
-
-    @Override
-    public void windowClosed(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowIconified(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowDeiconified(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowActivated(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowDeactivated(WindowEvent e) {
-
     }
     public void clear(){
         oldPasswordTextField.setText("");
