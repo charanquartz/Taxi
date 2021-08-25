@@ -1,5 +1,7 @@
 package proj;
 import proj.jb;
+
+import proj.email;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
@@ -33,18 +35,19 @@ public class home extends JFrame implements ActionListener {
 	 
 	 public home() {
 		 setTitle("PASSENGER HOME PAGE :)");
+		 
 		 c=getContentPane();
 	     c.setLayout(null); 
          setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
          setExtendedState(MAXIMIZED_BOTH);
-         setSize(500, 600);
+         setSize(400, 600);
          
          txtFld1 = new JTextField();
          // txtFld1.setForeground(Color.GRAY);
-          txtFld1.setText("Mobile Number");
+          txtFld1.setText("Email ID");
           txtFld1.addFocusListener(new FocusListener() {
               public void focusGained(FocusEvent e) {
-                  if (txtFld1.getText().equals("Mobile Number")) {
+                  if (txtFld1.getText().equals("Email ID")) {
                  	 txtFld1.setText("");
                  	 txtFld1.setForeground(Color.BLACK);
                       }
@@ -54,7 +57,7 @@ public class home extends JFrame implements ActionListener {
                   public void focusLost(FocusEvent e) {
                       if (txtFld1.getText().isEmpty()) {
                      	 txtFld1.setForeground(Color.GRAY);
-                     	 txtFld1.setText("Mobile Number");
+                     	 txtFld1.setText("Email ID");
                       }
                   }
               });
@@ -78,6 +81,7 @@ public class home extends JFrame implements ActionListener {
                        }
                    }
                });
+           
            jb_login = new JButton("Login");
            jb_login.addActionListener(this);
            
@@ -114,17 +118,19 @@ public class home extends JFrame implements ActionListener {
 	    	 oj.setMob(txtFld1.getText().toString());
 	    	 oj.setPass(txtFld2.getText().toString());
 	    	 String pass = oj.getPass();
-	    	 Long mob = oj.getMob();
+	    	 String email = oj.getEmail();
 	    	 try{
 	    		 Class.forName("oracle.jdbc.driver.OracleDriver");
                  Connection con=DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:XE","test","sql");
-                 String query="select mob from std1 where pass=?"; 
+                 String query="select email from std1 where pass=?"; 
                  PreparedStatement pstmt = con.prepareStatement(query);
                  pstmt.setString(1,pass);
                  ResultSet rst=pstmt.executeQuery();
                  if(rst.next()) {
-                	 if(mob.equals(rst.getString("mob"))) {
-                		 
+                	 if(email.equals(rst.getString("email"))) {
+                		 email em = new email();
+                		 em.setEmail(email);
+				 new BookRide();
                 	 }
                 	 else {
                 		 JOptionPane.showMessageDialog(null,"Mobile Number or Password wrong");
@@ -153,5 +159,3 @@ public class home extends JFrame implements ActionListener {
 	}
 
 }
-
-
