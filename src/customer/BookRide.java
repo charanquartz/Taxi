@@ -220,7 +220,6 @@ public class BookRide extends JFrame implements ActionListener {
 	                // Statement stmt=con.createStatement();
 	                
 	                
-	                //String query="insert into signup values('"+txtFld1.getText()+"','"+txtFld2.getText()+"','"+txtFld3.getText()+"','"+txtFld4.getText()+"','"+str_gender+"','"+jcSta+"','"+txtFld5.getText()+"')";
 	                 String query="insert into bookride values(?,?,?)"; 
 	                 PreparedStatement pstmt = con.prepareStatement(query);
 	                 //stmt.executeUpdate(query);
