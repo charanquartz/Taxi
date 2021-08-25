@@ -218,9 +218,11 @@ public class BookRide extends JFrame implements ActionListener {
 		    		 Class.forName("oracle.jdbc.driver.OracleDriver");
 	                 Connection con=DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:XE","test","sql");
 	                // Statement stmt=con.createStatement();
+					 
 	                
 	                
 	                 String query="insert into bookride values(?,?,?)"; 
+		 //create table bookride(fromm varchar2(30),too varchar2(30) , seat int , emaild varchar2(20);
 	                 PreparedStatement pstmt = con.prepareStatement(query);
 	                 //stmt.executeUpdate(query);
 	                 pstmt.setString(1,Fromm);
