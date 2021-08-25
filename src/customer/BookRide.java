@@ -222,7 +222,7 @@ public class BookRide extends JFrame implements ActionListener {
 	                
 	                
 	                 String query="insert into bookride values(?,?,?)"; 
-		 //create table bookride(fromm varchar2(30),too varchar2(30) , seat int , emaild varchar2(20);
+		 //create table bookride(fromm varchar2(30),too varchar2(30) , seat int , emaild varchar2(20));
 	                 PreparedStatement pstmt = con.prepareStatement(query);
 	                 //stmt.executeUpdate(query);
 	                 pstmt.setString(1,Fromm);
