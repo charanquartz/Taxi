@@ -11,7 +11,6 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.Statement;
 
 import javax.swing.ButtonGroup;
@@ -44,10 +43,6 @@ public class signup extends JFrame implements ActionListener {
 	            "Telangana","Tripura","Uttarakhand"};
 	 @SuppressWarnings({ "unchecked", "rawtypes" })
 	 public signup() {
-		 
-		 
-		 
-		 
 		 setTitle("PASSENGER SIGNUP FORM :)");
 		 c=getContentPane();
 	     c.setLayout(null); 
@@ -252,35 +247,15 @@ public class signup extends JFrame implements ActionListener {
 		             }
 		    	 
 		    	 String con_pass = oj.getPass();
-
-		    	 if(txtFld6.getText().equals(con_pass)) {
-		    		 
-		    		 //create table signup( Fname varchar2(20),Lname varchar2(20),Moblie varchar2(20),Email varchar2(20),Gender varchar2(20),State varchar2(20),Pass varchar2(20) );/
-				 try{
-					 String fname = oj.getFname();
-					 String lname = oj.getLname();
-					 long mob = oj.getMob();
-				     String email = oj.getEmail() ;
-				     String gender = oj.getGender();
-				     String state = oj.getState();
-				     String pass =oj.getPass();
+		    	 //
+		    	 try{
 		    		 Class.forName("oracle.jdbc.driver.OracleDriver");
 	                 Connection con=DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:XE","test","sql");
-	                // Statement stmt=con.createStatement();
+	                 Statement stmt=con.createStatement();
 	                
 	                
-	                //String query="insert into signup values('"+txtFld1.getText()+"','"+txtFld2.getText()+"','"+txtFld3.getText()+"','"+txtFld4.getText()+"','"+str_gender+"','"+jcSta+"','"+txtFld5.getText()+"')";
-	                 String query="insert into std1 values(?,?,?,?,?,?,?)"; 
-	                 PreparedStatement pstmt = con.prepareStatement(query);
-	                 //stmt.executeUpdate(query);
-	                 pstmt.setString(1,fname);
-	 	            pstmt.setString(2,lname);
-	 	           pstmt.setLong(3,mob);
-	 	            pstmt.setString(4,email);
-	 	            pstmt.setString(5,gender);
-	 	            pstmt.setString(6,state);
-	 	            pstmt.setString(7,pass);	            
-	             pstmt.executeUpdate();
+	                String query="insert into signup values('"+txtFld1.getText()+"','"+txtFld2.getText()+"','"+txtFld3.getText()+"','"+txtFld4.getText()+"','"+str_gender+"','"+jcSta+"','"+txtFld5.getText()+"')";
+	                 stmt.executeUpdate(query);
 	                 con.setAutoCommit(true);
 	                 JOptionPane.showMessageDialog(this, "Registration Success!");
 
@@ -289,10 +264,11 @@ public class signup extends JFrame implements ActionListener {
 		            catch(Exception ex){
 		                JOptionPane.showMessageDialog(this, ex.toString());
 		            }
+		    	 
+		    	 if(txtFld6.getText().equals(con_pass)) {
+		    		 
+		    		 /*create table signup( Fname varchar2(20),Lname varchar2(20),Moblie varchar2(20),Email varchar2(20),Gender varchar2(20),State varchar2(20),Pass varchar2(20) );*/
 		    	 }
-			else{
-				JOptionPane.showMessageDialog(null, "Password does not match");
-			}
 		    	 
 		    	 }
 		     }

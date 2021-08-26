@@ -1,22 +1,45 @@
 package driver;
-
+import java.util.*;
 public class Driver {
-    private String fname,lname,carID,gender,dob,nationality,city,address,email,pass;
-    private long mobile,driverExp;
+    private String fname,lname,carID,gender,nationality,city,address,email,pass,approved,availability,licenseId;
+    private Date dob;
+    private int portNUmber;
+    private ArrayList<Car> cars;
+    private long mobile,driverExp,xp;
 
-    public Driver(String fname, String lname, String carID, String gender, String dob, String nationality, String city, String address, String email, String pass, long mobile, long driverExp) {
-        this.fname = fname;
-        this.lname = lname;
-        this.carID = carID;
-        this.gender = gender;
-        this.dob = dob;
-        this.nationality = nationality;
-        this.city = city;
-        this.address = address;
-        this.email = email;
-        this.pass = pass;
-        this.mobile = mobile;
-        this.driverExp = driverExp;
+    Driver(){
+        cars=new ArrayList<>();
+    }
+    public ArrayList<Car> getCars() {
+        return cars;
+    }
+
+    public void setCars(ArrayList<Car> cars) {
+        this.cars = cars;
+    }
+
+    public int getPortNUmber() {
+        return portNUmber;
+    }
+
+    public void setPortNUmber(int portNUmber) {
+        this.portNUmber = portNUmber;
+    }
+
+    public String getApproved() {
+        return approved;
+    }
+
+    public void setApproved(String approved) {
+        this.approved = approved;
+    }
+
+    public String getAvailability() {
+        return availability;
+    }
+
+    public void setAvailability(String availability) {
+        this.availability = availability;
     }
 
     public String getFname() {
@@ -51,11 +74,11 @@ public class Driver {
         this.gender = gender;
     }
 
-    public String getDob() {
+    public Date getDob() {
         return dob;
     }
 
-    public void setDob(String dob) {
+    public void setDob(Date dob) {
         this.dob = dob;
     }
 
@@ -113,5 +136,21 @@ public class Driver {
 
     public void setDriverExp(long driverExp) {
         this.driverExp = driverExp;
+    }
+
+    public String getLicenseId() {
+        return licenseId;
+    }
+
+    public void setLicenseId(String licenseId) {
+        this.licenseId = licenseId;
+    }
+
+    public long getXp() {
+        return xp;
+    }
+
+    public void setXp(long xp) {
+        this.xp = xp;
     }
 }
