@@ -235,7 +235,11 @@ public class ViewRides extends JPanel{
                 JOptionPane.showMessageDialog(null,"Sorry this ride is already in progress / completed by other driver....");
                 return false;
             }
+            query="select * from ride where otp="+currentRideOTP;
+            resultSet= statement.executeQuery(query);
+            resultSet.next();
             currentRide.setCustomerEmail(resultSet.getString(1));
+            System.out.println(query);
             currentRide.setNoOfPassengers(resultSet.getInt(2));
             currentRide.setPickup(resultSet.getString(3));
             currentRide.setDestination(resultSet.getString(4));

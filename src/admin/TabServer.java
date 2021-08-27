@@ -50,9 +50,37 @@ public class TabServer extends JFrame {
 //        tabs.setEnabledAt(3,false);
 //        tabs.setEnabledAt(4,false);
     }
-    static public boolean isValidPassword(String txt){
+    public static boolean isValidPassword(String txt){
         pattern= Pattern.compile("^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\\d]){1,})(?=(.*[\\W]){1,})(?!.*\\s).{8,}$");
         matcher=pattern.matcher(txt);
         return matcher.matches();
+    }
+    public static String getCustomerName(String email){
+        String query;
+        try{
+            Statement s= connection.createStatement();
+            query="select fname,lName from customer where email='"+email+"'";
+            ResultSet resultSet=s.executeQuery(query);
+            resultSet.next();
+            return resultSet.getString(1).trim()+" "+resultSet.getString(2);
+        }
+        catch(Exception e){
+            System.out.println("getCustomerName()"+e);
+        }
+        return "-1";
+    }
+    public static String getDriverName(String email){
+        String query;
+        try{
+            Statement s= connection.createStatement();
+            query="select fname,lName from driver where email='"+email+"'";
+            ResultSet resultSet=s.executeQuery(query);
+            resultSet.next();
+            return resultSet.getString(1).trim()+" "+resultSet.getString(2);
+        }
+        catch(Exception e){
+            System.out.println("getDriverName()"+e);
+        }
+        return "-1";
     }
 }

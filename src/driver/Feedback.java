@@ -7,12 +7,12 @@ import java.awt.event.MouseListener;
 import java.sql.ResultSet;
 
 public class Feedback extends JPanel{
-    private final Label FeedbackLabel,ratingLabel;
-    private final JTextArea feedBackTextArea;
-    private final JComboBox<Object> ratingComboBox;
-    private final Object[] arr=new Object[]{"Select",1,2,3,4,5};
-    private final JButton submitButton;
-    private int count,ratings;
+    Label FeedbackLabel,ratingLabel;
+    JTextArea feedBackTextArea;
+    JComboBox<Object> ratingComboBox;
+    Object[] arr=new Object[]{"Select",1,2,3,4,5};
+    JButton submitButton;
+    int count,ratings;
     private String query;
     private ResultSet resultSet;
     Feedback(){
@@ -96,20 +96,17 @@ public class Feedback extends JPanel{
     }
     public boolean dbInsert(){
         try {
+            count=1;
             //To find number of entries in driver feedback...
-            query="select count(email) from driverFeedback ";
+            query="select feedbackno from driverFeedback ";
             resultSet = TabServer.statement.executeQuery(query);
-            resultSet.next();
-            count=resultSet.getInt(1)+1;
-
-            if(ratingComboBox.getSelectedIndex()==0){
-                ratings=-1;
+            if(resultSet.next()) {
+                resultSet.last();
+                count = resultSet.getInt(1)+1;
             }
-            else{
-                ratings=ratingComboBox.getSelectedIndex();
-            }
+            ratings=ratingComboBox.getSelectedIndex();
             //Entering into query
-            query="insert into driverFeedback values("+count+",'"+TabServer.driver.getEmail()+"','"+feedBackTextArea.getText()+"',"+ratings+")";
+            query="insert into driverFeedback values('"+TabServer.driver.getEmail()+"','"+feedBackTextArea.getText()+"',"+ratings+","+count+")";
             TabServer.statement.executeQuery(query);
         }
         catch(Exception e){
