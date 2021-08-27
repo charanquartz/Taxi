@@ -19,6 +19,7 @@ public class Feedback extends JPanel {
     String query;
     ResultSet resultSet;
     Feedback(){
+        setBackground(new Color(3, 252, 240));
         setBounds(0,0,1900,1000);
         setVisible(true);
         setLayout(null);
