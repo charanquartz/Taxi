@@ -35,7 +35,7 @@ public class TabServer extends JFrame{
         //Establishing connection to db
        connection=DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:XE","madhi","java");
        connection.setAutoCommit(true);
-       statement= connection.createStatement();
+       statement= connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
         login=new Login();
         signup=new SignUp();
