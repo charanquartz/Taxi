@@ -46,9 +46,9 @@ public class TabServer extends JFrame {
         add(tabs);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-        tabs.setEnabledAt(2,false);
-        tabs.setEnabledAt(3,false);
-        tabs.setEnabledAt(4,false);
+//        tabs.setEnabledAt(2,false);
+//        tabs.setEnabledAt(3,false);
+//        tabs.setEnabledAt(4,false);
     }
     static public boolean isValidPassword(String txt){
         pattern= Pattern.compile("^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\\d]){1,})(?=(.*[\\W]){1,})(?!.*\\s).{8,}$");
