@@ -21,6 +21,7 @@ public class ViewProfile extends JPanel{
     String currentCarId,query,gender,driverEmail,date;
     ResultSet resultSet;
     Car car;
+    Statement statement;
     int index;
     ViewProfile(){
         setBackground(new Color(255, 167, 88));
@@ -434,7 +435,7 @@ public class ViewProfile extends JPanel{
             query="update driver set gender ='"+gender+"' where email ='"+driverEmail+"'";
             TabServer.statement.executeQuery(query);
             date=DOBTextField.getText();
-            date=date.substring(6,10)+"-"+date.substring(3,5)+"-"+date.substring(0,2);
+            date=date.substring(0,4)+"-"+date.substring(5,7)+"-"+date.substring(8,10);
             query="update driver set dob =TO_DATE('"+date+"','YYYY-MM-DD') where email ='"+driverEmail+"'";
             TabServer.statement.executeQuery(query);
             query="update driver set drivingexp ='"+Integer.parseInt(drivingExpTextField.getText())+"' where email ='"+driverEmail+"'";
@@ -447,7 +448,7 @@ public class ViewProfile extends JPanel{
             TabServer.statement.executeQuery(query);
             query="update driver set mobile ="+mobileNoTextField.getText()+" where email ='"+driverEmail+"'";
             TabServer.statement.executeQuery(query);
-            query="update driver set passwword ='"+TabServer.driver.getPass()+"' where email='"+driverEmail+"'";
+            query="update driver set password ='"+TabServer.driver.getPass()+"' where email='"+driverEmail+"'";
             TabServer.statement.executeUpdate(query);
         }
         catch(Exception e){
@@ -552,7 +553,7 @@ public class ViewProfile extends JPanel{
             mobileNoTextField.setText(resultSet.getString(11));
             emailTextField.setText(resultSet.getString(12));
             licenseTextField.setText(resultSet.getString(9));
-            TabServer.driver.setCarID(carJComboBox.getSelectedItem().toString());
+            TabServer.driver.setCarID(getCarID(emailTextField.getText().trim()));
         }
         catch (Exception e){
             System.out.println("refreshOtherFields()"+e);
@@ -566,5 +567,19 @@ public class ViewProfile extends JPanel{
     public boolean setTextFieldFont(JTextField button){
         button.setFont(TabServer.font);
         return true;
+    }
+    public String getCarID(String email){
+        try{
+            ResultSet rs;
+            statement=TabServer.connection.createStatement();
+            query="select carID from car where owneremail='"+email+"'";
+            rs=statement.executeQuery(query);
+            rs.next();
+            return rs.getString(1);
+        }
+        catch(Exception e){
+            System.out.println("getCarID()"+e);
+        }
+        return "";
     }
 }

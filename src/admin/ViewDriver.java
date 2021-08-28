@@ -271,7 +271,12 @@ public class ViewDriver extends JPanel {
         try{
             int size=getNoOfApprovedDrivers();
             arr=new Object[getNoOfApprovedDrivers()][5];
-            driversTable=new JTable(arr,new Object[]{"SNO.","Name","State","Mobile Number","Email"});
+            driversTable=new JTable(arr,new Object[]{"SNO.","Name","State","Mobile Number","Email"}){
+                @Override
+                public boolean isCellEditable(int row,int col){
+                    return false;
+                }
+            };
             driversTableScrollPane=new JScrollPane(driversTable);
             driversTableScrollPane.setBounds(0,70,800,800);
             driversTable.setRowHeight(60);
@@ -287,6 +292,7 @@ public class ViewDriver extends JPanel {
                 arr[i][4]=resultSet.getString(12).trim();
                 resultSet.next();
             }
+            add(driversTableScrollPane);
         }
         catch(Exception e){
             System.out.println("getApprovedDriverDetailsAsArr()"+e);
@@ -305,6 +311,9 @@ public class ViewDriver extends JPanel {
             query="delete from driver where email='"+email+"'";
             statement=TabServer.connection.createStatement();
             statement.executeQuery(query);
+
+            TabServer.sendMail("Sorry you're fired","Dear customer,we are very sad to inform that,you would be removed from cab driver service becoz of your Rating of performance which was given by customers.. it's very important to us.so improve your skills much more better.\n" +
+                    "Thank you..",email);
         }
         catch(Exception e){
             System.out.println("removeDriver"+e);
