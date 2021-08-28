@@ -326,7 +326,6 @@ public class Feedback extends JPanel {
         driverFeedbackTable =new JTable(arr,new Object[]{"Feedback No.","Name","Email"});
         driverFeedbackTable.setRowHeight(60);
         driverFeedbackTable.setEnabled(false);
-
         //DriverScrollpane
         driverScrollPane=new JScrollPane(driverFeedbackTable);
         driverScrollPane.setBounds(0,70,500,400);
