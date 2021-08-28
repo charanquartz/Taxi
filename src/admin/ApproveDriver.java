@@ -19,7 +19,7 @@ public class ApproveDriver extends JPanel{
     ResultSet resultSet;
     int noOfApprovedDrivers;
     ApproveDriver(){
-        setBackground(new Color(3, 252, 240));
+        setBackground(new Color(3, 252, 115));
         setBounds(0,0,1900,1000);
         setVisible(true);
         setLayout(null);

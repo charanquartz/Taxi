@@ -5,6 +5,8 @@ import javax.mail.internet.MimeMessage;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Properties;

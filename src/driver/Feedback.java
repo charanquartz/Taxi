@@ -1,18 +1,22 @@
 package driver;
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.ResultSet;
 
 public class Feedback extends JPanel{
+    JTextField ratingfield;
     Label FeedbackLabel,ratingLabel;
     JTextArea feedBackTextArea;
-    JComboBox<Object> ratingComboBox;
-    Object[] arr=new Object[]{"Select",1,2,3,4,5};
+    JSlider ratingComboBox;
+    //Object[] arr=new Object[]{"Select",1,2,3,4,5};
     JButton submitButton;
-    int count,ratings;
+    int count;
+    Integer ratings;
     private String query;
     private ResultSet resultSet;
     Feedback(){
@@ -31,9 +35,9 @@ public class Feedback extends JPanel{
 
         //TextArea
         feedBackTextArea =new JTextArea();
-
+         ratingfield=new JTextField();
         //JComboBox
-        ratingComboBox=new JComboBox<>(arr);
+        ratingComboBox=new JSlider(0,10,1);
 
         //SetBounds label
         FeedbackLabel.setBounds(10,10,250,60);
@@ -41,13 +45,16 @@ public class Feedback extends JPanel{
 
         //SetBounds textArea
         feedBackTextArea.setBounds(10,80,1000,500);
-
+         ratingfield.setBounds(250,590,100,30);
         //setBounds button
         submitButton.setBounds(10,660,250,60);
 
-        //SetBounds JcomboBox
-        ratingComboBox.setBounds(150,590,250,60);
-
+        //SetBounds JSlider
+        ratingComboBox.setBounds(150,590,100,30);
+        ratingComboBox.setMinorTickSpacing(0);
+         ratingComboBox.setMajorTickSpacing(5);
+         ratingComboBox.setPaintLabels(true);
+         ratingComboBox.setPaintTicks(true);
         //set border
         feedBackTextArea.setBorder(TabServer.bdr);
         submitButton.setBorder(TabServer.bdr);
@@ -62,7 +69,7 @@ public class Feedback extends JPanel{
                 }
                 dbInsert();
                 JOptionPane.showMessageDialog(null,"Thanks for your feedback");
-                ratingComboBox.setSelectedItem(ratingComboBox.getItemAt(0));
+                ratingComboBox.setMinimum(0);
                 feedBackTextArea.setText("");
             }
 
@@ -86,7 +93,14 @@ public class Feedback extends JPanel{
 
             }
         });
-
+        //state listen for rating combobox
+        ratingComboBox.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                 ratings=ratingComboBox.getValue();
+                ratingfield.setText(ratings.toString());
+            }
+        });
         //add components to panel
         add(FeedbackLabel);
         add(feedBackTextArea);
@@ -104,7 +118,7 @@ public class Feedback extends JPanel{
                 resultSet.last();
                 count = resultSet.getInt(1)+1;
             }
-            ratings=ratingComboBox.getSelectedIndex();
+            ratings=ratingComboBox.getValue();
             //Entering into query
             query="insert into driverFeedback values('"+TabServer.driver.getEmail()+"','"+feedBackTextArea.getText()+"',"+ratings+","+count+")";
             TabServer.statement.executeQuery(query);
