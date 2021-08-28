@@ -103,6 +103,7 @@ public class ViewDriver extends JPanel {
         //Button
         refreshButton.setBounds(1240,560,190,60);
         deleteDriverButton.setBounds(1440,560,200,60);
+        deleteDriverButton.setEnabled(false);
 
         //Button
         refreshButton.addMouseListener(new MouseListener() {
@@ -131,7 +132,37 @@ public class ViewDriver extends JPanel {
 
             }
         });
+        deleteDriverButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(!(deleteDriverButton.isEnabled())){
+                    return;
+                }
+                removeDriver(emailTextField.getText().trim());
+                JOptionPane.showMessageDialog(null,"Driver removed successfully");
+                clearFields();
+            }
 
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
         //Label
         add(fNameLabel);
         add(lNameLabel);
@@ -217,10 +248,12 @@ public class ViewDriver extends JPanel {
     }
     public void removeDriver(String email){
         try{
-            query="";
+            query="delete from driver where email='"+email+"'";
+            statement=TabServer.connection.createStatement();
+            statement.executeQuery(query);
         }
         catch(Exception e){
-
+            System.out.println("removeDriver"+e);
         }
     }
     public void clearFields(){
