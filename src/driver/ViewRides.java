@@ -20,6 +20,8 @@ public class ViewRides extends JPanel{
     private int index,noOfRides,input,currentRideOTP,selectedRow,endKM,hoursElapsed,fare,distanceTravelled;
     private Ride currentRide;
     private Font font;
+    String customerName;
+    int customerPortNumber;
     ViewRides(){
         setBackground(new Color(255, 167, 88));
         setBounds(0,0,1900,1000);
@@ -116,7 +118,15 @@ public class ViewRides extends JPanel{
         chatButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                new DriverChatBox();
+                resultSet=getCustomerDetails((String)availableRidesTable.getValueAt(availableRidesTable.getRowCount(),0));
+                try {
+                    customerName = resultSet.getString(1).trim() + " " + resultSet.getString(2);
+                    customerPortNumber=resultSet.getInt(6);
+                }
+                catch(Exception k){
+                    System.out.println(k);
+                }
+                new DriverChatBox(customerName,customerPortNumber);
             }
 
             @Override
@@ -342,6 +352,7 @@ public class ViewRides extends JPanel{
         catch (Exception e){
             System.out.println("Ride complete()"+e);
         }
+        chatButton.setVisible(false);
         return true;
     }
     private boolean setCurrentRideToEmpty(){
@@ -368,5 +379,15 @@ public class ViewRides extends JPanel{
             System.out.println("Driver assigned for ride() "+e);
         }
         return false;
+    }
+    private ResultSet getCustomerDetails(String email){
+        try{
+            query="select * from customer where email='"+email+"'";
+            return statement.executeQuery(query);
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
+        return null;
     }
 }

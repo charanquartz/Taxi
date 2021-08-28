@@ -125,6 +125,10 @@ public class Feedback extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 rowSelected=e.getY()/60;
+                if(rowSelected>=customerFeedbackTable.getRowCount()){
+                    JOptionPane.showMessageDialog(null,"Error while fetching information.\nKindly refresh or restart the appliction for proper functioning...");
+                    return;
+                }
                 if(!(isCustomerFeedbackPresent((Integer)customerFeedbackTable.getValueAt(rowSelected,0)))){
                     JOptionPane.showMessageDialog(null,"Cant fetch feedback.Please refresh for proper functioning.");
                     return;
@@ -191,7 +195,8 @@ public class Feedback extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 rowSelected=e.getY()/60;
-                if(rowSelected>=driverFeedbackTable.getRowCount()){
+                if(rowSelected>=customerFeedbackTable.getRowCount()){
+                    JOptionPane.showMessageDialog(null,"Error while fetching information.\nKindly refresh or restart the appliction for proper functioning...");
                     return;
                 }
                 if(!(isDriverFeedbackPresent((Integer)driverFeedbackTable.getValueAt(rowSelected,0)))){

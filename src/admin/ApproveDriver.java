@@ -187,6 +187,10 @@ public class ApproveDriver extends JPanel{
             @Override
             public void mouseClicked(MouseEvent e) {
                 rowClicked=driversTable.getSelectedRow();
+                if(rowClicked>=driversTable.getRowCount()){
+                    JOptionPane.showMessageDialog(null,"Error while fetching information.\nKindly refresh or restart the appliction for proper functioning...");
+                    return;
+                }
                 fillDetails(driversTable.getValueAt(rowClicked,4).toString());
                 approveDriverButton.setEnabled(true);
             }
@@ -274,10 +278,6 @@ public class ApproveDriver extends JPanel{
         try{
             int size= getNoOfUnApprovedDrivers();
             arr=new Object[getNoOfUnApprovedDrivers()][5];
-            driversTable=new JTable(arr,new Object[]{"SNO.","Name","State","Mobile Number","Email"});
-            driversTableScrollPane=new JScrollPane(driversTable);
-            driversTableScrollPane.setBounds(0,70,800,800);
-            driversTable.setRowHeight(60);
             query="select * from driver where approved ='false'";
             statement=TabServer.connection.createStatement();
             resultSet=statement.executeQuery(query);
@@ -291,6 +291,11 @@ public class ApproveDriver extends JPanel{
                 arr[i][4]=resultSet.getString(12).trim();
                 resultSet.next();
             }
+            driversTable=new JTable(arr,new Object[]{"SNO.","Name","State","Mobile Number","Email"});
+            driversTableScrollPane=new JScrollPane(driversTable);
+            driversTableScrollPane.setBounds(0,70,800,800);
+            driversTable.setRowHeight(60);
+            add(driversTableScrollPane);
         }
         catch(Exception e){
             System.out.println("fillApprovedDriverDetailsAsArr()->ApproveDriver"+e);

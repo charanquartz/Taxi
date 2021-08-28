@@ -17,7 +17,7 @@ public class jb  {
  private String Gender;
  private String State;
  private String Pass;
- 
+
 
 
  public String getFname() {
@@ -76,7 +76,7 @@ Matcher mfname = pt.matcher(Name);
  public void setGender(String gender) {
      this.Gender = gender;
  }
- 
+
  public String getState() {
      return State;
  }
@@ -85,7 +85,7 @@ Matcher mfname = pt.matcher(Name);
      this.State = state;
  }
 
- 
+
  public long getMob() {
      return Mob;
  }
@@ -107,5 +107,5 @@ Matcher mfname = pt.matcher(Name);
  public void setPass(String Pass) {
  	this.Pass = Pass;
  }
- 
+
 }
