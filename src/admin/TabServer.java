@@ -1,7 +1,11 @@
 package admin;
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.swing.*;
 import javax.swing.JTabbedPane;
 import java.awt.*;
+import java.util.Properties;
 import java.util.regex.Pattern;
 import java.util.regex.*;
 import java.sql.*;
@@ -13,14 +17,15 @@ public class TabServer extends JFrame {
     public static Matcher matcher;
     public static Admin admin;
     public static JTabbedPane tabs;
-    JPanel login, viewDriver,removeDriver,feedback,changepassword;
+    public static Font font=new Font("Times new roman",Font.BOLD,18);
+    JPanel login, viewDriver, approveDriver,feedback,changepassword;
     public TabServer(){
         admin=new Admin();
         setTitle("ADMIN");
         tabs= new JTabbedPane();
         setBounds(0,0,1900,1000);
         setVisible(true);
-        setFont(new Font("Times new roman",Font.BOLD,18));
+        setFont(font);
         add(tabs,BorderLayout.CENTER);
 
         try{
@@ -32,23 +37,23 @@ public class TabServer extends JFrame {
             System.out.println("TabServer()"+e);
         }
         login=new Login();
-        removeDriver=new RemoveDriver();
+        approveDriver =new ApproveDriver();
         viewDriver=new ViewDriver();
         feedback=new Feedback();
         changepassword=new ChangePassword();
 
         tabs.addTab("LOGIN",login);
         tabs.addTab("CHANGE PASSWORD",changepassword);
-        tabs.addTab("VIEW EMPLOYEE",viewDriver);
-        tabs.addTab("REMOVE EMPLOYEE",removeDriver);
+        tabs.addTab("VIEW DRIVER",viewDriver);
+        tabs.addTab("APPROVE DRIVER", approveDriver);
         tabs.addTab("VIEW FEEDBACKS",feedback);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         add(tabs);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-//        tabs.setEnabledAt(2,false);
-//        tabs.setEnabledAt(3,false);
-//        tabs.setEnabledAt(4,false);
+        tabs.setEnabledAt(2,false);
+        tabs.setEnabledAt(3,false);
+        tabs.setEnabledAt(4,false);
     }
     public static boolean isValidPassword(String txt){
         pattern= Pattern.compile("^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\\d]){1,})(?=(.*[\\W]){1,})(?!.*\\s).{8,}$");
@@ -82,5 +87,53 @@ public class TabServer extends JFrame {
             System.out.println("getDriverName()"+e);
         }
         return "-1";
+    }
+    public static boolean sendMail(String subject,String text,String email){
+        final String username = "taxi.booking.service.java@gmail.com";
+        final String password = "projectcab";
+
+        final String from = "taxi.booking.service.java@gmail.com";
+        final String to = email;
+
+        Properties props = new Properties();
+
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.socketFactory.port", "465");
+        props.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.port", "465");
+
+
+
+
+        Authenticator a =new Authenticator() {
+
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+
+                return new PasswordAuthentication(username, password);
+
+            }
+
+        };
+
+        Session session = Session.getInstance(props, a);
+
+        try {
+
+            Message message = new MimeMessage(session);
+
+            message.setFrom(new InternetAddress(from));
+
+            message.setRecipients(Message.RecipientType.TO,InternetAddress.parse(to));
+            message.setSubject(subject);
+            message.setText(text);
+
+            Transport.send(message);
+
+        } catch (MessagingException e) {
+            System.out.println(e);
+        }
+        return true;
     }
 }

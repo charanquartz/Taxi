@@ -222,6 +222,7 @@ public class Feedback extends JPanel {
             }
         });
 
+
         add(driverTableLabel);
         add(driverScrollPane);
         add(customerScrollPane);
@@ -323,9 +324,13 @@ public class Feedback extends JPanel {
         //Table 1
         arr=new Object[getDriverFeedbackCount()][3];
         fillDriverSNoNameAndEmail(getDriverFeedbackCount());
-        driverFeedbackTable =new JTable(arr,new Object[]{"Feedback No.","Name","Email"});
+        driverFeedbackTable =new JTable(arr,new Object[]{"Feedback No.","Name","Email"}){
+            @Override
+            public boolean isCellEditable(int r,int c){
+                return false;
+            }
+        };
         driverFeedbackTable.setRowHeight(60);
-        driverFeedbackTable.setEnabled(false);
         //DriverScrollpane
         driverScrollPane=new JScrollPane(driverFeedbackTable);
         driverScrollPane.setBounds(0,70,500,400);
@@ -333,13 +338,18 @@ public class Feedback extends JPanel {
         //Table 2
         arr=new Object[getCustomerFeedbackCount()][3];
         fillCustomerSNoNameAndEmail(getCustomerFeedbackCount());
-        customerFeedbackTable =new JTable(arr,new Object[]{"Feedback No.","Name","Email"});
+        customerFeedbackTable =new JTable(arr,new Object[]{"Feedback No.","Name","Email"}){
+            public boolean isCellEditable(int r,int c){
+                return false;
+            }
+        };
         customerFeedbackTable.setRowHeight(60);
-        customerFeedbackTable.setEnabled(false);
 
         //CustomerScrollPane
         customerScrollPane=new JScrollPane(customerFeedbackTable);
         customerScrollPane.setBounds(0,540,500,400);
+        add(driverScrollPane);
+        add(customerScrollPane);
         return true;
     }
     public boolean isCustomerFeedbackPresent(int feedbackNumber){
