@@ -13,6 +13,7 @@ public class ViewDriver extends JPanel {
     Statement statement;
     Object[][] arr;
     String query;
+    int rowClicked;
     ResultSet resultSet;
     int noOfApprovedDrivers;
     ViewDriver(){
@@ -99,6 +100,21 @@ public class ViewDriver extends JPanel {
         approvedTextField.setBounds(1440,350,200,60);
         availabilityTextField.setBounds(1440,420,200,60);
         xpTextField.setBounds(1440,490,200,60);
+        fNameTextField.setEditable(false);
+        lNameTextField.setEditable(false);
+        carIDTextField.setEditable(false);
+        genderTextField.setEditable(false);
+        DOBTextField.setEditable(false);
+        cityTextField.setEditable(false);
+        addressTextField.setEditable(false);
+        drivingExpTextField.setEditable(false);
+        drivingLicenseTextField.setEditable(false);
+        stateTextField.setEditable(false);
+        mobileTextField.setEditable(false);
+        emailTextField.setEditable(false);
+        approvedTextField.setEditable(false);
+        availabilityTextField.setEditable(false);
+        xpTextField.setEditable(false);
 
         //Button
         refreshButton.setBounds(1240,560,190,60);
@@ -163,6 +179,36 @@ public class ViewDriver extends JPanel {
 
             }
         });
+
+        driversTable.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                rowClicked=driversTable.getSelectedRow();
+                fillDetails(driversTable.getValueAt(rowClicked,4).toString());
+                deleteDriverButton.setEnabled(true);
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+
         //Label
         add(fNameLabel);
         add(lNameLabel);
@@ -248,6 +294,14 @@ public class ViewDriver extends JPanel {
     }
     public void removeDriver(String email){
         try{
+            query="delete from driverFeedback where email='"+email+"'";
+            statement=TabServer.connection.createStatement();
+            statement.executeQuery(query);
+
+            query="delete from car where owneremail='"+email+"'";
+            statement=TabServer.connection.createStatement();
+            statement.executeQuery(query);
+
             query="delete from driver where email='"+email+"'";
             statement=TabServer.connection.createStatement();
             statement.executeQuery(query);
@@ -273,5 +327,43 @@ public class ViewDriver extends JPanel {
         approvedTextField.setText("");
         availabilityTextField.setText("");
         xpTextField.setText("");
+    }
+    public boolean fillDetails(String email){
+        resultSet=getDriverResultSet(email);
+        try {
+            resultSet.next();
+            fNameTextField.setText(resultSet.getString(1));
+            lNameTextField.setText(resultSet.getString(2));
+            carIDTextField.setText(resultSet.getString(3));
+            genderTextField.setText(resultSet.getString(4));
+            DOBTextField.setText(resultSet.getString(5).substring(0,10));
+            cityTextField.setText(resultSet.getString(6));
+            addressTextField.setText(resultSet.getString(7));
+            drivingExpTextField.setText(resultSet.getString(8));
+            drivingLicenseTextField.setText(resultSet.getString(9));
+            stateTextField.setText(resultSet.getString(10));
+            mobileTextField.setText(resultSet.getString(11));
+            emailTextField.setText(resultSet.getString(12));
+            approvedTextField.setText(resultSet.getString(14));
+            availabilityTextField.setText(resultSet.getString(15));
+            xpTextField.setText(resultSet.getString(16));
+            deleteDriverButton.setEnabled(true);
+        }
+        catch (Exception e){
+            System.out.println("fillDetails()"+e);
+        }
+        return true;
+    }
+    public ResultSet getDriverResultSet(String email){
+        try{
+            query="select * from driver where email='"+email+"'";
+            statement=TabServer.connection.createStatement();
+            resultSet=statement.executeQuery(query);
+            return resultSet;
+        }
+        catch(Exception e){
+            System.out.println("getDriverResultSet()"+e);
+        }
+        return null;
     }
 }
