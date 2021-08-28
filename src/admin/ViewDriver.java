@@ -184,6 +184,10 @@ public class ViewDriver extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 rowClicked=driversTable.getSelectedRow();
+                if(rowClicked>=driversTable.getRowCount()){
+                    JOptionPane.showMessageDialog(null,"Error while fetching information.\nKindly refresh or restart the appliction for proper functioning...");
+                    return;
+                }
                 fillDetails(driversTable.getValueAt(rowClicked,4).toString());
                 deleteDriverButton.setEnabled(true);
             }

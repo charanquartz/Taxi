@@ -51,6 +51,7 @@ public class TabServer extends JFrame {
         add(tabs);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
 
+        tabs.setEnabledAt(1,false);
         tabs.setEnabledAt(2,false);
         tabs.setEnabledAt(3,false);
         tabs.setEnabledAt(4,false);
