@@ -236,7 +236,7 @@ public class SignUpPage extends JFrame implements ActionListener {
 			
 		     Object obj=e.getSource();
 		     if(obj==jb_submit){
-		    	 jb oj = new jb();
+		    	 JavaBean oj = new JavaBean();
 		    	 oj.setFname(txtFld1.getText());
 		    	 oj.setLname(txtFld2.getText());
 		    	 oj.setMob(txtFld3.getText().toString());
