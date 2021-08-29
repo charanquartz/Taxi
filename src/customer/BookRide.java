@@ -1,6 +1,8 @@
 package customer;
 
+import customer.email;
 import java.awt.Color;
+
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.Image;
@@ -38,7 +40,7 @@ public class BookRide extends JFrame implements ActionListener {
 	 JRadioButton jrb_male,jrb_female;
 	 String str_gender;
 	 ButtonGroup bg;
-	 JButton jb_submit;
+	 JButton jb_submit,jb_upd;
 	 JPanel jp;
 	 
 	 
@@ -63,11 +65,12 @@ public class BookRide extends JFrame implements ActionListener {
          lbl2 = new JLabel("Destination Location");
          lbl3 = new JLabel("Car Type");
          lbl4 = new JLabel("No of Seats");
+        
          
          
          //txt field
          txtFld1 = new JTextField();
-        // txtFld1.setForeground(Color.GRAY);
+         txtFld1.setForeground(Color.GRAY);
          txtFld1.setText("Enter the Pickup Location");
          txtFld1.addFocusListener(new FocusListener() {
              public void focusGained(FocusEvent e) {
@@ -125,6 +128,9 @@ public class BookRide extends JFrame implements ActionListener {
          jb_submit = new JButton("Book Ride");
          jb_submit.addActionListener(this);
          
+         jb_upd = new JButton("  Update  ");
+         jb_upd.addActionListener(this);
+         
          //setbounds area
          title.setBounds(400, 60, 200, 25);
          lbl1.setBounds(300,120, 200, 25);
@@ -132,6 +138,9 @@ public class BookRide extends JFrame implements ActionListener {
          lbl3.setBounds(300,240, 200, 25);
          lbl4.setBounds(300,300, 200, 25);
          jb_submit.setBounds(400,360, 120,20);
+         jb_upd.setBounds(1000,15,120,20);
+         
+         
          
          title.setFont(new Font("Serif", Font.BOLD, 20));
          lbl1.setFont(new Font("Serif", Font.BOLD, 21));
@@ -157,6 +166,7 @@ public class BookRide extends JFrame implements ActionListener {
          
          
          c.add(jb_submit);
+         c.add(jb_upd);
          
          c.add(txtFld1);
          c.add(txtFld2);
@@ -170,7 +180,7 @@ public class BookRide extends JFrame implements ActionListener {
 
              Class.forName("oracle.jdbc.driver.OracleDriver");
              Connection con=DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:XE","test","sql");
-             String query="select company from car";
+             String query="select COMPANY from car";
              PreparedStatement pstmt=con.prepareStatement(query);
              //create table car(ownerEmail varchar(30),carId varchar(10) primary key,company varchar(20),model varchar(30),capacity int,ac char(5),farePerKM int);
 
@@ -178,7 +188,7 @@ public class BookRide extends JFrame implements ActionListener {
 
              while(rst.next()){
 
-                 carnme.addItem(rst.getInt("Car"));
+                 carnme.addItem(rst.getString("COMPANY"));
              }
 
 
@@ -198,36 +208,30 @@ public class BookRide extends JFrame implements ActionListener {
 			
 		     Object obj=e.getSource();
 		     if(obj==jb_submit){
-		    	 jb oj = new jb();
-		    	 oj.setFname(txtFld1.getText());
-		    	 oj.setLname(txtFld2.getText());
 		    	 
-		    	 oj.setState(carnme.getSelectedItem().toString());
-		    	 
-		    	 
-		    	 String con_pass = oj.getPass();
+		    	 email em = new email();
+		    	 String email = em.getEmail();
 
-		    	 if(txtFld2.getText().equals(con_pass)) {
+		    	 
 
 				 try{
-					 String Fromm = oj.getFromm();
-					 String Too = oj.getToo();
-					 int Seat = oj.getSeat();
+					 
 					 
 				     
 		    		 Class.forName("oracle.jdbc.driver.OracleDriver");
 	                 Connection con=DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:XE","test","sql");
 	                // Statement stmt=con.createStatement();
-					 
 	                
 	                
-	                 String query="insert into bookride values(?,?,?)"; 
-		 //create table bookride(fromm varchar2(30),too varchar2(30) , seat int , emaild varchar2(20));
+	                 String query="insert into bookride values(?,?,?,?,?)"; 
+	  //create tabel bookride(from varchar(20), to varchar(20), seat varchar(20), email varchar(20), company varchar(20) );
 	                 PreparedStatement pstmt = con.prepareStatement(query);
 	                 //stmt.executeUpdate(query);
-	                 pstmt.setString(1,Fromm);
-	 	            pstmt.setString(2,Too);
-	 	           pstmt.setInt(3,Seat);
+	                 pstmt.setString(1,txtFld1.getText());
+	 	            pstmt.setString(2,txtFld2.getText());
+	 	           pstmt.setString(3,carseat.getSelectedItem().toString());
+	 	           pstmt.setString(4,email);
+	 	          pstmt.setString(5,carnme.getSelectedItem().toString());
 	 	           	            
 	             pstmt.executeUpdate();
 	                 con.setAutoCommit(true);
@@ -238,15 +242,19 @@ public class BookRide extends JFrame implements ActionListener {
 		            catch(Exception ex){
 		                JOptionPane.showMessageDialog(this, ex.toString());
 		            }
-		    	 }
+		     }
+		     else if(obj == jb_upd) {
+		    	 new cusup();
+		     }
+		    	 
 			else{
 				JOptionPane.showMessageDialog(null, "Booking Not Success");
 			}
 		    	 
-		    	 }
+		    	 
 		     }
-	 public static void main(String[]args) {
+	 public static void main(String args[]) {
 		 new BookRide();
-	 }
+	 } 
 	 
 }
