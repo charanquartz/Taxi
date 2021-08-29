@@ -1,19 +1,23 @@
 package driver;
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.ResultSet;
+
+import static java.awt.Color.WHITE;
 
 public class Feedback extends JPanel{
     JTextField ratingfield;
     Label FeedbackLabel,ratingLabel;
     JTextArea feedBackTextArea;
     JSlider ratingComboBox;
-    //Object[] arr=new Object[]{"Select",1,2,3,4,5};
     JButton submitButton;
     int count;
     Integer ratings;
@@ -45,20 +49,31 @@ public class Feedback extends JPanel{
 
         //SetBounds textArea
         feedBackTextArea.setBounds(10,80,1000,500);
-         ratingfield.setBounds(250,590,100,30);
+         ratingfield.setBounds(70,600,100,30);
+         ratingfield.setEnabled(false);
         //setBounds button
-        submitButton.setBounds(10,660,250,60);
+        submitButton.setBounds(10,720,250,60);
 
         //SetBounds JSlider
-        ratingComboBox.setBounds(150,590,100,30);
         ratingComboBox.setMinorTickSpacing(0);
          ratingComboBox.setMajorTickSpacing(5);
          ratingComboBox.setPaintLabels(true);
          ratingComboBox.setPaintTicks(true);
+         ratingComboBox.setBounds(10,650,200,60);
         //set border
         feedBackTextArea.setBorder(TabServer.bdr);
         submitButton.setBorder(TabServer.bdr);
-
+        //focus event for text
+        ratingfield.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+            }
+            @Override
+            public void focusLost(FocusEvent e) {
+                if(ratingfield.getText().equals(""))
+                    ratingComboBox.setValue(5);
+            }
+        });
         //MouseEvent for button
         submitButton.addMouseListener(new MouseListener() {
             @Override
@@ -69,7 +84,8 @@ public class Feedback extends JPanel{
                 }
                 dbInsert();
                 JOptionPane.showMessageDialog(null,"Thanks for your feedback");
-                ratingComboBox.setMinimum(0);
+                ratingComboBox.setValue(0);
+                ratingfield.setText("");
                 feedBackTextArea.setText("");
             }
 
@@ -98,6 +114,8 @@ public class Feedback extends JPanel{
             @Override
             public void stateChanged(ChangeEvent e) {
                  ratings=ratingComboBox.getValue();
+                ratingfield.setFont(new Font("Times New Roman", Font.BOLD, 19));
+                ratingfield.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED,Color.BLACK, WHITE));
                 ratingfield.setText(ratings.toString());
             }
         });
@@ -107,6 +125,7 @@ public class Feedback extends JPanel{
         add(submitButton);
         add(ratingComboBox);
         add(ratingLabel);
+        add(ratingfield);
     }
     public boolean dbInsert(){
         try {
