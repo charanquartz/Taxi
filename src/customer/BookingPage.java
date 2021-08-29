@@ -1,6 +1,8 @@
 package customer;
 
-import customer.email;
+import customer.FeedbackPage;
+import customer.Email;
+import customer.GenerateRandomNumber;
 import java.awt.Color;
 
 import java.awt.Container;
@@ -31,24 +33,30 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
-public class BookRide extends JFrame implements ActionListener {
+public class BookingPage extends JFrame implements ActionListener {
 	 Container c;
-	 JLabel title,lbl1,lbl2,lbl3,lbl4;
+	 JLabel title,lbl1,lbl2,lbl3,lbl4,lbl5;
 	 JTextField txtFld1,txtFld2;
 	 @SuppressWarnings("rawtypes")
-	 JComboBox carnme , carseat;
-	 JRadioButton jrb_male,jrb_female;
+	 JComboBox  carseat;
 	 String str_gender;
 	 ButtonGroup bg;
-	 JButton jb_submit,jb_upd;
+	 JButton jb_submit;
 	 JPanel jp;
+	
+	
 	 
+	 GenerateRandomNumber dd = new GenerateRandomNumber();
+	 String dd1 = dd.getRandomNumberString();
+	 int i=Integer.parseInt(dd1);
+	
+	  
 	 
 	 @SuppressWarnings({ "unchecked", "rawtypes" })
-	 public BookRide() {
+	 public BookingPage() {
 		 
 		 
-		 
+		  
 		 
 		 setTitle("BOOK RIDE");
 		 c=getContentPane();
@@ -58,13 +66,14 @@ public class BookRide extends JFrame implements ActionListener {
          c.setBackground(Color.yellow);
          setSize(500, 600);
          
-         title = new JLabel("TAXI BOOKING ");
+         title = new JLabel("TAXI BOOKING PAGE");
          
          //labels
          lbl1 = new JLabel("Current Location");
          lbl2 = new JLabel("Destination Location");
-         lbl3 = new JLabel("Car Type");
+         //lbl3 = new JLabel("Car Type");
          lbl4 = new JLabel("No of Seats");
+         lbl5 = new JLabel("Your OTP is "+dd1);
         
          
          
@@ -111,7 +120,7 @@ public class BookRide extends JFrame implements ActionListener {
          
          
          //select car seat
-         carnme=new JComboBox();
+         
          
          carseat = new JComboBox();
          carseat.addItem("1");
@@ -128,79 +137,63 @@ public class BookRide extends JFrame implements ActionListener {
          jb_submit = new JButton("Book Ride");
          jb_submit.addActionListener(this);
          
-         jb_upd = new JButton("  Update  ");
-         jb_upd.addActionListener(this);
+        // jb_upd = new JButton("  Update  ");
+         //jb_upd.addActionListener(this);
+         //jb_upd.addActionListener(this);
          
          //setbounds area
-         title.setBounds(400, 60, 200, 25);
-         lbl1.setBounds(300,120, 200, 25);
-         lbl2.setBounds(300,180, 200, 25);
-         lbl3.setBounds(300,240, 200, 25);
-         lbl4.setBounds(300,300, 200, 25);
-         jb_submit.setBounds(400,360, 120,20);
-         jb_upd.setBounds(1000,15,120,20);
+         title.setBounds(250, 40, 500, 50);
+         lbl1.setBounds(80,120, 200, 25);
+         lbl2.setBounds(80, 180, 200, 25);
+      
+         lbl4.setBounds(80,240, 200, 25);
+         jb_submit.setBounds(250,300, 150,30);
+         //jb_upd.setBounds(1000,15,120,20);
+         
+         lbl5.setBounds(800,240, 200, 35);
          
          
          
-         title.setFont(new Font("Serif", Font.BOLD, 20));
+         title.setFont(new Font("Serif", Font.BOLD, 30));
          lbl1.setFont(new Font("Serif", Font.BOLD, 21));
          lbl2.setFont(new Font("Serif", Font.BOLD, 21));
-         lbl3.setFont(new Font("Serif", Font.BOLD, 21));
          lbl4.setFont(new Font("Serif", Font.BOLD, 21));
-         jb_submit.setFont(new Font("Serif", Font.BOLD,15));
+         lbl5.setFont(new Font("Serif", Font.BOLD, 22));
+         jb_submit.setFont(new Font("Serif", Font.BOLD,20));
          
-         txtFld1.setBounds(550, 120, 200, 20);
-         txtFld2.setBounds(550,180, 200, 20);
+         txtFld1.setBounds(300, 120, 250, 30);
+         txtFld2.setBounds(300,180, 250, 30);
          
         
-         carnme.setBounds(550,240, 120, 20);
-         carseat.setBounds(550,300, 120, 20);
+        
+         carseat.setBounds(300,240, 45, 30);
          
          
          //add
          c.add(title);
          c.add(lbl1);
          c.add(lbl2);
-         c.add(lbl3);
+        // c.add(lbl3);
          c.add(lbl4);
+         c.add(lbl5).setVisible(false);;
          
          
          c.add(jb_submit);
-         c.add(jb_upd);
+         //c.add(jb_upd);
          
          c.add(txtFld1);
          c.add(txtFld2);
          
          
-         c.add(carnme);
+         
          c.add(carseat);
          
-         try{
-             
-
-             Class.forName("oracle.jdbc.driver.OracleDriver");
-             Connection con=DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:XE","test","sql");
-             String query="select COMPANY from car";
-             PreparedStatement pstmt=con.prepareStatement(query);
-             //create table car(ownerEmail varchar(30),carId varchar(10) primary key,company varchar(20),model varchar(30),capacity int,ac char(5),farePerKM int);
-
-             ResultSet rst=pstmt.executeQuery();
-
-             while(rst.next()){
-
-                 carnme.addItem(rst.getString("COMPANY"));
-             }
-
-
-      }
-      catch(Exception ex){
-          JOptionPane.showMessageDialog(this, " ---------- "+ ex.toString());
-      }
          
          setVisible(true);
          
 	 }
 	 //
+	 
 
 	 //
 	 @SuppressWarnings("unused")
@@ -209,11 +202,9 @@ public class BookRide extends JFrame implements ActionListener {
 		     Object obj=e.getSource();
 		     if(obj==jb_submit){
 		    	 
-		    	 email em = new email();
+		    	 Email em = new Email();
 		    	 String email = em.getEmail();
-
 		    	 
-
 				 try{
 					 
 					 
@@ -223,7 +214,7 @@ public class BookRide extends JFrame implements ActionListener {
 	                // Statement stmt=con.createStatement();
 	                
 	                
-	                 String query="insert into bookride values(?,?,?,?,?)"; 
+	                 String query="insert into bookride3 values(?,?,?,?,?,?,?)"; 
 	  //create tabel bookride(from varchar(20), to varchar(20), seat varchar(20), email varchar(20), company varchar(20) );
 	                 PreparedStatement pstmt = con.prepareStatement(query);
 	                 //stmt.executeUpdate(query);
@@ -231,30 +222,40 @@ public class BookRide extends JFrame implements ActionListener {
 	 	            pstmt.setString(2,txtFld2.getText());
 	 	           pstmt.setString(3,carseat.getSelectedItem().toString());
 	 	           pstmt.setString(4,email);
-	 	          pstmt.setString(5,carnme.getSelectedItem().toString());
-	 	           	            
+	 	          pstmt.setString(5,"false");
+	 	         pstmt.setInt(6,-1);
+	 	           pstmt.setInt(7,i);
+	 	           
 	             pstmt.executeUpdate();
 	                 con.setAutoCommit(true);
+	                 
 	                 JOptionPane.showMessageDialog(this, "Booking Success!");
+	                 lbl5.setVisible(true);
+	                 //new feed().setVisible(true);
+	                 
+	                 
 
 
 		            }
 		            catch(Exception ex){
 		                JOptionPane.showMessageDialog(this, ex.toString());
 		            }
+				 
 		     }
-		     else if(obj == jb_upd) {
-		    	 new UpdatePage();
-		     }
+	
 		    	 
 			else{
 				JOptionPane.showMessageDialog(null, "Booking Not Success");
 			}
-		    	 
+		     
+		      
 		    	 
 		     }
 	 public static void main(String args[]) {
-		 new BookRide();
+		  new BookingPage();
+		 
+		 
 	 } 
+	 
 	 
 }
