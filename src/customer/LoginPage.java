@@ -1,7 +1,7 @@
 package customer;
 import customer.JavaBean;
 
-import customer.email;
+import customer.Email;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
@@ -28,8 +28,9 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 public class LoginPage extends JFrame implements ActionListener {
 	Container c;
-	JTextField txtFld1,txtFld2;
+	JTextField txtFld1;
 	ButtonGroup bg;
+	JPasswordField txtFld2;
 	JButton jb_login;
 	JPanel jp;
 	JLabel txt;
@@ -68,25 +69,10 @@ public class LoginPage extends JFrame implements ActionListener {
                   }
               });
           
-          txtFld2 = new JTextField();
+          txtFld2 = new JPasswordField();
+          
           // txtFld1.setForeground(Color.GRAY);
-          txtFld2.setText("Password");
-          txtFld2.addFocusListener(new FocusListener() {
-               public void focusGained(FocusEvent e) {
-                   if (txtFld2.getText().equals("Password")) {
-                  	 txtFld2.setText("");
-                  	 txtFld2.setForeground(Color.BLACK);
-                       }
-
-                   }
-               
-                   public void focusLost(FocusEvent e) {
-                       if (txtFld2.getText().isEmpty()) {
-                      	 txtFld2.setForeground(Color.GRAY);
-                      	 txtFld2.setText("Password");
-                       }
-                   }
-               });
+          
            
            jb_login = new JButton("Login");
            jb_login.addActionListener(this);
@@ -128,8 +114,9 @@ public class LoginPage extends JFrame implements ActionListener {
                  ResultSet rst=pstmt.executeQuery();
                  if(rst.next()) {
                 	 if(email.equals(rst.getString("email"))) {
-                		 email em = new email();
+                		 Email em = new Email();
                 		 em.setEmail(email);
+                		 new BookingPage();
                 		 // paste here
                 		
                 	 }
