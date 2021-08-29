@@ -65,7 +65,7 @@ public class ViewRides extends JPanel{
 
         //Adding buttons
         add(changingButton);
-        //add(chatButton);
+        add(chatButton);
         changingButton.setBounds(0,150,200,60);
         chatButton.setBounds(210,150,200,60);
 
@@ -118,8 +118,12 @@ public class ViewRides extends JPanel{
         chatButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                resultSet=getCustomerDetails((String)availableRidesTable.getValueAt(availableRidesTable.getRowCount(),0));
+                if(!(chatButton.isEnabled())){
+                    return;
+                }
+                resultSet=getCustomerDetails((String)currentRideTable.getValueAt(0,0));
                 try {
+                    resultSet.next();
                     customerName = resultSet.getString(1).trim() + " " + resultSet.getString(2);
                     customerPortNumber=resultSet.getInt(6);
                 }
@@ -237,6 +241,7 @@ public class ViewRides extends JPanel{
     public boolean acceptRide(int currentRideOTP){
         query="select * from ride where otp="+currentRideOTP;
         try {
+            chatButton.setEnabled(true);
             statement = TabServer.connection.createStatement();
             resultSet= statement.executeQuery(query);
             currentRide=new Ride();
@@ -323,6 +328,7 @@ public class ViewRides extends JPanel{
         return true;
     }
     private boolean rideComplete(){
+        chatButton.setEnabled(false);
         fare=0;
         endKM=Integer.parseInt(JOptionPane.showInputDialog(null,"Enter the end kilometer : "));
         hoursElapsed=Integer.parseInt(JOptionPane.showInputDialog(null,"Enter the hours of travel : "));
