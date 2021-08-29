@@ -244,7 +244,7 @@ public class BookRide extends JFrame implements ActionListener {
 		            }
 		     }
 		     else if(obj == jb_upd) {
-		    	 new cusup();
+		    	 new UpdatePage();
 		     }
 		    	 
 			else{
