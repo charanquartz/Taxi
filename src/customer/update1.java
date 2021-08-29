@@ -1,5 +1,8 @@
+
 package proj;
 import proj.jb;
+
+import proj.email;
 
 import proj.home;
 
@@ -35,8 +38,8 @@ public class cusup extends JFrame implements ActionListener {
 		
 		Container c;
 		 JLabel title,lbl1,lbl2,lbl3,lbl4,lbl5,lbl6,lbl7;
-		 JTextField txtFld1,txtFld2,txtFld3,txtFld4,txtFld5,txtFld6,txtFld7;
-		 JButton jb_submit;
+		 JTextField txtFld1,txtFld2,txtFld3,txtFld4,txtFld5,txtFld6,txtFld7,txt;
+		 JButton jb_submit,btn;
 		 JPanel jp;
 		
 		public cusup()  {
@@ -55,10 +58,11 @@ public class cusup extends JFrame implements ActionListener {
 	         lbl1 = new JLabel("FIRST NAME");
 	         lbl2 = new JLabel("LAST NAME");
 	         lbl3 = new JLabel("MOBILE");
-	         lbl4 = new JLabel("EMAIL");
+	         lbl4 = new JLabel("EMAIL(dont change)");
 	         lbl5 = new JLabel("GENDER");
 	         lbl6 = new JLabel("STATE");
 	         lbl7 = new JLabel("PASSWORD");
+	         
 	         
 	         txtFld1 = new JTextField();
 	         txtFld2 = new JTextField();
@@ -69,12 +73,39 @@ public class cusup extends JFrame implements ActionListener {
 	         txtFld7 = new JTextField();
 	         
 	         
+	         txt = new JTextField();
+	         txt.setText("ENTER YOUR EMAIL");
+	         txt.addFocusListener(new FocusListener() {
+	               public void focusGained(FocusEvent e) {
+	                   if (txt.getText().equals("ENTER YOUR EMAIL")) {
+	                	   txt.setText("");
+	                	   txt.setForeground(Color.BLACK);
+	                       }
+
+	                   }
+	               
+	                   public void focusLost(FocusEvent e) {
+	                       if (txt.getText().isEmpty()) {
+	                    	   txt.setForeground(Color.GRAY);
+	                    	   txt.setText("ENTER YOUR EMAIL");
+	                       }
+	                   }
+	               });
+
+	         
+	         
+	         
 	       //submit btn
 	         jb_submit = new JButton("Submit");
 	         jb_submit.addActionListener(this);
 	         
+	         btn = new JButton("click");
+	         btn.addActionListener(this);
+	         
+	         
 	         
 	         title.setBounds(400, 60, 500, 25);
+	         txt.setBounds(400,90,200, 20);
 	         lbl1.setBounds(400,120, 120, 20);
 	         lbl2.setBounds(400,150, 120, 20);
 	         lbl3.setBounds(400,180, 120, 20);
@@ -92,6 +123,7 @@ public class cusup extends JFrame implements ActionListener {
 	         txtFld7.setBounds(550,300, 120,20);
 	         
 	         jb_submit.setBounds(500,380, 150,20);
+	         btn.setBounds(650,90,150,20);
 	         
 	         title.setFont(new Font("Serif", Font.BOLD, 20));
 	         jb_submit.setFont(new Font("Serif", Font.BOLD,15));
@@ -107,7 +139,9 @@ public class cusup extends JFrame implements ActionListener {
 	         c.add(lbl7);
 	         
 	         c.add(jb_submit);
+	         c.add(btn);
 	         
+	         c.add(txt);
 	         c.add(txtFld1);
 	         c.add(txtFld2);
 	         c.add(txtFld3);
@@ -115,31 +149,7 @@ public class cusup extends JFrame implements ActionListener {
 	         c.add(txtFld5);
 	         c.add(txtFld6);
 	         c.add(txtFld7);
-	         try {
-	        	 
-	        	 email ot = new email();
-	        	 Class.forName("oracle.jdbc.driver.OracleDriver");
-                 Connection con=DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:XE","test","sql");
-                 String query="select fname, lname, mob, Gender, State, Pass from table std1 where Email=?";
-                 PreparedStatement pstmt=con.prepareStatement(query);
-
-                 pstmt.setString(1,ot.getEmail());
-                 ResultSet rst=pstmt.executeQuery();
-                 if(rst.next()){
-                     txtFld1.setText(rst.getString("fname"));
-                     txtFld2.setText(rst.getString("lname"));
-                     txtFld3.setText(rst.getString("mob"));
-                     txtFld4.setText(rst.getString("Email"));
-                     txtFld5.setText(rst.getString("Gender"));
-                     txtFld6.setText(rst.getString("State"));
-                     txtFld7.setText(rst.getString("Pass"));
-                     
-                     
-                 }
-			} catch (Exception e) {
-				// TODO: handle exception
-				JOptionPane.showMessageDialog(this,"@@@@@@@@@@@@@@@"+ e.toString());
-			}
+	         
 	         
 	         
 	         setVisible(true);
@@ -151,10 +161,36 @@ public class cusup extends JFrame implements ActionListener {
 		
 		public void actionPerformed(ActionEvent e) {
 			Object src = e.getSource();
-			if(src == jb_submit) {
+			if(src == btn) {
+				try {
+		        	 
+		        	 Class.forName("oracle.jdbc.driver.OracleDriver");
+	                 Connection con=DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:XE","SYSTEM","jana");
+	                 String query="select fname,lname,mob,email,gender,state,pass from std1 where email=?";
+	                 PreparedStatement pstmt=con.prepareStatement(query);
+
+	                 pstmt.setString(1,txt.getText());
+	                 ResultSet rst=pstmt.executeQuery();
+	                 if(rst.next()){
+	                     txtFld1.setText(rst.getString("fname"));
+	                     txtFld2.setText(rst.getString("lname"));
+	                     txtFld3.setText(rst.getString("mob"));
+	                     txtFld4.setText(rst.getString("email"));
+	                     txtFld5.setText(rst.getString("gender"));
+	                     txtFld6.setText(rst.getString("state"));
+	                     txtFld7.setText(rst.getString("pass"));
+	                     
+	                     
+	                 }
+				} catch (Exception e1) {
+					// TODO: handle exception
+					JOptionPane.showMessageDialog(this,"@@@@@@@@@@@@@@@"+ e1.toString());
+				}
+			}
+			else if(src == jb_submit) {
 				try {
 					Class.forName("oracle.jdbc.driver.OracleDriver");
-	                   Connection con=DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:XE","test","sql");
+	                   Connection con=DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:XE","SYSTEM","jana");
 	                   String query="update std1 set fname=?,lname=?,mob=?,Gender=?,State=?,Pass=? where Email=?";
 	                   PreparedStatement pstmt=con.prepareStatement(query);
 	                   pstmt.setString(1,txtFld1.getText());
@@ -181,25 +217,4 @@ public class cusup extends JFrame implements ActionListener {
 		new cusup();
 		
 	}
-}
------------------------------------------------------------
-  // email class
-  package proj;
-
-public class email {
-	private String email;
-	
-	public String getEmail() {
-	     return email;
-	 }
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public static void main(String[] args) {
-		
-
-	}
-
 }
