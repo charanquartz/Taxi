@@ -1,6 +1,5 @@
-
 package customer;
-import customer.jb;
+import customer.JavaBean;
 
 import customer.email;
 import java.awt.Color;
@@ -115,7 +114,7 @@ public class LoginPage extends JFrame implements ActionListener {
 			
 	     Object obj=e.getSource();
 	     if(obj == jb_login) {
-	    	 jb oj = new jb();
+	    	 JavaBean oj = new JavaBean();
 	    	 oj.setEmail(txtFld1.getText().toString());
 	    	 oj.setPass(txtFld2.getText().toString());
 	    	 String pass = oj.getPass();
@@ -131,8 +130,8 @@ public class LoginPage extends JFrame implements ActionListener {
                 	 if(email.equals(rst.getString("email"))) {
                 		 email em = new email();
                 		 em.setEmail(email);
-                		// System.out.println(em.getEmail());
-				         new BookRide2();
+                		 // paste here
+                		
                 	 }
                 	 else {
                 		 JOptionPane.showMessageDialog(null,"Mobile Number or Password wrong");
