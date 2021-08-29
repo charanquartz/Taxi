@@ -1,3 +1,4 @@
+package customer;
 
 import java.awt.*;
 
@@ -13,7 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-class feed extends Frame  implements ActionListener
+class FeedbackPage extends Frame  implements ActionListener
 {
 	private TextArea area_txta;
 	private TextField txt;
@@ -26,8 +27,8 @@ class feed extends Frame  implements ActionListener
 	 private Button submit_btn,exit_btn,clear_btn;
 	 private String s;
 	  
-	  public feed() {
-		  setBackground(Color.gray);
+	  public FeedbackPage() {
+		  setBackground(Color.yellow);
 	        setLayout(null);
 	         
 	         setExtendedState(MAXIMIZED_BOTH);
@@ -131,7 +132,7 @@ class feed extends Frame  implements ActionListener
 	  public void paint(Graphics g)
 	    {
 	            g.setFont(new Font("Informal Roman",Font.BOLD,30));
-	            g.setColor(Color.RED);
+	            g.setColor(Color.BLACK);
 	            g.drawString("FeedBack Form",200,80);
 	            
 	    }
@@ -157,7 +158,7 @@ class feed extends Frame  implements ActionListener
 	        	 
 	        	try {
 	        		Class.forName("oracle.jdbc.driver.OracleDriver");
-	                 Connection con=DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:XE","SYSTEM","jana");
+	                 Connection con=DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:XE","test","sql");
 	                 String query="insert into feed values(?,?,?)";
 	                 PreparedStatement pstmt = con.prepareStatement(query);
 	                    pstmt.setString(1,txt.getText());
@@ -181,7 +182,7 @@ class feed extends Frame  implements ActionListener
 	
 	
 	public static void main(String[]args) {
-		new feed().setVisible(true);;
+		new FeedbackPage().setVisible(true);
 		
 	}
 }
