@@ -3,4 +3,6 @@
 2.CustomerLogin - LoginPage.java
 3.Update profile - UpdatePage.java
 4.Book ride - BookingPage.java
-5.Feedback
+5.Feedback  FeedbackPage.java
+Email.java
+GenerateRandomNumber.java
