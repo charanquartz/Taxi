@@ -51,19 +51,20 @@ public class Login extends JPanel{
 				 if(txtFld2.getText().trim().equals("Enter password")){
 				 	txtFld2.setEchoChar('*');
 				 	txtFld2.setText("");
+					txtFld1.setForeground(Color.BLACK);
 				 }
 			 }
 
 			 @Override
 			 public void focusLost(FocusEvent e) {
 			 	if(txtFld2.getText().trim().equals("")){
+					txtFld1.setForeground(Color.GRAY);
 			 		txtFld2.setEchoChar((char)0);
 					txtFld2.setText("Enter password");
 				}
 			 }
 		 });
           // txtFld1.setForeground(Color.GRAY);
-
 
            jb_login = new JButton("Login");
            //Mouse event

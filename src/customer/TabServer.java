@@ -1,9 +1,14 @@
 package customer;
 import java.awt.*;
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.swing.*;
 import java.sql.*;
+import java.util.Properties;
+
 public class TabServer extends JFrame{
-    Customer customer;
+    static Customer customer;
     static Connection connection;
     static JTabbedPane tabs;
     JPanel signup,login,bookRide,feedback,updateProfile;
@@ -24,6 +29,7 @@ public class TabServer extends JFrame{
         //Establishing connection
         try{
             connection=DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:XE","test","sql");
+            connection.setAutoCommit(true);
         }
         catch(Exception e){
             System.out.println("TabServer()->Customer"+e);
@@ -61,8 +67,67 @@ public class TabServer extends JFrame{
             return statement.executeQuery(query);
         }
         catch(Exception e){
-            System.out.println("getCustomerDetails"+e);
+            System.out.println("getCustomerDetails-->Email"+e);
         }
         return null;
+    }
+    public static ResultSet getCustomerDetails(long mobileNumber){
+        String query="select * from customer where mobile="+mobileNumber+"";
+        try {
+            Statement statement = connection.createStatement();
+            return statement.executeQuery(query);
+        }
+        catch(Exception e){
+            System.out.println("getCustomerDetails-->mobileNumber"+e);
+        }
+        return null;
+    }
+    public static boolean sendMail(String subject,String text,String email){
+        final String username = "taxi.booking.service.java@gmail.com";
+        final String password = "projectcab";
+
+        final String from = "taxi.booking.service.java@gmail.com";
+        final String to = email;
+
+        Properties props = new Properties();
+
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.socketFactory.port", "465");
+        props.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.port", "465");
+
+
+
+
+        Authenticator a =new Authenticator() {
+
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+
+                return new PasswordAuthentication(username, password);
+
+            }
+
+        };
+
+        Session session = Session.getInstance(props, a);
+
+        try {
+
+            Message message = new MimeMessage(session);
+
+            message.setFrom(new InternetAddress(from));
+
+            message.setRecipients(Message.RecipientType.TO,InternetAddress.parse(to));
+            message.setSubject(subject);
+            message.setText(text);
+
+            Transport.send(message);
+
+        } catch (MessagingException e) {
+            System.out.println(e);
+        }
+        return true;
     }
 }
