@@ -1,25 +1,16 @@
 package customer;
 
-import customer.FeedbackPage;
-import customer.Email;
-import customer.GenerateRandomNumber;
 import java.awt.Color;
 
 import java.awt.Container;
 import java.awt.Font;
-import java.awt.Image;
-import java.awt.ItemSelectable;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.awt.event.ItemEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -28,12 +19,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
-public class BookingPage extends JFrame implements ActionListener {
+public class BookRide extends JPanel implements ActionListener {
 	 Container c;
 	 JLabel title,lbl1,lbl2,lbl3,lbl4,lbl5;
 	 JTextField txtFld1,txtFld2;
@@ -43,27 +32,12 @@ public class BookingPage extends JFrame implements ActionListener {
 	 ButtonGroup bg;
 	 JButton jb_submit;
 	 JPanel jp;
-	
-	
-	 
-	 GenerateRandomNumber dd = new GenerateRandomNumber();
-	 String dd1 = dd.getRandomNumberString();
-	 int i=Integer.parseInt(dd1);
-	
-	  
-	 
+
+	 int i= TabServer.generateRandomNumber();
 	 @SuppressWarnings({ "unchecked", "rawtypes" })
-	 public BookingPage() {
-		 
-		 
-		  
-		 
-		 setTitle("BOOK RIDE");
-		 c=getContentPane();
-	     c.setLayout(null); 
-         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-         setExtendedState(MAXIMIZED_BOTH);
-         c.setBackground(Color.yellow);
+	 public BookRide() {
+		 setLayout(null);
+         setBackground(Color.yellow);
          setSize(500, 600);
          
          title = new JLabel("TAXI BOOKING PAGE");
@@ -73,7 +47,7 @@ public class BookingPage extends JFrame implements ActionListener {
          lbl2 = new JLabel("Destination Location");
          //lbl3 = new JLabel("Car Type");
          lbl4 = new JLabel("No of Seats");
-         lbl5 = new JLabel("Your OTP is "+dd1);
+         lbl5 = new JLabel("Your OTP is "+i);
         
          
          
@@ -170,23 +144,23 @@ public class BookingPage extends JFrame implements ActionListener {
          
          
          //add
-         c.add(title);
-         c.add(lbl1);
-         c.add(lbl2);
+         add(title);
+         add(lbl1);
+         add(lbl2);
         // c.add(lbl3);
-         c.add(lbl4);
-         c.add(lbl5).setVisible(false);;
+         add(lbl4);
+         add(lbl5).setVisible(false);;
          
          
-         c.add(jb_submit);
+         add(jb_submit);
          //c.add(jb_upd);
          
-         c.add(txtFld1);
-         c.add(txtFld2);
+         add(txtFld1);
+         add(txtFld2);
          
          
          
-         c.add(carseat);
+         add(carseat);
          
          
          setVisible(true);
@@ -252,7 +226,7 @@ public class BookingPage extends JFrame implements ActionListener {
 		    	 
 		     }
 	 public static void main(String args[]) {
-		  new BookingPage();
+		  new BookRide();
 		 
 		 
 	 } 

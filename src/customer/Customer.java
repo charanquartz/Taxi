@@ -7,7 +7,7 @@ import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
-public class JavaBean  {
+public class Customer {
 
  private String Fname;
  private String Lname;

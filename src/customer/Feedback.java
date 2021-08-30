@@ -3,18 +3,14 @@ package customer;
 import java.awt.*;
 
 import java.awt.event.*;
-import java.io.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 
-import javax.swing.ButtonGroup;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-class FeedbackPage extends Frame  implements ActionListener
+
+public class Feedback extends JPanel  implements ActionListener
 {
 	private TextArea area_txta;
 	private TextField txt;
@@ -27,15 +23,12 @@ class FeedbackPage extends Frame  implements ActionListener
 	 private Button submit_btn,exit_btn,clear_btn;
 	 private String s;
 	  
-	  public FeedbackPage() {
+	  public Feedback() {
+	  	setVisible(true);
 		  setBackground(Color.yellow);
-	        setLayout(null);
-	         
-	         setExtendedState(MAXIMIZED_BOTH);
-	   
-	        setTitle("Applicatoin Form");
-	        setSize(650,450);
-	        setLocation(375,175);
+		  setLayout(null);
+	      setSize(650,450);
+	      setLocation(375,175);
 	        
 	        elabel = new Label("Email");
 	        elabel.setBounds(50,100,50,30);
@@ -118,15 +111,6 @@ class FeedbackPage extends Frame  implements ActionListener
 	        submit_btn.setBounds(25,500,75,30);
 	        submit_btn.addActionListener(this);
 	        add(submit_btn);
-	        
-	        
-	        addWindowListener(new WindowAdapter()
-	        {
-	            public void windowClosing(WindowEvent we)
-	            {
-	                System.exit(0);
-	            }
-	        });
 	  }
 	  
 	  public void paint(Graphics g)
@@ -182,8 +166,7 @@ class FeedbackPage extends Frame  implements ActionListener
 	
 	
 	public static void main(String[]args) {
-		new FeedbackPage().setVisible(true);
-		
+		new Feedback();
 	}
 }
 //create table feed (email varchar2(20), feed varchar2(500), rate varchar2(20));

@@ -4,8 +4,6 @@ package customer;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -13,21 +11,18 @@ import java.awt.event.FocusListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.Statement;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
-public class SignUpPage extends JFrame implements ActionListener {
+public class SignUp extends JPanel implements ActionListener {
 	 Container c;
 	 JLabel title,lbl1,lbl2,lbl3,lbl4,lbl5,lbl6,lbl7,lbl8;
 	 JTextField txtFld1,txtFld2,txtFld3,txtFld4,txtFld5,txtFld6;
@@ -44,17 +39,9 @@ public class SignUpPage extends JFrame implements ActionListener {
 	            "Meghalaya","Mizoram","Nagaland","Orissa","Punjab","Rajasthan","Sikkim","Tamil Nadu",			      
 	            "Telangana","Tripura","Uttarakhand"};
 	 @SuppressWarnings({ "unchecked", "rawtypes" })
-	 public SignUpPage() {
-		 
-		 
-		 
-		 
-		 setTitle("CUSTOMER SIGNUP PAGE :)");
-		 c=getContentPane();
-	     c.setLayout(null); 
-         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-         setExtendedState(MAXIMIZED_BOTH);
-         c.setBackground(Color.yellow);
+	 public SignUp() {
+		 setLayout(null);
+         setBackground(Color.yellow);
          setSize(500, 600);
          
          title = new JLabel("SIGNUP PAGE");
@@ -206,27 +193,27 @@ public class SignUpPage extends JFrame implements ActionListener {
          txtFld6.setBounds(530,300, 150, 30);
          
          //add
-         c.add(title);
-         c.add(lbl1);
-         c.add(lbl2);
-         c.add(lbl3);
-         c.add(lbl4);
-         c.add(lbl5);
-         c.add(lbl6); 
-         c.add(lbl7);
-         c.add(lbl8);
+         add(title);
+         add(lbl1);
+         add(lbl2);
+         add(lbl3);
+         add(lbl4);
+         add(lbl5);
+         add(lbl6);
+         add(lbl7);
+         add(lbl8);
+
+         add(jb_submit);
          
-         c.add(jb_submit);
-         
-         c.add(txtFld1);
-         c.add(txtFld2);
-         c.add(txtFld3);
-         c.add(txtFld4);
-         c.add(txtFld5);
-         c.add(txtFld6);
-         c.add(jcSta);
-         c.add(jrb_female);
-         c.add(jrb_male);
+         add(txtFld1);
+         add(txtFld2);
+         add(txtFld3);
+         add(txtFld4);
+         add(txtFld5);
+         add(txtFld6);
+         add(jcSta);
+         add(jrb_female);
+         add(jrb_male);
          
          setVisible(true);
          
@@ -236,7 +223,7 @@ public class SignUpPage extends JFrame implements ActionListener {
 			
 		     Object obj=e.getSource();
 		     if(obj==jb_submit){
-		    	 JavaBean oj = new JavaBean();
+		    	 Customer oj = new Customer();
 		    	 oj.setFname(txtFld1.getText());
 		    	 oj.setLname(txtFld2.getText());
 		    	 oj.setMob(txtFld3.getText().toString());
@@ -257,7 +244,7 @@ public class SignUpPage extends JFrame implements ActionListener {
 
 		    	 if(txtFld6.getText().equals(con_pass)) {
 		    		 
-		    		 //create table signup( Fname varchar2(20),Lname varchar2(20),Moblie varchar2(20),Email varchar2(20),Gender varchar2(20),State varchar2(20),Pass varchar2(20) );/
+		    		 // create table customer(Fname varchar2(30),Lname varchar2(30),Moblie int,Email varchar2(30),Gender char(8),State char(20),Pass varchar2(30),portNumber int primary key);
 				 try{
 					 String fname = oj.getFname();
 					 String lname = oj.getLname();
@@ -298,8 +285,15 @@ public class SignUpPage extends JFrame implements ActionListener {
 		    	 
 		    	 }
 		     }
+	public int generateRandomNumber(){
+	     int n=0;
+	     for(int i=0;i<6;i++){
+
+         }
+	     return n;
+    }
 	 public static void main(String[]args) {
-		 new SignUpPage();
+		 new SignUp();
 	 }
 	 
 }
