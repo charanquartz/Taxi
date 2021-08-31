@@ -10,7 +10,7 @@ public class Login extends JPanel{
 	JPasswordField txtFld2;
 	JButton jb_login;
 	JLabel txt;
-	 
+	JCheckBox showpasswordCheckBox;
 	 public Login() {
 		 setLayout(null);
 		 setVisible(true);
@@ -66,6 +66,48 @@ public class Login extends JPanel{
 		 });
           // txtFld1.setForeground(Color.GRAY);
 
+		 showpasswordCheckBox=new JCheckBox("Show password");
+		 showpasswordCheckBox.setBounds(1030,270,200,35);
+		 showpasswordCheckBox.addMouseListener(new MouseListener() {
+			 @Override
+			 public void mouseClicked(MouseEvent e) {
+				 if(txtFld2.getText().trim().equals("Enter password")){
+				 	showpasswordCheckBox.setSelected(false);
+				 	return;
+				 }
+				 if(showpasswordCheckBox.isSelected()){
+				 	String pass=txtFld2.getText();
+				 	txtFld2.setEchoChar((char)0);
+				 	txtFld2.setText(pass);
+				 }
+				 else{
+				 	String pass=txtFld2.getText();
+				 	txtFld2.setEchoChar('*');
+				 	txtFld2.setText(pass);
+				 }
+			 }
+
+			 @Override
+			 public void mousePressed(MouseEvent e) {
+
+			 }
+
+			 @Override
+			 public void mouseReleased(MouseEvent e) {
+
+			 }
+
+			 @Override
+			 public void mouseEntered(MouseEvent e) {
+
+			 }
+
+			 @Override
+			 public void mouseExited(MouseEvent e) {
+
+			 }
+		 });
+
            jb_login = new JButton("Login");
            //Mouse event
 		 	jb_login.addMouseListener(new MouseListener() {
@@ -80,6 +122,7 @@ public class Login extends JPanel{
 						if(customerDetails.next()) {
 							String password=customerDetails.getString(7);
 							if(password.equals(txtFld2.getText())){
+								TabServer.customer.setEmail(txtFld1.getText());
 								JOptionPane.showMessageDialog(null,"Login success");
 								TabServer.tabs.setEnabledAt(0,false);
 								TabServer.tabs.setEnabledAt(1,false);
@@ -134,5 +177,6 @@ public class Login extends JPanel{
            add(txtFld2);
            add(jb_login);
            add(txt);
+           add(showpasswordCheckBox);
 	 }
 }
