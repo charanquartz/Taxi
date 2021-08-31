@@ -403,7 +403,7 @@ public class SignUp extends JPanel{
             JOptionPane.showMessageDialog(null,"Please enter your mobile number");
             return false;
         }
-        if(!TabServer.isValidNumber(txtFld7.getText())){
+        if(!TabServer.isValidPhoneNumber(txtFld7.getText())){
             JOptionPane.showMessageDialog(null,"Please enter a valid mobile number");
             return false;
         }

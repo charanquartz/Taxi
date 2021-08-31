@@ -1,16 +1,10 @@
 package customer;
-import customer.JavaBean;
-
-
-import customer.LoginPage;
 
 
 import java.awt.Color;
 
 import java.awt.Container;
 import java.awt.Font;
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -19,20 +13,15 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 
-import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
-public class UpdatePage extends JFrame implements ActionListener {
+public class UpdateProfile extends JPanel implements ActionListener {
 		
 		Container c;
 		 JLabel title,lbl1,lbl2,lbl3,lbl4,lbl5,lbl6,lbl7;
@@ -40,14 +29,10 @@ public class UpdatePage extends JFrame implements ActionListener {
 		 JButton jb_submit,btn;
 		 JPanel jp;
 		
-		public UpdatePage()  {
-			
-			setTitle("UPDATE PASSANGER PROFILE ;)");
-			c=getContentPane();
-		     c.setLayout(null); 
-	         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	         setExtendedState(MAXIMIZED_BOTH);
-	         c.setBackground(Color.yellow);
+		public UpdateProfile()  {
+			setVisible(true);
+			setLayout(null);
+	        setBackground(Color.yellow);
 	         setSize(500, 600);
 	         
 	         title = new JLabel("UPDATE PROFILE");
@@ -127,34 +112,26 @@ public class UpdatePage extends JFrame implements ActionListener {
 	         jb_submit.setFont(new Font("Serif", Font.BOLD,15));
 	         
 	         //add
-	         c.add(title);
-	         c.add(lbl1).setVisible(false);
-	         c.add(lbl2).setVisible(false);
-	         c.add(lbl3).setVisible(false);
+	         add(title);
+	         add(lbl1).setVisible(false);
+	         add(lbl2).setVisible(false);
+	         add(lbl3).setVisible(false);
 	         
-	         c.add(lbl5).setVisible(false);
-	         c.add(lbl6).setVisible(false); 
-	         c.add(lbl7).setVisible(false);
+	         add(lbl5).setVisible(false);
+	         add(lbl6).setVisible(false);
+	         add(lbl7).setVisible(false);
+	         add(jb_submit).setVisible(false);
+
+	         add(btn);
 	         
-	         c.add(jb_submit).setVisible(false);
-	         c.add(btn);
-	         
-	         c.add(txt);
-	         c.add(txtFld1).setVisible(false);
-	         c.add(txtFld2).setVisible(false);
-	         c.add(txtFld3).setVisible(false);
+	         add(txt);
+	         add(txtFld1).setVisible(false);
+	         add(txtFld2).setVisible(false);
+	         add(txtFld3).setVisible(false);
 	        
-	         c.add(txtFld5).setVisible(false);
-	         c.add(txtFld6).setVisible(false);
-	         c.add(txtFld7).setVisible(false);
-	         
-	         
-	         
-	         setVisible(true);
-	         
-	         
-			
-			
+	         add(txtFld5).setVisible(false);
+	         add(txtFld6).setVisible(false);
+	         add(txtFld7).setVisible(false);
 		}
 		
 		public void actionPerformed(ActionEvent e) {
@@ -228,7 +205,7 @@ public class UpdatePage extends JFrame implements ActionListener {
 		
 	
 	public static void main(String[]args) {
-		new UpdatePage();
+		new UpdateProfile();
 		
 	}
 }

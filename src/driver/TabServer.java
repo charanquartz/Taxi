@@ -71,6 +71,11 @@ public class TabServer extends JFrame{
         }
         return true;
     }
+    static public boolean isValidPhoneNumber(String txt){
+        pattern=Pattern.compile("^[6-9]{1}[0-9]{9}$");
+        matcher=pattern.matcher(txt);
+        return matcher.matches();
+    }
     static public boolean isValidDate(String txt){
         pattern=Pattern.compile("\\d{4}-\\d{2}-\\d{2}");
         matcher=pattern.matcher(txt);
