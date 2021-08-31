@@ -82,6 +82,17 @@ public class TabServer extends JFrame{
         }
         return null;
     }
+    public static ResultSet getCustomerDetails(int portNumber){
+        String query="select * from customer where portNumber="+portNumber+"";
+        try {
+            Statement statement = connection.createStatement();
+            return statement.executeQuery(query);
+        }
+        catch(Exception e){
+            System.out.println("getCustomerDetails-->mobileNumber"+e);
+        }
+        return null;
+    }
     public static boolean sendMail(String subject,String text,String email){
         final String username = "taxi.booking.service.java@gmail.com";
         final String password = "projectcab";

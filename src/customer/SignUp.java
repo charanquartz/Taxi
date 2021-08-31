@@ -215,7 +215,7 @@ public class SignUp extends JPanel implements ActionListener {
 
     @SuppressWarnings("unused")
     public void actionPerformed(ActionEvent e) {
-        int customerPortNumber;
+        int customerPortNumber=123456;
         Object obj = e.getSource();
         if (obj == jb_submit) {
             TabServer.customer.setFirstName(txtFld1.getText());
@@ -224,7 +224,16 @@ public class SignUp extends JPanel implements ActionListener {
             TabServer.customer.setEmail(txtFld4.getText());
             TabServer.customer.setPassword(txtFld5.getText());
             TabServer.customer.setState(jcSta.getSelectedItem().toString());
-            TabServer.customer.setPortNumber(TabServer.generateRandomNumber());
+            try {
+                //Generating port number that is not present already in the table...
+                while (TabServer.getCustomerDetails(customerPortNumber).next()) {
+                    customerPortNumber=TabServer.generateRandomNumber();
+                }
+            }
+            catch (Exception ex){
+                System.out.println(ex);
+            }
+            TabServer.customer.setPortNumber(customerPortNumber);
 
             //Checking if email / mobile already registered
             ResultSet resultSet;
