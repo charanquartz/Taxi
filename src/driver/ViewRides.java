@@ -5,7 +5,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.*;
 import java.awt.*;
-import java.sql.Driver;
 
 public class ViewRides extends JPanel{
     Statement statement;
@@ -250,7 +249,7 @@ public class ViewRides extends JPanel{
             resultSet.next();
             currentRide.setCustomerEmail(resultSet.getString(1));
             System.out.println(query);
-            currentRide.setNoOfPassengers(resultSet.getInt(2));
+            currentRide.setNoOfSeats(resultSet.getInt(2));
             currentRide.setPickup(resultSet.getString(3));
             currentRide.setDestination(resultSet.getString(4));
             currentRide.setDriverAssigned("true");
@@ -266,7 +265,7 @@ public class ViewRides extends JPanel{
 
             //Updating table values...
             currentRideTable.setValueAt(currentRide.getCustomerEmail(),0,0);
-            currentRideTable.setValueAt(currentRide.getNoOfPassengers(),0,1);
+            currentRideTable.setValueAt(currentRide.getNoOfSeats(),0,1);
             currentRideTable.setValueAt(currentRide.getPickup(),0,2);
             currentRideTable.setValueAt(currentRide.getDestination(),0,3);
             currentRideTable.setValueAt(-1,0,4);

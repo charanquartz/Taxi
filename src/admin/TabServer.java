@@ -20,7 +20,6 @@ public class TabServer extends JFrame {
     public static Font font=new Font("Times new roman",Font.BOLD,18);
     JPanel login, viewDriver, approveDriver,feedback,changepassword;
     public TabServer(){
-        setContentPane(new JLabel(new ImageIcon("C:\\Users\\vadha\\Downloads\\image.JPG")));
         admin=new Admin();
         setTitle("ADMIN");
         tabs= new JTabbedPane();

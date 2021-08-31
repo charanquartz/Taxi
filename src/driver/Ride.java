@@ -2,8 +2,8 @@ package driver;
 
 public class Ride {
     private String customerEmail,driverAssigned,destination,pickup;
-    private int noOfPassengers,otp,startKM;
-
+    private int noOfSeats,otp,startKM;
+    //3.create table ride(email varchar(30) references customer(email),noOfSeats int,pickup varchar(30),dest varchar(30),driverAssigned char(5),startKM int,otp int primary key);
     public int getStartKM() {
         return startKM;
     }
@@ -12,12 +12,12 @@ public class Ride {
         this.startKM = startKM;
     }
 
-    public int getNoOfPassengers() {
-        return noOfPassengers;
+    public int getNoOfSeats() {
+        return noOfSeats;
     }
 
-    public void setNoOfPassengers(int noOfPassengers) {
-        this.noOfPassengers = noOfPassengers;
+    public void setNoOfSeats(int noOfSeats) {
+        this.noOfSeats = noOfSeats;
     }
 
     public int getOtp() {

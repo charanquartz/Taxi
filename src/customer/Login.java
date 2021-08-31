@@ -122,6 +122,13 @@ public class Login extends JPanel{
 						if(customerDetails.next()) {
 							String password=customerDetails.getString(7);
 							if(password.equals(txtFld2.getText())){
+								TabServer.customer.setFirstName(customerDetails.getString(1));
+								TabServer.customer.setLastName(customerDetails.getString(2));
+								TabServer.customer.setMobileNumber(customerDetails.getLong(3)+"");
+								TabServer.customer.setGender(customerDetails.getString(5));
+								TabServer.customer.setState(customerDetails.getString(6));
+								TabServer.customer.setPassword(customerDetails.getString(7));
+								TabServer.customer.setPortNumber(customerDetails.getInt(8));
 								TabServer.customer.setEmail(txtFld1.getText());
 								JOptionPane.showMessageDialog(null,"Login success");
 								TabServer.tabs.setEnabledAt(0,false);

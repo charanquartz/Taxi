@@ -93,6 +93,30 @@ public class TabServer extends JFrame{
         }
         return null;
     }
+    public static ResultSet getRideDetails(int otp){
+        String query="select * from ride where otp="+otp;
+        try{
+            Statement statement=connection.createStatement();
+            return statement.executeQuery(query);
+        }
+        catch (Exception e){
+            System.out.println("getRideDetails()"+e);
+        }
+        return null;
+    }
+    public static boolean hasAlreadyBookedARide(String email){
+        try{
+            String query="select * from ride where email='"+email+"'";
+            Statement statement=connection.createStatement();
+            if(statement.executeQuery(query).next()){
+                return true;
+            }
+        }
+        catch(Exception e){
+            System.out.println("hasAlreadyBookedRide()"+e);
+        }
+        return false;
+    }
     public static boolean sendMail(String subject,String text,String email){
         final String username = "taxi.booking.service.java@gmail.com";
         final String password = "projectcab";
