@@ -23,7 +23,7 @@ public class TabServer extends JFrame{
         signup=new SignUp();
         login=new Login();
         bookRide=new BookRide();
-        feedback=new Feedback();
+       // feedback=new Feedback();
         updateProfile=new UpdateProfile();
 
         //Establishing connection

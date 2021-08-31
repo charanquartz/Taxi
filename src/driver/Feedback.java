@@ -26,10 +26,9 @@ public class Feedback extends JPanel{
     Feedback(){
         setBounds(0,0,1900,1000);
         setVisible(true);
-        setFont(new Font("Times New Roman",Font.BOLD,19));
+    setFont(new Font("Times New Roman",Font.BOLD,19));
         setLayout(null);
         setBackground(new Color(255, 167, 88));
-
         //Label
         FeedbackLabel=new Label("Enter your feedback : ");
         ratingLabel=new Label("Rate us : ");
