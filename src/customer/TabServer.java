@@ -45,7 +45,6 @@ public class TabServer extends JFrame{
         tabs.setEnabledAt(3,false);
         tabs.setEnabledAt(4,false);
 
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         add(tabs);
     }
@@ -92,6 +91,31 @@ public class TabServer extends JFrame{
             System.out.println("getCustomerDetails-->mobileNumber"+e);
         }
         return null;
+    }
+    public static ResultSet getRideDetails(int otp){
+        String query="select * from ride where otp="+otp;
+        try{
+            Statement statement=connection.createStatement();
+            return statement.executeQuery(query);
+        }
+        catch (Exception e){
+            System.out.println("getRideDetails()"+e);
+        }
+        return null;
+    }
+    public static boolean hasAlreadyBookedARide(String email){
+        try{
+            String query="select * from ride where email='"+email+"'";
+            Statement statement=connection.createStatement();
+            ResultSet resultSet=statement.executeQuery(query);
+            if(resultSet.next()){
+                return true;
+            }
+        }
+        catch(Exception e){
+            System.out.println("hasAlreadyBookedRide()"+e);
+        }
+        return false;
     }
     public static boolean sendMail(String subject,String text,String email){
         final String username = "taxi.booking.service.java@gmail.com";

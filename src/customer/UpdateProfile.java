@@ -165,6 +165,13 @@ public class UpdateProfile extends JPanel implements ActionListener {
         Object src = e.getSource();
         if (src == jb_submit) {
             try {
+                TabServer.customer.setFirstName(txtFld1.getText());
+                TabServer.customer.setLastName(txtFld2.getText());
+                TabServer.customer.setMobileNumber(txtFld3.getText());
+                TabServer.customer.setEmail(txtFld4.getText());
+                TabServer.customer.setGender(txtFld5.getText());
+                TabServer.customer.setState(txtFld6.getText());
+                TabServer.customer.setPassword(txtFld7.getText());
                 String query = "update customer set fname=?,lname=?,mobile=?,Gender=?,State=?,Pass=? where Email=?";
                 PreparedStatement pstmt = TabServer.connection.prepareStatement(query);
                 pstmt.setString(1, txtFld1.getText());
@@ -176,7 +183,6 @@ public class UpdateProfile extends JPanel implements ActionListener {
                 pstmt.setString(7, TabServer.customer.getEmail());
                 pstmt.executeUpdate();
                 JOptionPane.showMessageDialog(this, "Updation Success ");
-
             } catch (Exception e2) {
                 JOptionPane.showMessageDialog(this, "^^^^^^^^^^^^^^^^" + e2.toString());
 
@@ -187,19 +193,19 @@ public class UpdateProfile extends JPanel implements ActionListener {
         try {
             String query = "select fname,lname,mobile,email,gender,state,pass,portNumber from customer where email=?";
             PreparedStatement pstmt = TabServer.connection.prepareStatement(query);
-
             pstmt.setString(1, TabServer.customer.getEmail());
             ResultSet rst = pstmt.executeQuery();
             if (rst.next()) {
                 showPasswordCheckBox.setVisible(true);
                 jb_submit.setVisible(true);
 
-                txtFld1.setText(rst.getString("fname").trim());
-                txtFld2.setText(rst.getString("lname").trim());
-                txtFld3.setText(rst.getString("mobile").trim());
-                txtFld5.setText(rst.getString("gender").trim());
-                txtFld6.setText(rst.getString("state").trim());
-                txtFld7.setText(rst.getString("pass").trim());
+                txtFld1.setText(rst.getString(1).trim());
+                txtFld2.setText(rst.getString(2));
+                txtFld3.setText(""+rst.getLong(3));
+                txtFld4.setText(rst.getString(4).trim());
+                txtFld5.setText(rst.getString(5).trim());
+                txtFld6.setText(rst.getString(6).trim());
+                txtFld7.setText(rst.getString(7).trim());
             } else {
                 JOptionPane.showMessageDialog(null, "Email not registered");
             }

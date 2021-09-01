@@ -1,7 +1,5 @@
 package driver;
-import javax.swing.*;
-import java.awt.Event.*;
-import java.awt.*;
+
 public class Car {
     private String carID,company,model,ownerEmail,AC;
     private int capacity,farePerKM;

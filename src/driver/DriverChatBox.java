@@ -1,16 +1,16 @@
 package driver;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.io.*;
 import java.net.*;
 public class DriverChatBox extends JFrame{
     Label historyLabel,enterNewMessageLabel;
     static JTextArea historyTextArea,newMessageTextArea;
-    JButton sendButton;
-    static BufferedReader bf;
-    static Socket customerSocket;
+    static JButton sendButton;
+    static BufferedReader bufferedReader;
+    static BufferedWriter bufferedWriter;
+    static Socket driverSocket;
     static int customerPortNumber;
     static String customerName;
     DriverChatBox(String name,int PortNumber){
@@ -47,86 +47,56 @@ public class DriverChatBox extends JFrame{
         customerPortNumber=PortNumber;
         customerName=name;
 
-        //Networking
-
-        //Establishing connection with customer...
-        Thread thread=new Thread(){
-            @Override
-            public void run(){
+        Thread thread = new Thread() {
+            public void run() {
                 try {
-                    customerSocket = new Socket("127.0.0.1",customerPortNumber);
+                    driverSocket = new Socket("127.0.0.1", customerPortNumber);
+                    bufferedReader=new BufferedReader(new InputStreamReader(driverSocket.getInputStream()));
+                    bufferedWriter=new BufferedWriter(new OutputStreamWriter(driverSocket.getOutputStream()));
                 }
                 catch(Exception e){
-                    System.out.println(e);
+                    System.out.println("DriverChatBox --->establishConnection"+e);
+                    JOptionPane.showMessageDialog(null,"Customer is Offline please retry again");
                 }
             }
         };
         thread.start();
-        try {
+        try{
             thread.join();
         }
-        catch(Exception e){
+        catch (Exception e){
             System.out.println(e);
         }
-
-        Thread readerThread=new Thread(){
+        Thread readerThread = new Thread() {
             @Override
-            public void run(){
-                while(true){
-                    try {
-                        historyTextArea.setText(historyTextArea.getText()+"\n"+customerName+" : "+new DataInputStream(customerSocket.getInputStream()).readUTF());
-                    }
-                    catch(Exception e){
-                        System.out.println(e);
-                    }
-                }
-            }
-        };
-        Thread writerThread=new Thread(){
             public void run() {
-                while (true) {
-                    try {
-                        new DataOutputStream(customerSocket.getOutputStream()).writeUTF(newMessageTextArea.getText());
+                try {
+                    while (true) {
+                        String message = bufferedReader.readLine();
+                        historyTextArea.setText(historyTextArea.getText() + "\n" + customerName + " : " + message);
                     }
-                    catch (Exception e) {
-                        System.out.println(e);
-                    }
+
+                } catch (Exception e) {
+                    System.out.println("DriverChatBox" + e);
                 }
             }
         };
         readerThread.start();
-
-        //Mouseevent for button
-        sendButton.addMouseListener(new MouseListener() {
+        sendButton.addActionListener(new ActionListener() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                writerThread.start();
-                try {
-                    writerThread.join();
+            public void actionPerformed(ActionEvent e) {
+                if(newMessageTextArea.getText().trim().equals("")){
+                    return;
                 }
-                catch(Exception k){
-                    System.out.println(k);
+                historyTextArea.setText(historyTextArea.getText()+"\nYOU : "+newMessageTextArea.getText());
+                try{
+                    bufferedWriter.write(newMessageTextArea.getText());
+                    bufferedWriter.newLine();
+                    bufferedWriter.flush();
                 }
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
+                catch(Exception ex){
+                    System.out.println("DriverChatBox class"+ex);
+                }
             }
         });
     }

@@ -3,7 +3,6 @@ import java.util.*;
 public class Driver {
     private String fname,lname,carID,gender,nationality,city,address,email,pass,approved,availability,licenseId;
     private Date dob;
-    private int portNUmber;
     private ArrayList<Car> cars;
     private long mobile,driverExp,xp;
 
@@ -16,14 +15,6 @@ public class Driver {
 
     public void setCars(ArrayList<Car> cars) {
         this.cars = cars;
-    }
-
-    public int getPortNUmber() {
-        return portNUmber;
-    }
-
-    public void setPortNUmber(int portNUmber) {
-        this.portNUmber = portNUmber;
     }
 
     public String getApproved() {

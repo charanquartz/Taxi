@@ -20,7 +20,6 @@ public class TabServer extends JFrame {
     public static Font font=new Font("Times new roman",Font.BOLD,18);
     JPanel login, viewDriver, approveDriver,feedback,changepassword;
     public TabServer(){
-        setContentPane(new JLabel(new ImageIcon("C:\\Users\\vadha\\Downloads\\image.JPG")));
         admin=new Admin();
         setTitle("ADMIN");
         tabs= new JTabbedPane();
@@ -30,7 +29,7 @@ public class TabServer extends JFrame {
         add(tabs,BorderLayout.CENTER);
 
         try{
-            connection=DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:XE","madhi","java");
+            connection=DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:XE","test","sql");
             connection.setAutoCommit(true);
             statement=connection.createStatement();
         }
@@ -48,7 +47,6 @@ public class TabServer extends JFrame {
         tabs.addTab("VIEW DRIVER",viewDriver);
         tabs.addTab("APPROVE DRIVER", approveDriver);
         tabs.addTab("VIEW FEEDBACKS",feedback);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
         add(tabs);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
 

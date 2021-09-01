@@ -1,99 +1,110 @@
-//import java.awt.*;
-//import java.awt.event.*;
-//import java.net.*;
-//import java.io.*;
-//public class CustomerChatBox extends Frame implements ActionListener,Runnable
-//{
-//	Socket s;
-//	BufferedReader br;
-//	BufferedWriter bw;
-//	TextField text;
-//	Button button1,button2;
-//	List list;
-//      Label l1;
-//	public static void main(String arg[])
-//	{
-//		new CustomerChatBox("Customer:");
-//
-//	}
-//	public void run()
-//	{
-//		try
-//              {
-//                  s.setSoTimeout(1);
-//              }
-//              catch(Exception e){}
-//
-//		while (true)
-//		{
-//			try
-//                      {
-//                          list.addItem(br.readLine());
-//			}
-//                      catch (Exception h){}
-//		}
-//	}
-//
-//	public CustomerChatBox(String m)
-//	{
-//		super(m);
-//		setSize(450,500);
-//		setLocation(500,0);
-//
-//		this.setLayout(null);
-//
-//              l1=new Label("Customer");
-//              l1.setFont(new Font("verdana",Font.BOLD,23));
-//
-//
-//		button1 = new Button("Send");
-//		button2 = new Button("Exit");
-//		button1.addActionListener(this);
-//		button2.addActionListener(this);
-//		list = new List();
-//		text = new TextField();
-//
-//              l1.setBounds(100,50,300,30);
-//              list.setBounds(100,100,200,200);
-//              text.setBounds(100,320,200,30);
-//              button1.setBounds(100,400,80,30);
-//              button2.setBounds(220,400,80,30);
-//
-//              add(l1);
-//		add(list);
-//		add(button1);
-//		add(button2);
-//		add(text);
-//              setBackground(Color.pink);
-//
-//		setVisible(true);
-//		try{
-//			s = new Socket("127.0.0.1",100);
-//			br = new BufferedReader(new InputStreamReader(s.getInputStream()));
-//			bw = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()));
-//			Thread th;
-//			th = new Thread(this);
-//			th.start();
-//
-//		}catch(Exception e){}
-//
-//	}
-//	public void actionPerformed(ActionEvent e)
-//	{
-//		 if (e.getSource().equals(button2))
-//               {
-//			 System.exit(0);
-//               }
-//		 else
-//               {
-//                  try{
-//                      bw.write(text.getText());
-//			          bw.newLine();
-//                      bw.flush();
-//                     }
-//                     catch(Exception m){}
-//		 }
-//
-//	}
-//
-//}
+package customer;
+
+import java.io.*;
+import java.net.*;
+import java.awt.*;
+import javax.swing.*;
+import java.awt.event.*;
+
+public class CustomerChatBox extends JFrame{
+    Label historyLabel,newMessageLabel;
+    static boolean isConnected=false;
+    static JTextArea historyTextArea,newMessageTextArea;
+    static JButton sendButton;
+    static String message;
+    static ServerSocket customerServerSocket;
+    static Socket driverSocket;
+    static BufferedReader bufferedReader;
+    static BufferedWriter bufferedWriter;
+    CustomerChatBox(){
+        setVisible(true);
+        setLayout(null);
+        setBackground(Color.YELLOW);
+        setBounds(0,0,1900,1000);
+
+        //Label
+        historyLabel=new Label("History : ");
+        newMessageLabel=new Label("Enter message : ");
+
+        //TextArea
+        historyTextArea=new JTextArea();
+        newMessageTextArea=new JTextArea();
+
+        //Button
+        sendButton=new JButton("Send");
+
+        //SetBounds
+        historyLabel.setBounds(0,0,200,50);
+        historyTextArea.setBounds(210,10,1700,600);
+        newMessageLabel.setBounds(0,620,200,50);
+        newMessageTextArea.setBounds(210,620,1000,200);
+        sendButton.setBounds(1220,620,200,50);
+
+        //Adding fields
+        add(historyLabel);
+        add(newMessageLabel);
+        add(historyTextArea);
+        add(newMessageTextArea);
+        add(sendButton);
+
+        Thread connectionThread=new Thread(){
+            @Override
+            public void run(){
+                try {
+                    customerServerSocket = new ServerSocket(TabServer.customer.getPortNumber());
+                    driverSocket=customerServerSocket.accept();
+                    bufferedReader=new BufferedReader(new InputStreamReader(driverSocket.getInputStream()));
+                    bufferedWriter=new BufferedWriter(new OutputStreamWriter(driverSocket.getOutputStream()));
+                }
+                catch(Exception e){
+                    System.out.println("establishConnection()"+e);
+                }
+            }
+        };
+        connectionThread.start();
+        try{
+            connectionThread.join();
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
+        Thread readerThread=new Thread(){
+            @Override
+            public void run(){
+                try{
+                    while(true){
+                        String receivedMessage=bufferedReader.readLine();
+                        historyTextArea.setText(historyTextArea.getText()+"\nDriver : "+receivedMessage);
+                    }
+                }
+                catch(Exception e){
+                    System.out.println(e);
+                }
+            }
+        };
+        readerThread.start();
+        sendButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(!isConnected){
+                    JOptionPane.showMessageDialog(null,"Driver is offline");
+                    return;
+                }
+                message=newMessageTextArea.getText().trim();
+                if(message.equals("")){
+                    return;
+                }
+                try {
+                    bufferedWriter.write(message);
+                    historyTextArea.setText(historyTextArea.getText()+"\nYOU : "+message);
+                    bufferedWriter.newLine();
+                    bufferedWriter.flush();
+                    newMessageTextArea.setText("");
+                }
+                catch(Exception ex){
+                    System.out.println("CustomerChatBox()-->actionPerformed()"+e);
+                }
+            }
+        });
+    }
+}

@@ -5,7 +5,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.*;
 import java.awt.*;
-import java.sql.Driver;
 
 public class ViewRides extends JPanel{
     Statement statement;
@@ -21,7 +20,7 @@ public class ViewRides extends JPanel{
     private Ride currentRide;
     private Font font;
     String customerName;
-    int customerPortNumber;
+    int customerPortNumber,rowClicked;
     ViewRides(){
         setBackground(new Color(255, 167, 88));
         setBounds(0,0,1900,1000);
@@ -40,10 +39,13 @@ public class ViewRides extends JPanel{
 
         //Table
         arr=new Object[][]{{"-","-","-","-","-","-"}};
-        currentRideTable =new JTable(arr,new Object[]{"Customer email","Number of pasengers","Pickup place","Destination place","Kilometers at pickup","Customer mobile number"});
+        currentRideTable =new JTable(arr,new Object[]{"Customer email","Number of pasengers","Pickup place","Destination place","Kilometers at pickup","Customer mobile number"}){
+            public boolean isCellEditable(int r,int c){
+                return false;
+            }
+        };
         currentRideTableScrollPane =new JScrollPane(currentRideTable);
         currentRideTableScrollPane.setBounds(0,70,1800,70);
-        currentRideTable.setEnabled(false);
         currentRideTable.setRowHeight(60);
         //currentRideTable.setBorder(bdr);
         currentRideTable.setFont(new Font("Times new roman",Font.BOLD,19));
@@ -65,7 +67,7 @@ public class ViewRides extends JPanel{
 
         //Adding buttons
         add(changingButton);
-        //add(chatButton);
+        add(chatButton);
         changingButton.setBounds(0,150,200,60);
         chatButton.setBounds(210,150,200,60);
 
@@ -118,13 +120,17 @@ public class ViewRides extends JPanel{
         chatButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                resultSet=getCustomerDetails((String)availableRidesTable.getValueAt(availableRidesTable.getRowCount(),0));
+                if(!chatButton.isEnabled()){
+                    return;
+                }
+                resultSet=getCustomerDetails(""+currentRideTable.getValueAt(0,0));
                 try {
+                    resultSet.next();
                     customerName = resultSet.getString(1).trim() + " " + resultSet.getString(2);
-                    customerPortNumber=resultSet.getInt(6);
+                    customerPortNumber=resultSet.getInt(8);
                 }
                 catch(Exception k){
-                    System.out.println(k);
+                    System.out.println("ViewRide--->ChatButton()"+k);
                 }
                 new DriverChatBox(customerName,customerPortNumber);
             }
@@ -174,7 +180,11 @@ public class ViewRides extends JPanel{
                 arr[index]=new Object[]{index+1,resultSet.getString(1),resultSet.getInt(2),resultSet.getString( 3),resultSet.getString(4)};
                 index++;
             }
-            availableRidesTable =new JTable(arr,new Object[]{"S.No","Customer email","Number of pasengers","Pickup place","Destination place"});
+            availableRidesTable =new JTable(arr,new Object[]{"S.No","Customer email","Number of pasengers","Pickup place","Destination place"}){
+                public boolean isCellEditable(int r,int c){
+                    return false;
+                }
+            };
             //availableRidesTable.setBorder(bdr);
             availableRidesTable.setEnabled(false);
             availableRidesTable.setRowHeight(60);
@@ -249,8 +259,7 @@ public class ViewRides extends JPanel{
             resultSet= statement.executeQuery(query);
             resultSet.next();
             currentRide.setCustomerEmail(resultSet.getString(1));
-            System.out.println(query);
-            currentRide.setNoOfPassengers(resultSet.getInt(2));
+            currentRide.setNoOfSeats(resultSet.getInt(2));
             currentRide.setPickup(resultSet.getString(3));
             currentRide.setDestination(resultSet.getString(4));
             currentRide.setDriverAssigned("true");
@@ -266,7 +275,7 @@ public class ViewRides extends JPanel{
 
             //Updating table values...
             currentRideTable.setValueAt(currentRide.getCustomerEmail(),0,0);
-            currentRideTable.setValueAt(currentRide.getNoOfPassengers(),0,1);
+            currentRideTable.setValueAt(currentRide.getNoOfSeats(),0,1);
             currentRideTable.setValueAt(currentRide.getPickup(),0,2);
             currentRideTable.setValueAt(currentRide.getDestination(),0,3);
             currentRideTable.setValueAt(-1,0,4);
@@ -382,6 +391,7 @@ public class ViewRides extends JPanel{
     }
     private ResultSet getCustomerDetails(String email){
         try{
+            System.out.println(email);
             query="select * from customer where email='"+email+"'";
             return statement.executeQuery(query);
         }
