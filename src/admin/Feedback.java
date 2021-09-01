@@ -195,7 +195,7 @@ public class Feedback extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 rowSelected=e.getY()/60;
-                if(rowSelected>=customerFeedbackTable.getRowCount()){
+                if(rowSelected>=driverFeedbackTable.getRowCount()){
                     JOptionPane.showMessageDialog(null,"Error while fetching information.\nKindly refresh or restart the appliction for proper functioning...");
                     return;
                 }
@@ -398,7 +398,7 @@ public class Feedback extends JPanel {
             feedbackNoTextField.setText(resultSet.getString(1));
             emailTextField.setText(resultSet.getString(2));
             mobileNumberTextField.setText(customerDetailsResultSet.getString(3));
-            stateTextField.setText(customerDetailsResultSet.getString(7));
+            stateTextField.setText(customerDetailsResultSet.getString(6));
             feedbackTextArea.setText(resultSet.getString(3));
             if(resultSet.getString(4).trim().equals("-1")){
                 ratingsTextField.setText("Not given");
@@ -428,7 +428,6 @@ public class Feedback extends JPanel {
     public ResultSet getDriverDetails(String email){
         try{
             query="select * from driver where email='"+email+"'";
-            System.out.println(query);
             Statement statement=TabServer.connection.createStatement();
             return statement.executeQuery(query);
         }
@@ -446,7 +445,7 @@ public class Feedback extends JPanel {
             driverDetailsResultSet = getDriverDetails(resultSet.getString(1));
             driverDetailsResultSet.next();
 
-            userTypeTextField.setText("Customer");
+            userTypeTextField.setText("Driver");
             feedbackNoTextField.setText(resultSet.getString(4));
             emailTextField.setText(resultSet.getString(1));
             mobileNumberTextField.setText(driverDetailsResultSet.getString(11));
@@ -466,7 +465,7 @@ public class Feedback extends JPanel {
         }
         return true;
     }
-    public boolean deleteDriverEntry(Integer feedbackNumber){
+    public boolean deleteDriverEntry(int feedbackNumber){
         try{
             query="delete from driverFeedback where feedbackNo="+feedbackNumber;
             TabServer.statement.executeQuery(query);
@@ -476,7 +475,7 @@ public class Feedback extends JPanel {
         }
         return true;
     }
-    public boolean deleteCustomerEntry(Integer feedbackNumber){
+    public boolean deleteCustomerEntry(int feedbackNumber){
         try{
             query="delete from customerFeedback where feedbackno="+feedbackNumber;
             TabServer.statement.executeQuery(query);

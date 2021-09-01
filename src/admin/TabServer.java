@@ -29,7 +29,7 @@ public class TabServer extends JFrame {
         add(tabs,BorderLayout.CENTER);
 
         try{
-            connection=DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:XE","madhi","java");
+            connection=DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:XE","test","sql");
             connection.setAutoCommit(true);
             statement=connection.createStatement();
         }
