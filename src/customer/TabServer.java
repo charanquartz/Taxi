@@ -108,7 +108,8 @@ public class TabServer extends JFrame{
         try{
             String query="select * from ride where email='"+email+"'";
             Statement statement=connection.createStatement();
-            if(statement.executeQuery(query).next()){
+            ResultSet resultSet=statement.executeQuery(query);
+            if(resultSet.next()){
                 return true;
             }
         }

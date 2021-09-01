@@ -5,6 +5,8 @@ import driver.Ride;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.*;
 
 public class BookRide extends JPanel implements ActionListener {
@@ -84,7 +86,7 @@ public class BookRide extends JPanel implements ActionListener {
         jb_submit.addActionListener(this);
         submitOtpButton=new JButton("Submit OTP");
         submitOtpButton.addActionListener(this);
-        chatBoxButton=new JButton("Chat with driver : ");
+        chatBoxButton=new JButton("Chat with driver ");
         chatBoxButton.setBounds(890,300,150,30);
         chatBoxButton.addActionListener(this);
 
@@ -122,10 +124,6 @@ public class BookRide extends JPanel implements ActionListener {
         add(otpTextField).setVisible(false);
         add(chatBoxButton).setVisible(false);
 
-        if(TabServer.hasAlreadyBookedARide(TabServer.customer.getEmail())){
-            chatBoxButton.setVisible(true);
-        }
-
         add(txtFld1);
         add(txtFld2);
 
@@ -139,10 +137,23 @@ public class BookRide extends JPanel implements ActionListener {
         Object obj = e.getSource();
         if (obj == jb_submit) {
             try {
-                if(TabServer.hasAlreadyBookedARide(TabServer.customer.getEmail())){
-                    JOptionPane.showMessageDialog(null,"Please complete your current ride to book a new ride...");
+                if(!isValidLocationName(txtFld1.getText())){
                     return;
                 }
+                if(!isValidLocationName(txtFld2.getText())){
+                    return;
+                }
+                if(TabServer.hasAlreadyBookedARide(TabServer.customer.getEmail())){
+                    JOptionPane.showMessageDialog(null,"Please complete your current ride to book a new ride...");
+                    chatBoxButton.setVisible(true);
+                    return;
+                }
+                /*Procedure
+                SQL>create or replace procedure insertRide(email varchar,noOfSeats int,pickup varchar,dest varchar,driverAssigned char,startKM int,otp int) as
+                  2  begin
+                  3  insert into ride values(email,noOfSeats,pickup,dest,driverAssigned,startKM,otp);
+                  4  end;
+                  5  */
                 query="{call insertRide(?,?,?,?,?,?,?)}";
                 CallableStatement callableStatement=TabServer.connection.prepareCall(query);
                 callableStatement.setString(1, TabServer.customer.getEmail());
@@ -192,11 +203,33 @@ public class BookRide extends JPanel implements ActionListener {
                 return;
             }
             new CustomerChatBox();
-            CustomerChatBox.establishConnection();
+            //CustomerChatBox.establishConnection();
         }
         else
         {
             JOptionPane.showMessageDialog(null, "Booking Not Success");
         }
+    }
+    private boolean isValidLocationName(String Fromm){
+        String Name = Fromm.replaceAll("\\s", "");
+        String regex_Fromm = "^[A-Za-z]{3,40}+$";
+        Pattern pt = Pattern.compile(regex_Fromm);
+        Matcher mFromm = pt.matcher(Name);
+        boolean Fromm_match = mFromm.matches();
+        if (Fromm_match == true) {
+            //this.Fromm = Fromm;
+        } else if (Fromm.length() < 3) {
+            JOptionPane.showMessageDialog(null, "A location  should contain atleast 3 characters");
+            return false;
+        } else {
+            Pattern ptfname_check = Pattern.compile("[^a-zA-z]");
+            Matcher mtfname = ptfname_check.matcher(Fromm);
+            boolean splcheck = mtfname.find();
+            if (splcheck == true) {
+                JOptionPane.showMessageDialog(null, "Special characters and numbers are not allowed");
+                return false;
+            }
+        }
+        return true;
     }
 }

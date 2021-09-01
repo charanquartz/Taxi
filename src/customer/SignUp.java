@@ -8,7 +8,8 @@ import javax.swing.*;
 @SuppressWarnings("serial")
 public class SignUp extends JPanel implements ActionListener {
     JLabel title, lbl1, lbl2, lbl3, lbl4, lbl5, lbl6, lbl7, lbl8;
-    JTextField txtFld1, txtFld2, txtFld3, txtFld4, txtFld5, txtFld6,otpTextField;
+    JTextField txtFld1, txtFld2, txtFld3, txtFld4,otpTextField;
+    JPasswordField  txtFld5, txtFld6;
     @SuppressWarnings("rawtypes")
     JComboBox jcSta;
     JRadioButton jrb_male, jrb_female;
@@ -83,8 +84,8 @@ public class SignUp extends JPanel implements ActionListener {
             }
         });
         otpTextField=new JTextField();
-        txtFld5 = new JTextField();
-        txtFld5.setText("Atleast 3 Char");
+        txtFld5 = new JPasswordField();
+        //txtFld5.setText("Atleast 3 Char");
         txtFld5.addFocusListener(new FocusListener() {
             public void focusGained(FocusEvent e) {
                 if (txtFld5.getText().equals("Atleast 3 Char")) {
@@ -101,8 +102,8 @@ public class SignUp extends JPanel implements ActionListener {
                 }
             }
         });
-        txtFld6 = new JTextField();
-        txtFld6.setText("Confirm pass");
+        txtFld6 = new JPasswordField();
+        txtFld6.setEchoChar('*');
         txtFld6.addFocusListener(new FocusListener() {
             public void focusGained(FocusEvent e) {
                 if (txtFld6.getText().equals("Confirm pass")) {
@@ -215,7 +216,7 @@ public class SignUp extends JPanel implements ActionListener {
 
     @SuppressWarnings("unused")
     public void actionPerformed(ActionEvent e) {
-        int customerPortNumber=123456;
+        int customerPortNumber=12345;
         Object obj = e.getSource();
         if (obj == jb_submit) {
             TabServer.customer.setFirstName(txtFld1.getText());
@@ -226,8 +227,8 @@ public class SignUp extends JPanel implements ActionListener {
             TabServer.customer.setState(jcSta.getSelectedItem().toString());
             try {
                 //Generating port number that is not present already in the table...
-                while (TabServer.getCustomerDetails(customerPortNumber).next()) {
-                    customerPortNumber=TabServer.generateRandomNumber();
+                while (customerPortNumber>65565 || TabServer.getCustomerDetails(customerPortNumber).next()) {
+                    customerPortNumber=TabServer.generateRandomNumber()/10;
                 }
             }
             catch (Exception ex){

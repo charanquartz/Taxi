@@ -92,26 +92,6 @@ public class Customer {
         this.state = state;
     }
 
-    public void setFromm(String Fromm) {
-        String Name = Fromm.replaceAll("\\s", "");
-        String regex_Fromm = "^[A-Za-z]{3,40}+$";
-        Pattern pt = Pattern.compile(regex_Fromm);
-        Matcher mFromm = pt.matcher(Name);
-        boolean Fromm_match = mFromm.matches();
-        if (Fromm_match == true) {
-            //this.Fromm = Fromm;
-        } else if (Fromm.length() < 3) {
-            JOptionPane.showMessageDialog(null, "First Name should contain atleast 3 characters");
-        } else {
-            Pattern ptfname_check = Pattern.compile("[^a-zA-z]");
-            Matcher mtfname = ptfname_check.matcher(Fromm);
-            boolean splcheck = mtfname.find();
-            if (splcheck == true) {
-                JOptionPane.showMessageDialog(null, "Special characters and numbers are not allowed");
-            }
-        }
-    }
-
     public void setToo(String Too) {
         String Name = Too.replaceAll("\\s", "");
         String regex_Too = "^[A-Za-z]{3,40}+$";

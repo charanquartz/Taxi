@@ -19,7 +19,7 @@ public class CustomerChatBox extends JFrame implements ActionListener{
         setVisible(true);
         setLayout(null);
         setBackground(Color.YELLOW);
-        setBounds(20,20,1000,1000);
+        setBounds(0,0,1900,1000);
 
         //Label
         historyLabel=new Label("History : ");
@@ -31,6 +31,12 @@ public class CustomerChatBox extends JFrame implements ActionListener{
 
         //Button
         sendButton=new JButton("Send");
+
+        //SetBounds
+        historyLabel.setBounds(0,0,200,50);
+        historyTextArea.setBounds(210,10,1700,600);
+        newMessageLabel.setBounds(0,620,200,50);
+        newMessageTextArea.setBounds(210,620,1000,200);
 
         //Adding fields
         add(historyLabel);
@@ -80,7 +86,7 @@ public class CustomerChatBox extends JFrame implements ActionListener{
             readerThread.start();
         }
         catch(Exception e){
-            System.out.println("establishConnection()");
+            System.out.println("establishConnection()"+e);
         }
         return true;
     }
