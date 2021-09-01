@@ -32,7 +32,7 @@ public class TabServer extends JFrame{
         add(tabs,BorderLayout.CENTER);
 
         //Establishing connection to db
-       connection=DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:XE","madhi","java");
+       connection=DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:XE","test","sql");
        connection.setAutoCommit(true);
        statement= connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
@@ -49,7 +49,6 @@ public class TabServer extends JFrame{
         tabs.setEnabledAt(2,false);
         tabs.setEnabledAt(3,false);
         tabs.setEnabledAt(4,false);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         add(tabs);
     }

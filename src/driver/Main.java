@@ -1,5 +1,5 @@
 package driver;
-public class driverMain {
+public class Main {
     static{
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");

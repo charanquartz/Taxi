@@ -1,11 +1,9 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
-
-import driver.*;
 class HomePage extends JFrame implements ActionListener
 {
-    JButton admin,customer,driver;
+    JButton adminButton, customerButton, driverButton;
     HomePage()
     {
         //font
@@ -24,44 +22,43 @@ class HomePage extends JFrame implements ActionListener
         //login panel
         JPanel login=new JPanel();
         login.setLayout(null);
-        login.setSize(400,350);
         login.setBackground(new Color(0,0,0,60));
-        login.setBounds(0,0,900,550);
+        login.setBounds(0,0,1900,950);
 
-        admin=new JButton("ADMIN");
-        admin.setBounds(310,210,120,40);
-        admin.setBackground(new Color(200,180,140));
-        admin.addActionListener(this);
-        login.add(admin);
+        adminButton =new JButton("ADMIN");
+        adminButton.setBounds(310,210,120,40);
+        adminButton.setBackground(new Color(200,180,140));
+        adminButton.addActionListener(this);
+        login.add(adminButton);
 
-        driver=new JButton("DRIVER");
-        driver.setBounds(310,260,120,40);
-        driver.setBackground(new Color(200,180,140));
-        driver.addActionListener(this);
-        login.add(driver);
+        driverButton =new JButton("DRIVER");
+        driverButton.setBounds(310,260,120,40);
+        driverButton.setBackground(new Color(200,180,140));
+        driverButton.addActionListener(this);
+        login.add(driverButton);
 
-        customer=new JButton("CUSTOMER");
-        customer.setBounds(310,310,120,40);
-        customer.setBackground(new Color(200,180,140));
-        customer.addActionListener(this);
-        login.add(customer);
+        customerButton =new JButton("CUSTOMER");
+        customerButton.setBounds(310,310,120,40);
+        customerButton.setBackground(new Color(200,180,140));
+        customerButton.addActionListener(this);
+        login.add(customerButton);
 
         //frame
-        setSize(900,600);
+        setBounds(0,0,1900,1000);
         setLayout(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         //background
-        ImageIcon background_image=new ImageIcon("C:\\Users\\vadha\\Downloads\\img2.jpeg");
+        ImageIcon background_image=new ImageIcon("C:\\Users\\vadha\\Downloads\\img.jpg");
 
         Image img=background_image.getImage();
-        Image temp_img=img.getScaledInstance(900, 600,Image.SCALE_SMOOTH);
+        Image temp_img=img.getScaledInstance(1900, 1000,Image.SCALE_SMOOTH);
         background_image=new ImageIcon(temp_img);
         JLabel background=new JLabel("", background_image,JLabel.CENTER);
 
         background.add(login);
         background.add(heading);
-        background.setBounds(0,0,900,600);
+        background.setBounds(0,0,1900,1000);
         add(background);
 
         setVisible(true);
@@ -69,18 +66,28 @@ class HomePage extends JFrame implements ActionListener
     @Override
     public void actionPerformed(ActionEvent e) {
         Object object=e.getSource();
-        if(object==admin){
-            new admin.Main();
+        if(object== adminButton){
+            admin.Main.main(new String[]{"admin"});
         }
-        if(object==customer){
-            new customer.Main();
+        if(object== customerButton){
+            customer.Main.main(new String[]{"customer"});
         }
-        if(object==driver){
-            new driverMain();
+        if(object== driverButton){
+            try {
+                driver.Main.main(new String[]{"driver"});
+            } catch (Exception ex) {
+                System.out.println("Home Page"+ex);
+            }
         }
     }
     public static void main(String args[])
     {
+        try{
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
         new HomePage();
     }
 }

@@ -45,7 +45,6 @@ public class TabServer extends JFrame{
         tabs.setEnabledAt(3,false);
         tabs.setEnabledAt(4,false);
 
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         add(tabs);
     }

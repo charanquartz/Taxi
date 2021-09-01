@@ -203,7 +203,6 @@ public class BookRide extends JPanel implements ActionListener {
                 return;
             }
             new CustomerChatBox();
-            //CustomerChatBox.establishConnection();
         }
         else
         {

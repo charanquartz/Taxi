@@ -165,6 +165,13 @@ public class UpdateProfile extends JPanel implements ActionListener {
         Object src = e.getSource();
         if (src == jb_submit) {
             try {
+                TabServer.customer.setFirstName(txtFld1.getText());
+                TabServer.customer.setLastName(txtFld2.getText());
+                TabServer.customer.setMobileNumber(txtFld3.getText());
+                TabServer.customer.setEmail(txtFld4.getText());
+                TabServer.customer.setGender(txtFld5.getText());
+                TabServer.customer.setState(txtFld6.getText());
+                TabServer.customer.setPassword(txtFld7.getText());
                 String query = "update customer set fname=?,lname=?,mobile=?,Gender=?,State=?,Pass=? where Email=?";
                 PreparedStatement pstmt = TabServer.connection.prepareStatement(query);
                 pstmt.setString(1, txtFld1.getText());
@@ -184,7 +191,7 @@ public class UpdateProfile extends JPanel implements ActionListener {
     }
     public boolean enterFields(){
         try {
-            String query = "select fname,lname,mobile,email,gender,state,pass,portNumber from customer where email=?",gender;
+            String query = "select fname,lname,mobile,email,gender,state,pass,portNumber from customer where email=?";
             PreparedStatement pstmt = TabServer.connection.prepareStatement(query);
             pstmt.setString(1, TabServer.customer.getEmail());
             ResultSet rst = pstmt.executeQuery();

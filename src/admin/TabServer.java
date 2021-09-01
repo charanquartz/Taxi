@@ -47,7 +47,6 @@ public class TabServer extends JFrame {
         tabs.addTab("VIEW DRIVER",viewDriver);
         tabs.addTab("APPROVE DRIVER", approveDriver);
         tabs.addTab("VIEW FEEDBACKS",feedback);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
         add(tabs);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
 

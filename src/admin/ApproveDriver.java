@@ -281,7 +281,6 @@ public class ApproveDriver extends JPanel{
             query="select * from driver where approved ='false'";
             statement=TabServer.connection.createStatement();
             resultSet=statement.executeQuery(query);
-            System.out.println(size);
             resultSet.next();
             for(int i=0;i<size;i++){
                 arr[i][0]=i+1;

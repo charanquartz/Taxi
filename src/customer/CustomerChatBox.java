@@ -6,11 +6,12 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 
-public class CustomerChatBox extends JFrame implements ActionListener{
+public class CustomerChatBox extends JFrame{
     Label historyLabel,newMessageLabel;
+    static boolean isConnected=false;
     static JTextArea historyTextArea,newMessageTextArea;
     static JButton sendButton;
-    String message;
+    static String message;
     static ServerSocket customerServerSocket;
     static Socket driverSocket;
     static BufferedReader bufferedReader;
@@ -37,6 +38,7 @@ public class CustomerChatBox extends JFrame implements ActionListener{
         historyTextArea.setBounds(210,10,1700,600);
         newMessageLabel.setBounds(0,620,200,50);
         newMessageTextArea.setBounds(210,620,1000,200);
+        sendButton.setBounds(1220,620,200,50);
 
         //Adding fields
         add(historyLabel);
@@ -44,26 +46,28 @@ public class CustomerChatBox extends JFrame implements ActionListener{
         add(historyTextArea);
         add(newMessageTextArea);
         add(sendButton);
-    }
-    @Override
-    public void actionPerformed(ActionEvent e){
-        Object obj=e.getSource();
-        if(obj==sendButton){
-            message=newMessageTextArea.getText().trim();
-            if(message.equals("")){
-                return;
+
+        Thread connectionThread=new Thread(){
+            @Override
+            public void run(){
+                try {
+                    customerServerSocket = new ServerSocket(TabServer.customer.getPortNumber());
+                    driverSocket=customerServerSocket.accept();
+                    bufferedReader=new BufferedReader(new InputStreamReader(driverSocket.getInputStream()));
+                    bufferedWriter=new BufferedWriter(new OutputStreamWriter(driverSocket.getOutputStream()));
+                }
+                catch(Exception e){
+                    System.out.println("establishConnection()"+e);
+                }
             }
-            try {
-                bufferedWriter.write(message);
-                bufferedWriter.newLine();
-                bufferedWriter.flush();
-            }
-            catch(Exception ex){
-                System.out.println("CustomerChatBox()-->actionPerformed()"+e);
-            }
+        };
+        connectionThread.start();
+        try{
+            connectionThread.join();
         }
-    }
-    public static boolean establishConnection(){
+        catch (Exception e){
+            System.out.println(e);
+        }
         Thread readerThread=new Thread(){
             @Override
             public void run(){
@@ -78,16 +82,29 @@ public class CustomerChatBox extends JFrame implements ActionListener{
                 }
             }
         };
-        try {
-            customerServerSocket = new ServerSocket(TabServer.customer.getPortNumber());
-            driverSocket=customerServerSocket.accept();
-            bufferedReader=new BufferedReader(new InputStreamReader(driverSocket.getInputStream()));
-            bufferedWriter=new BufferedWriter(new OutputStreamWriter(driverSocket.getOutputStream()));
-            readerThread.start();
-        }
-        catch(Exception e){
-            System.out.println("establishConnection()"+e);
-        }
-        return true;
+        readerThread.start();
+        sendButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(!isConnected){
+                    JOptionPane.showMessageDialog(null,"Driver is offline");
+                    return;
+                }
+                message=newMessageTextArea.getText().trim();
+                if(message.equals("")){
+                    return;
+                }
+                try {
+                    bufferedWriter.write(message);
+                    historyTextArea.setText(historyTextArea.getText()+"\nYOU : "+message);
+                    bufferedWriter.newLine();
+                    bufferedWriter.flush();
+                    newMessageTextArea.setText("");
+                }
+                catch(Exception ex){
+                    System.out.println("CustomerChatBox()-->actionPerformed()"+e);
+                }
+            }
+        });
     }
 }
