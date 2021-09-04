@@ -49,7 +49,7 @@ class HomePage extends JFrame implements ActionListener
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         //background
-        ImageIcon background_image=new ImageIcon("C:\\Users\\vadha\\Downloads\\img.jpg");
+        ImageIcon background_image=new ImageIcon("C:\\Users\\vadha\\Downloads\\img.jpg");//change it according to your location
 
         Image img=background_image.getImage();
         Image temp_img=img.getScaledInstance(1900, 1000,Image.SCALE_SMOOTH);
