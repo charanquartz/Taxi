@@ -16,7 +16,7 @@ public class CustomerChatBox extends JFrame{
     static Socket driverSocket;
     static BufferedReader bufferedReader;
     static BufferedWriter bufferedWriter;
-    CustomerChatBox(){
+    CustomerChatBox(Integer port){
         setVisible(true);
         setLayout(null);
         setBackground(Color.YELLOW);
@@ -47,26 +47,15 @@ public class CustomerChatBox extends JFrame{
         add(newMessageTextArea);
         add(sendButton);
 
-        Thread connectionThread=new Thread(){
-            @Override
-            public void run(){
-                try {
-                    customerServerSocket = new ServerSocket(TabServer.customer.getPortNumber());
-                    driverSocket=customerServerSocket.accept();
-                    bufferedReader=new BufferedReader(new InputStreamReader(driverSocket.getInputStream()));
-                    bufferedWriter=new BufferedWriter(new OutputStreamWriter(driverSocket.getOutputStream()));
-                }
-                catch(Exception e){
-                    System.out.println("establishConnection()"+e);
-                }
-            }
-        };
-        connectionThread.start();
-        try{
-            connectionThread.join();
+        try {
+            customerServerSocket = new ServerSocket(port);
+            driverSocket = customerServerSocket.accept();
+            bufferedReader = new BufferedReader(new InputStreamReader(driverSocket.getInputStream()));
+            bufferedWriter = new BufferedWriter(new OutputStreamWriter(driverSocket.getOutputStream()));
+            isConnected=true;
         }
-        catch (Exception e){
-            System.out.println(e);
+        catch(Exception e){
+            System.out.println("establishConnection()"+e);
         }
         Thread readerThread=new Thread(){
             @Override

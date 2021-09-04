@@ -132,7 +132,12 @@ public class ViewRides extends JPanel{
                 catch(Exception k){
                     System.out.println("ViewRide--->ChatButton()"+k);
                 }
-                new DriverChatBox(customerName,customerPortNumber);
+                Thread thread=new Thread(){
+                    public void run(){
+                        new DriverChatBox(customerName,customerPortNumber);
+                    }
+                };
+                thread.start();
             }
 
             @Override
