@@ -148,28 +148,6 @@ public class BookRide extends JPanel implements ActionListener {
                     chatBoxButton.setVisible(true);
                     return;
                 }
-                /*Procedure
-                SQL>create or replace procedure insertRide(email varchar,noOfSeats int,pickup varchar,dest varchar,driverAssigned char,startKM int,otp int) as
-                  2  begin
-                  3  insert into ride values(email,noOfSeats,pickup,dest,driverAssigned,startKM,otp);
-                  4  end;
-                  5  */
-                query="{call insertRide(?,?,?,?,?,?,?)}";
-                CallableStatement callableStatement=TabServer.connection.prepareCall(query);
-                callableStatement.setString(1, TabServer.customer.getEmail());
-                callableStatement.setInt(2, Integer.parseInt(carseat.getSelectedItem().toString()));
-                callableStatement.setString(3, txtFld1.getText());
-                callableStatement.setString(4, txtFld2.getText());
-                callableStatement.setString(5, "false");
-                callableStatement.setInt(6, -1);
-                otp=TabServer.generateRandomNumber();
-                while(TabServer.getRideDetails(otp).next()){
-                    otp=TabServer.generateRandomNumber();
-                }
-                callableStatement.setInt(7,otp);
-
-                callableStatement.executeUpdate();
-
                 TabServer.sendMail("Ride Booking","Your OTP for ride booking proces : "+otp,TabServer.customer.getEmail());
                 JOptionPane.showMessageDialog(this, "OTP is sent to your mail...");
                 otpLabel.setVisible(true);
@@ -184,7 +162,29 @@ public class BookRide extends JPanel implements ActionListener {
             if(submitOtpButton.isVisible()){
                 try{
                     if(otp==Integer.parseInt(otpTextField.getText())){
-                        JOptionPane.showMessageDialog(this,"Ride is booked successfully");
+                        /*Procedure
+                SQL>create or replace procedure insertRide(email varchar,noOfSeats int,pickup varchar,dest varchar,driverAssigned char,startKM int,otp int) as
+                  2  begin
+                  3  insert into ride values(email,noOfSeats,pickup,dest,driverAssigned,startKM,otp);
+                  4  end;
+                  5  */
+                        query="{call insertRide(?,?,?,?,?,?,?)}";
+                        CallableStatement callableStatement=TabServer.connection.prepareCall(query);
+                        callableStatement.setString(1, TabServer.customer.getEmail());
+                        callableStatement.setInt(2, Integer.parseInt(carseat.getSelectedItem().toString()));
+                        callableStatement.setString(3, txtFld1.getText());
+                        callableStatement.setString(4, txtFld2.getText());
+                        callableStatement.setString(5, "false");
+                        callableStatement.setInt(6, -1);
+                        otp=TabServer.generateRandomNumber();
+                        while(TabServer.getRideDetails(otp).next()){
+                            otp=TabServer.generateRandomNumber();
+                        }
+                        callableStatement.setInt(7,otp);
+
+                        callableStatement.executeUpdate();
+                        JOptionPane.showMessageDialog(this,"Ride is booked successfully.\nKindly share this OTP with your driver during pickup"+otp);
+                        TabServer.sendMail("Ride Confirmation","OTP for your ride : "+otp+"\nKindly share it with your driver at pickup location",TabServer.customer.getEmail());
                         chatBoxButton.setVisible(true);
                     }
                     else{
@@ -202,7 +202,12 @@ public class BookRide extends JPanel implements ActionListener {
             if(!chatBoxButton.isEnabled()){
                 return;
             }
-            new CustomerChatBox();
+            Thread t=new Thread() {
+                public void run() {
+                    new CustomerChatBox(TabServer.customer.getPortNumber());
+                }
+            };
+            t.start();
         }
         else
         {

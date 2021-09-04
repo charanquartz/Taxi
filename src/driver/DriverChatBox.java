@@ -47,25 +47,13 @@ public class DriverChatBox extends JFrame{
         customerPortNumber=PortNumber;
         customerName=name;
 
-        Thread thread = new Thread() {
-            public void run() {
-                try {
-                    driverSocket = new Socket("127.0.0.1", customerPortNumber);
-                    bufferedReader=new BufferedReader(new InputStreamReader(driverSocket.getInputStream()));
-                    bufferedWriter=new BufferedWriter(new OutputStreamWriter(driverSocket.getOutputStream()));
-                }
-                catch(Exception e){
-                    System.out.println("DriverChatBox --->establishConnection"+e);
-                    JOptionPane.showMessageDialog(null,"Customer is Offline please retry again");
-                }
-            }
-        };
-        thread.start();
-        try{
-            thread.join();
-        }
-        catch (Exception e){
-            System.out.println(e);
+        try {
+            driverSocket = new Socket("127.0.0.1", customerPortNumber);
+            bufferedReader = new BufferedReader(new InputStreamReader(driverSocket.getInputStream()));
+            bufferedWriter = new BufferedWriter(new OutputStreamWriter(driverSocket.getOutputStream()));
+        } catch (Exception e) {
+            System.out.println("DriverChatBox --->establishConnection" + e);
+            JOptionPane.showMessageDialog(null, "Customer is Offline please retry again");
         }
         Thread readerThread = new Thread() {
             @Override
