@@ -1,7 +1,7 @@
 package driver;
 import java.util.*;
 public class Driver {
-    private String fname,lname,carID,gender,nationality,city,address,email,pass,approved,availability,licenseId;
+    private String fname,lname,carID,gender, state,city,address,email,pass,approved,availability,licenseId;
     private Date dob;
     private ArrayList<Car> cars;
     private long mobile,driverExp,xp;
@@ -73,12 +73,12 @@ public class Driver {
         this.dob = dob;
     }
 
-    public String getNationality() {
-        return nationality;
+    public String getState() {
+        return state;
     }
 
-    public void setNationality(String nationality) {
-        this.nationality = nationality;
+    public void setState(String state) {
+        this.state = state;
     }
 
     public String getCity() {
