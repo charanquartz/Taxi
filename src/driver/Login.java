@@ -1,6 +1,4 @@
 package driver;
-import javafx.scene.control.Tab;
-
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -193,7 +191,7 @@ public class Login extends JPanel{
             TabServer.driver.setAddress(rs.getString(7));
             TabServer.driver.setDriverExp(rs.getInt(8));
             TabServer.driver.setLicenseId(rs.getString(9));
-            TabServer.driver.setNationality(rs.getString(10));
+            TabServer.driver.setState(rs.getString(10));
             TabServer.driver.setMobile(rs.getLong(11));
             TabServer.driver.setEmail(rs.getString(12));
             TabServer.driver.setPass(rs.getString(13));
